@@ -476,10 +476,14 @@ enum SubscriptionPlan {
 
 enum SubscriptionStatus {
   TRIAL
-  PENDING_REVIEW
   ACTIVE
   EXPIRED
   CANCELED
+}
+
+enum PaymentReviewStatus {
+  PENDING
+  APPROVED
   REJECTED
 }
 
@@ -494,11 +498,11 @@ model Subscription {
   endsAt     DateTime?
   refId      String?
 
-  // Payment-review fields (manual card transfer)
-  trackingCode   String?
-  paidAt         DateTime?
-  reviewedAt     DateTime?
-  reviewedBy     String?
+  paymentStatus   PaymentReviewStatus?
+  trackingCode    String?
+  paidAt          DateTime?
+  reviewedAt      DateTime?
+  reviewedBy      String?
   rejectionReason String?
 
   createdAt  DateTime           @default(now())
@@ -507,6 +511,7 @@ model Subscription {
   business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
   @@index([status])
+  @@index([paymentStatus])
   @@index([trackingCode])
 }
 
