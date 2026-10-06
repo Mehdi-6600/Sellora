@@ -381,24 +381,3 @@ BEGIN
     EXECUTE format('CREATE TRIGGER set_updated_at BEFORE UPDATE ON %s FOR EACH ROW EXECUTE FUNCTION set_updated_at();', t);
   END LOOP;
 END $$;
-
--- Mark migration as applied (for prisma migrate baseline)
-CREATE TABLE IF NOT EXISTS "_prisma_migrations" (
-  id VARCHAR(36) PRIMARY KEY,
-  checksum VARCHAR(64) NOT NULL,
-  finished_at TIMESTAMPTZ,
-  migration_name VARCHAR(255) NOT NULL,
-  logs TEXT,
-  rolled_back_at TIMESTAMPTZ,
-  started_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  applied_steps_count INTEGER NOT NULL DEFAULT 0
-);
-INSERT INTO "_prisma_migrations" (id, checksum, finished_at, migration_name, logs, applied_steps_count)
-VALUES (
-  '0001_init',
-  'manual-seed',
-  now(),
-  '0001_init',
-  NULL,
-  1
-) ON CONFLICT DO NOTHING;
