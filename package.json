@@ -1,0 +1,47 @@
+{
+  "name": "sellora",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "postbuild": "prisma migrate deploy",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "postinstall": "prisma generate",
+    "typecheck": "tsc --noEmit",
+    "test:db": "SELLORA_ALLOW_PG_FALLBACK=1 tsx scripts/test-db.mts"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "5.22.0",
+    "@prisma/client": "5.22.0",
+    "@upstash/qstash": "^2.7.17",
+    "bcryptjs": "^2.4.3",
+    "clsx": "^2.1.1",
+    "jose": "^5.9.6",
+    "next": "14.2.15",
+    "pg": "^8.16.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/pg": "^8.16.0",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.15",
+    "postcss": "^8.4.47",
+    "prisma": "5.22.0",
+    "tailwindcss": "^3.4.14",
+    "tsx": "^4.19.0",
+    "typescript": "^5"
+  }
+}
