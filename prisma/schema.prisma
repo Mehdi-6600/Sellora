@@ -34,6 +34,7 @@ model User {
   name          String?
   passwordHash  String
   locale        String   @default("fa")
+  isAdmin       Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -92,12 +93,12 @@ model BusinessMember {
 model InstagramAccount {
   id                 String                    @id @default(cuid())
   businessId         String                    @unique
-  instagramBusinessAccountId String             @unique // IGSID / page-scoped ID
+  instagramBusinessAccountId String             @unique
   pageId             String?
   username           String?
   name               String?
   profilePicUrl      String?
-  accessToken        String // encrypted at rest by app layer (see lib/crypto)
+  accessToken        String
   tokenExpiresAt     DateTime?
   status             InstagramConnectionStatus @default(DISCONNECTED)
   lastVerifiedAt     DateTime?
@@ -149,7 +150,7 @@ model Product {
   name        String
   description String?
   sku         String?
-  price       Int           // in smallest currency unit (for IRR: rials; toman = price/10)
+  price       Int
   imageUrl    String?
   status      ProductStatus @default(AVAILABLE)
   createdAt   DateTime      @default(now())
@@ -171,7 +172,7 @@ model ProductVariant {
   size       String?
   color      String?
   sku        String?
-  price      Int?          // override
+  price      Int?
   status     ProductStatus @default(AVAILABLE)
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
@@ -196,7 +197,7 @@ model BusinessRuleset {
   isActive   Boolean  @default(true)
   address    String?
   phone      String?
-  workingHours Json?   // { sat: {open:"09:00",close:"21:00"}, ... }
+  workingHours Json?
   shippingInfo String?
   paymentMethods String?
   returnPolicy String?
@@ -213,7 +214,7 @@ model BusinessRuleset {
 model BusinessRule {
   id         String   @id @default(cuid())
   businessId String
-  key        String   // e.g. "shipping", "payment", "hours", "custom"
+  key        String
   value      Json
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -225,7 +226,7 @@ model BusinessRule {
 }
 
 // ---------------------------------------------------------------------------
-// Automation (internal — owner UI hides complexity)
+// Automation
 // ---------------------------------------------------------------------------
 
 model AutomationConfig {
@@ -265,11 +266,11 @@ model Conversation {
   id            String            @id @default(cuid())
   businessId    String
   igAccountId   String
-  igSid         String            // Instagram-scoped user id (customer)
+  igSid         String
   customerName  String?
   customerUsername String?
   customerProfilePic String?
-  postId        String?           // originating post if started from comment
+  postId        String?
   state         ConversationState @default(NEW)
   automationLock AutomationLock   @default(AUTO)
   lastMessageAt  DateTime         @default(now())
@@ -336,16 +337,16 @@ model Message {
   id             String           @id @default(cuid())
   businessId     String
   conversationId String
-  igMessageId    String?          // Meta message ID (outbound or inbound)
+  igMessageId    String?
   direction      MessageDirection
   senderType     MessageSenderType
   text           String           @db.Text
-  metadataJson   Json?            // attachments, intents, entities, template used
+  metadataJson   Json?
   deliveryState  DeliveryState    @default(PENDING)
   failureReason  String?
   deliveredAt    DateTime?
   seenAt         DateTime?
-  idempotencyKey String?          // unique per outbound send attempt
+  idempotencyKey String?
   createdAt      DateTime         @default(now())
 
   business     Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
@@ -388,9 +389,9 @@ model Lead {
   businessId      String
   conversationId  String          @unique
   temperature     LeadTemperature @default(COLD)
-  score           Int             @default(0) // 0-100
-  reason          String?         // primary reason (persian text for UI)
-  signalsJson     Json            @default("[]") // structured signals
+  score           Int             @default(0)
+  reason          String?
+  signalsJson     Json            @default("[]")
   relevantIntent  String?
   contactName     String?
   contactPhone    String?
@@ -414,10 +415,10 @@ model Lead {
 
 model WebhookEvent {
   id           String   @id @default(cuid())
-  businessId   String?  // can be null until we resolve account
-  source       String   @default("meta") // "meta", "qstash", ...
-  externalId   String?  // Meta entry/message id for idempotency
-  eventType    String   // e.g. "messages","comments","messaging_postbacks"
+  businessId   String?
+  source       String   @default("meta")
+  externalId   String?
+  eventType    String
   signatureOk  Boolean  @default(false)
   payload      Json
   processed    Boolean  @default(false)
@@ -451,7 +452,7 @@ model AuditLog {
   id          String   @id @default(cuid())
   businessId  String
   actorUserId String?
-  action      String   // "product.create", "product.price_change", "instagram.connect", ...
+  action      String
   targetType  String?
   targetId    String?
   metaJson    Json?
@@ -475,9 +476,11 @@ enum SubscriptionPlan {
 
 enum SubscriptionStatus {
   TRIAL
+  PENDING_REVIEW
   ACTIVE
   EXPIRED
   CANCELED
+  REJECTED
 }
 
 model Subscription {
@@ -485,15 +488,26 @@ model Subscription {
   businessId String             @unique
   plan       SubscriptionPlan
   status     SubscriptionStatus @default(TRIAL)
-  amount     Int                // amount paid (in toman or rials — see currency)
+  amount     Int
   currency   String             @default("IRR")
   startsAt   DateTime           @default(now())
   endsAt     DateTime?
   refId      String?
+
+  // Payment-review fields (manual card transfer)
+  trackingCode   String?
+  paidAt         DateTime?
+  reviewedAt     DateTime?
+  reviewedBy     String?
+  rejectionReason String?
+
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @updatedAt
 
   business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([trackingCode])
 }
 
 model UsageSnapshot {
@@ -514,7 +528,7 @@ model UsageSnapshot {
 model Notification {
   id         String   @id @default(cuid())
   businessId String
-  kind       String   // "lead.hot", "instagram.reauth", "system"...
+  kind       String
   title      String
   body       String
   readAt     DateTime?
