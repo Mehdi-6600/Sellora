@@ -75,6 +75,20 @@ export default async function SettingsPage() {
         </div>
       </div>
 
+      <div className="section-title">راهنما</div>
+      <div className="space-y-2">
+        <Link href="/why-sellora" className="card p-4 flex items-center gap-3">
+          <div className="h-10 w-10 rounded-xl bg-brand-50 grid place-items-center text-xl">✨</div>
+          <div className="flex-1">
+            <div className="font-medium">چرا Sellora؟</div>
+            <div className="text-xs text-ink-500">همه‌ی قابلیت‌ها و مزیت‌های Sellora</div>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink-400 rtl:rotate-180">
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+        </Link>
+      </div>
+
       {isAdmin && (
         <>
           <div className="section-title">پنل مدیریت</div>
