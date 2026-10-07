@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getServerDict } from "@/lib/i18n";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
@@ -36,6 +37,22 @@ export default async function SubscriptionPage() {
           <Badge tone={sub.status === "ACTIVE" ? "green" : sub.status === "TRIAL" ? "amber" : "gray"}>{sub.status}</Badge>
         </Card>
       )}
+
+      <Link
+        href="/why-sellora"
+        className="block card p-4 mb-4 bg-gradient-to-l from-brand-50 to-white border-brand-200"
+      >
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-xl bg-brand-600 text-white grid place-items-center text-lg">✨</div>
+          <div className="flex-1">
+            <div className="font-semibold text-ink-900 text-sm">چرا Sellora؟</div>
+            <div className="text-xs text-ink-600">قابلیت‌ها و مزیت‌ها رو ببین</div>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-600 rtl:rotate-180">
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+        </div>
+      </Link>
 
       <div className="grid grid-cols-1 gap-3">
         {PLANS.map((p) => (
