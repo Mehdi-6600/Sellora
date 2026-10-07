@@ -66,8 +66,6 @@ async function handleSignup(req: NextRequest) {
 
   const slug = parsed.data.slug || uniqueSlug(parsed.data.businessName);
 
-  // Encrypt a dummy placeholder token for instagram account (nothing to encrypt yet).
-  // We create an InstagramAccount row in DISCONNECTED state for easier joins later.
   const result = await prisma.$transaction(async (tx: any) => {
     const user = await tx.user.create({
       data: { email, name: parsed.data.name, passwordHash },
@@ -89,7 +87,6 @@ async function handleSignup(req: NextRequest) {
     await tx.businessRuleset.create({
       data: { businessId: business.id, version: 1, isActive: true },
     });
-    // Disconnected placeholder for InstagramAccount so joins always return a row.
     await tx.instagramAccount.create({
       data: {
         businessId: business.id,
@@ -105,8 +102,14 @@ async function handleSignup(req: NextRequest) {
   return NextResponse.json({ ok: true });
 }
 
-async function handleLogout() {
+async function handleLogout(req: NextRequest) {
   await destroySession();
+  // If the request came from an HTML form (Accept: text/html), redirect to /login.
+  // Otherwise return JSON (for API callers).
+  const accept = req.headers.get("accept") || "";
+  if (accept.includes("text/html")) {
+    return NextResponse.redirect(new URL("/login", req.url), { status: 303 });
+  }
   return NextResponse.json({ ok: true });
 }
 
@@ -120,7 +123,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ rou
       case "signup":
         return await handleSignup(req);
       case "logout":
-        return await handleLogout();
+        return await handleLogout(req);
       default:
         return NextResponse.json({ error: "not_found" }, { status: 404 });
     }
