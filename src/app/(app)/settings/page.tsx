@@ -43,6 +43,8 @@ export default async function SettingsPage() {
     },
   ];
 
+  const isAdmin = Boolean(auth.user?.isAdmin);
+
   return (
     <AppShell title={dict.nav.settings}>
       <div className="card p-4 mb-4 flex items-center gap-3">
@@ -52,6 +54,9 @@ export default async function SettingsPage() {
         <div className="flex-1">
           <div className="font-semibold">{auth.user.name || auth.business.name}</div>
           <div className="text-xs text-ink-500">{auth.user.email}</div>
+          {isAdmin && (
+            <div className="text-[10px] text-brand-600 font-semibold mt-0.5">ADMIN</div>
+          )}
         </div>
         <form action="/api/auth/logout" method="post">
           <button type="submit" className="btn-secondary text-xs" style={{ padding: "0.4rem 0.75rem" }}>
@@ -69,6 +74,24 @@ export default async function SettingsPage() {
           <AutomationToggle enabled={auto?.enabled ?? false} />
         </div>
       </div>
+
+      {isAdmin && (
+        <>
+          <div className="section-title">پنل مدیریت</div>
+          <div className="space-y-2">
+            <Link href="/admin/subscriptions" className="card p-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-amber-50 grid place-items-center text-xl">👑</div>
+              <div className="flex-1">
+                <div className="font-medium">مدیریت اشتراک‌ها</div>
+                <div className="text-xs text-ink-500">بررسی، تأیید یا رد درخواست‌های پرداخت</div>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink-400 rtl:rotate-180">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </Link>
+          </div>
+        </>
+      )}
 
       <div className="section-title">بخش‌ها</div>
       <div className="space-y-2">
