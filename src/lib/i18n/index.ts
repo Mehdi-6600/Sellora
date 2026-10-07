@@ -14,9 +14,11 @@ export function isLocale(v: string | null | undefined): v is Locale {
 
 /**
  * Server-side locale resolution:
- *   1. Cookie `sellora_locale`
- *   2. Accept-Language header (first two chars)
- *   3. Default (fa)
+ *   1. Cookie `sellora_locale` (اگر کاربر خودش تغییر داده باشد)
+ *   2. Default: fa (Persian) — Sellora is a Persian-first product.
+ *
+ * توجه: عمداً از Accept-Language استفاده نمی‌کنیم تا کاربران ایرانی همیشه
+ * تجربه‌ی فارسی داشته باشند، حتی اگر مرورگرشان انگلیسی باشد.
  */
 export async function getLocale(): Promise<Locale> {
   try {
@@ -25,16 +27,6 @@ export async function getLocale(): Promise<Locale> {
     if (isLocale(cookieLocale)) return cookieLocale;
   } catch {
     // cookies() can throw in some non-request contexts.
-  }
-  try {
-    const h = headers();
-    const al = h.get("accept-language");
-    if (al) {
-      const first = al.split(",")[0].slice(0, 2).toLowerCase();
-      if (isLocale(first)) return first;
-    }
-  } catch {
-    // ignore
   }
   return DEFAULT_LOCALE;
 }
