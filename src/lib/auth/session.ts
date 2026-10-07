@@ -9,8 +9,25 @@ import { prisma } from "@/lib/db/prisma";
 const COOKIE_NAME = "sellora_session";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
+/**
+ * Session signing key.
+ *
+ * SECURITY (fail closed): in production we refuse to sign or verify sessions
+ * with anything other than an explicitly configured NEXTAUTH_SECRET. Falling
+ * back to a built-in dev secret in production would let anyone who knows the
+ * source code forge a valid session cookie for any user and any tenant.
+ * In development we keep a fixed dev secret so local iteration works.
+ */
 function getSecretKey(): Uint8Array {
-  const secret = process.env.NEXTAUTH_SECRET || "sellora-dev-secret-change-me-please";
+  const secret = process.env.NEXTAUTH_SECRET;
+  if (!secret || secret.length < 16) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "NEXTAUTH_SECRET is not configured (or too short). Refusing to sign sessions with a built-in dev key."
+      );
+    }
+    return new TextEncoder().encode("sellora-dev-secret-change-me-please");
+  }
   return new TextEncoder().encode(secret);
 }
 
@@ -53,6 +70,9 @@ export async function getSession(): Promise<SessionPayload | null> {
   const c = cookies();
   const token = c.get(COOKIE_NAME)?.value;
   if (!token) return null;
+  // Surface a missing-secret misconfiguration as a loud 500 instead of silently
+  // treating every session as invalid (fail closed, but diagnosable).
+  getSecretKey();
   try {
     const { payload } = await jwtVerify(token, getSecretKey(), {
       issuer: "sellora",

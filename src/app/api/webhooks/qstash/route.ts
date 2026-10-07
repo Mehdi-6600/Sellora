@@ -12,7 +12,11 @@ import { processJob } from "@/lib/queue";
 function verifyQstashSignature(req: NextRequest, rawBody: string): boolean {
   const current = process.env.QSTASH_CURRENT_SIGNING_KEY;
   const next = process.env.QSTASH_NEXT_SIGNING_KEY;
-  if (!current && !next) return true; // keys not configured (dev / single-instance)
+  // SECURITY (fail closed): when no signing keys are configured, QStash is not
+  // in use at all (jobs run inline), so this public endpoint must refuse every
+  // request. Previously it accepted everything, which exposed an
+  // unauthenticated way to execute `send.message` jobs for arbitrary tenants.
+  if (!current && !next) return false;
   const sigHeader = req.headers.get("upstash-signature");
   if (!sigHeader) return false;
   // Strip "v1=" prefix if present.
@@ -47,8 +51,9 @@ export async function POST(req: NextRequest) {
   try {
     await processJob(job as any, payload as any);
     return NextResponse.json({ ok: true });
-  } catch (err: any) {
-    // Return non-2xx so QStash retries according to schedule.
-    return NextResponse.json({ error: err?.message ?? "job_failed" }, { status: 500 });
+  } catch (err) {
+    // Never echo internal job errors to the caller; QStash only needs non-2xx.
+    console.error("[qstash] job failed:", err);
+    return NextResponse.json({ error: "job_failed" }, { status: 500 });
   }
 }

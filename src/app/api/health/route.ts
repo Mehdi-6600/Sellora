@@ -6,19 +6,19 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   let dbOk = false;
-  let dbError: string | null = null;
   try {
     await prisma.$queryRaw`SELECT 1`;
     dbOk = true;
-  } catch (e: any) {
-    dbError = e?.message ?? String(e);
+  } catch (e) {
+    // SECURITY: the raw DB error can contain host names, roles and query text.
+    // Log it server-side; expose only a boolean to anonymous callers.
+    console.error("[health] database check failed:", e);
   }
   return NextResponse.json({
     ok: true,
     service: "sellora",
     time: new Date().toISOString(),
     db: dbOk ? "connected" : "disconnected",
-    dbError: dbOk ? null : dbError,
     meta: {
       appIdConfigured: !!process.env.META_APP_ID,
       qstashConfigured: !!process.env.QSTASH_TOKEN,
