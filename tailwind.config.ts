@@ -1,29 +1,22 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Sellora design tokens.
+ * Sellora design tokens — Purple Premium edition.
  *
- * Two colour sources, deliberately kept apart:
+ * Canvas: a deep, luxurious, soft purple (not neon, not too dark) with violet
+ * aura gradients, inspired by the deep violet-wine shadows of the official
+ * brand artwork (public/og.jpg). Surfaces are layered glass on top of it.
  *
- * 1. THE ARTWORK (untouched). public/brand/sellora-mark-*.webp and
- *    public/brand/sellora-wordmark*.webp are the original Sellora artwork.
- *    Its own colours — deep wine #8E0F39, crimson #D6255C, rose #F0567F — are
- *    kept verbatim in the `rose` scale and are never re-tinted, so the
- *    character always looks exactly like the reference image.
+ * The BRAND rose scale keeps the exact hues of the original Sellora character
+ * (public/icons/icon-512.png): the logo/character colors never change — only
+ * the environment around them became Purple Premium. The scale is arranged
+ * for dark surfaces: low steps are deep rose tints (tiles/borders), high
+ * steps are light rose (text on dark).
  *
- * 2. THE ENVIRONMENT (purple premium). The page canvas, panels, borders,
- *    shadows, focus rings and hover states all use the violet `brand` scale
- *    below: deep, soft and modern rather than neon. Violet + the artwork's
- *    magenta sit next to each other on the colour wheel, so the crimson
- *    character reads as the brand signature on a purple stage.
- *
- *   violet 50  #F4F1FE     violet 500 #7C4CE4    violet 900 #331468
- *   violet 100 #EAE4FD     violet 600 #6733D0    violet 950 #1F0A45
- *   violet 200 #D6C9FB     violet 700 #5525AE
- *   violet 300 #B9A2F6     violet 800 #431C88
- *
- * Every value is a tint/shade of that same violet family so the interface,
- * the gradients and the soft-3D lighting never disagree.
+ *   canvas base    #150E2E  (deep premium purple page background)
+ *   canvas soft    #1E1442  (raised purple surface)
+ *   violet aura    #8B5CF6 / #A78BFA (soft depth highlights)
+ *   brand rose     #ED436E / #D6255C / #F0567F (character + primary actions)
  */
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
@@ -35,93 +28,72 @@ const config: Config = {
       },
       colors: {
         /**
-         * The interface accent — Sellora violet. Used by buttons, links,
-         * badges, focus rings and every active state.
+         * Brand rose — the original character hues, arranged for dark
+         * surfaces: 50–300 are deep rose tints (tiles, borders), 500–600 are
+         * the untouched brand core, 700–950 are light rose for text on dark.
          */
         brand: {
-          50: "#f4f1fe",
-          100: "#eae4fd",
-          200: "#d6c9fb",
-          300: "#b9a2f6",
-          400: "#9874ef",
-          500: "#7c4ce4",
-          600: "#6733d0",
-          700: "#5525ae",
-          800: "#431c88",
-          900: "#331468",
-          950: "#1f0a45",
-        },
-        /**
-         * The colours of the original artwork itself (character, wordmark,
-         * speech-bubble lockup). Reserved for brand moments — the character's
-         * light pool, the signature chat bubble, avatars — so the artwork's
-         * palette is never confused with the interface accent.
-         */
-        rose: {
-          50: "#fff1f5",
-          100: "#ffe3ec",
-          200: "#ffc9d8",
-          300: "#ffa0b9",
-          400: "#f9709a",
+          50: "#3a1129",
+          100: "#5c1a40",
+          200: "#93295e",
+          300: "#c04a7d",
+          400: "#e0608c",
           500: "#ed436e",
           600: "#d6255c",
-          700: "#b01447",
-          800: "#8e0f39",
-          900: "#730d2f",
-          950: "#43061b",
+          700: "#f0567f",
+          800: "#ff7fa3",
+          900: "#ffadc6",
+          950: "#ffd9e5",
         },
-        /** Violet-tinted neutrals: text, hairlines, muted surfaces. */
+        /**
+         * Ink — purple-tinted neutrals for the dark premium canvas.
+         * Low steps are dark surfaces/borders, high steps are light text.
+         */
         ink: {
-          50: "#f8f7fc",
-          100: "#f1eff8",
-          200: "#e3dfef",
-          300: "#bdb7d3",
-          400: "#837c9e",
-          500: "#6b6489",
-          600: "#575173",
-          700: "#433e5c",
-          800: "#302c47",
-          900: "#201d33",
-          950: "#131120",
+          50: "#221a45",
+          100: "#2c2356",
+          200: "#453680",
+          300: "#645a97",
+          400: "#7f76ad",
+          500: "#9c93c4",
+          600: "#b3abd6",
+          700: "#c9c2e6",
+          800: "#ddd8f0",
+          900: "#f1eefb",
+          950: "#fbfaff",
         },
-        /** Page backgrounds — soft lavender, never a grey canvas. */
+        /** Page backgrounds — deep Purple Premium, never a grey canvas. */
         canvas: {
-          DEFAULT: "#f1ecfc",
-          soft: "#faf8ff",
-          deep: "#e7dffa",
-          /** Frosted lavender surface used by sticky bars. */
-          glass: "rgba(247, 244, 254, 0.82)",
+          DEFAULT: "#150e2e",
+          soft: "#1e1442",
+          deep: "#0e0920",
+          /** Frosted surface used by sticky bars. */
+          glass: "rgba(21, 14, 46, 0.72)",
         },
       },
       boxShadow: {
-        /** Resting card: hairline lift, wide and very soft, violet-tinted. */
-        card: "0 1px 2px rgba(31, 16, 66, 0.04), 0 14px 32px -22px rgba(31, 16, 66, 0.30)",
+        /** Resting card: glass top-light, wide and very soft purple depth. */
+        card: "inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 1px 2px rgba(6, 3, 20, 0.5), 0 14px 34px -20px rgba(6, 3, 20, 0.6)",
         /** Hovered / active card. */
         "card-hover":
-          "0 2px 6px rgba(31, 16, 66, 0.06), 0 26px 48px -26px rgba(31, 16, 66, 0.38)",
+          "inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 2px 4px rgba(6, 3, 20, 0.5), 0 24px 48px -24px rgba(6, 3, 20, 0.7)",
         /** Raised surface (sidebar, sheets, popovers). */
-        raised:
-          "0 4px 12px -4px rgba(31, 16, 66, 0.10), 0 30px 64px -34px rgba(31, 16, 66, 0.42)",
+        raised: "inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 4px 10px -4px rgba(6, 3, 20, 0.55), 0 28px 60px -30px rgba(6, 3, 20, 0.75)",
         /** Slightly raised buttons — tactile but never cartoonish. */
-        soft: "0 1px 2px rgba(31, 16, 66, 0.06), 0 10px 22px -14px rgba(31, 16, 66, 0.30)",
-        /** Primary (violet) button. */
+        soft: "0 1px 2px rgba(6, 3, 20, 0.5), 0 8px 20px -12px rgba(6, 3, 20, 0.6)",
         "brand-btn":
-          "0 1px 2px rgba(38, 10, 92, 0.20), 0 12px 24px -12px rgba(103, 51, 208, 0.55)",
-        /** Violet glow for purple surfaces and interactive highlights. */
-        glow: "0 24px 60px -26px rgba(124, 76, 228, 0.60)",
-        glowSoft: "0 18px 50px -30px rgba(124, 76, 228, 0.50)",
-        /**
-         * Rose glow from the original artwork — only ever used around the
-         * character itself, so the mark keeps its own light.
-         */
-        "rose-glow": "0 22px 54px -26px rgba(214, 37, 92, 0.55)",
-        /** Subtle inset depth for fields and soft-3D tiles. */
-        inset: "inset 0 1px 2px rgba(31, 16, 66, 0.06)",
-        "inset-light": "inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+          "0 1px 2px rgba(60, 6, 32, 0.35), 0 10px 24px -10px rgba(214, 37, 92, 0.6)",
+        /** Brand glow (character / hero moments) — the rose of the artwork. */
+        glow: "0 24px 70px -24px rgba(237, 67, 110, 0.5)",
+        glowSoft: "0 18px 50px -28px rgba(237, 67, 110, 0.45)",
+        /** Violet glow for premium hero panels. */
+        premium: "0 24px 70px -28px rgba(124, 58, 237, 0.45)",
+        /** Subtle inset depth for fields. */
+        inset: "inset 0 1px 2px rgba(6, 3, 20, 0.6)",
         /** Sticky bottom navigation. */
-        nav: "0 -10px 30px -20px rgba(31, 16, 66, 0.40)",
+        nav: "0 -10px 30px -18px rgba(6, 3, 20, 0.7)",
         /** Desktop sidebar. */
-        side: "1px 0 0 rgba(31, 16, 66, 0.06), 22px 0 60px -46px rgba(31, 16, 66, 0.45)",
+        side: "1px 0 0 rgba(255, 255, 255, 0.06), 18px 0 50px -40px rgba(6, 3, 20, 0.7)",
       },
       borderRadius: {
         /** Cards use 18–24px per the design language. */
@@ -130,24 +102,20 @@ const config: Config = {
         sheet: "1.75rem",
       },
       backgroundImage: {
-        /** Deep violet stage for hero surfaces that carry the character. */
-        "brand-gradient":
-          "linear-gradient(140deg, #7a4ce6 0%, #5a2bc0 46%, #2e1266 100%)",
-        /** Airy lavender wash for light panels. */
-        "brand-gradient-soft": "linear-gradient(160deg, #f4f1fe 0%, #ffffff 62%)",
-        /** Interactive violet sheen (buttons, badges, tiles). */
+        /** Brand rose gradient — exact colors of the original artwork. */
+        "brand-gradient": "linear-gradient(135deg, #f0567f 0%, #d6255c 46%, #8e0f39 100%)",
+        /** Soft violet glass panel on the premium canvas. */
+        "brand-gradient-soft":
+          "linear-gradient(160deg, rgba(139, 92, 246, 0.16) 0%, rgba(167, 139, 250, 0.05) 60%, rgba(255, 255, 255, 0.02) 100%)",
         "brand-gradient-sheen":
-          "linear-gradient(135deg, #9874ef 0%, #6733d0 46%, #431c88 100%)",
-        /** The artwork's own gradient, verbatim — signature brand moments. */
-        "rose-gradient": "linear-gradient(135deg, #f0567f 0%, #d6255c 46%, #8e0f39 100%)",
-        /** The ambient purple aura behind every screen. */
+          "linear-gradient(135deg, #f9709a 0%, #ed436e 40%, #b01447 100%)",
+        /** Purple Premium hero/CTA panels: deep, luxurious, soft violet. */
+        "premium-gradient":
+          "linear-gradient(135deg, #2e1760 0%, #3b1d7e 46%, #1d0f45 100%)",
+        /** Ambient violet aura behind every screen (fixed, never scrolls). */
         "canvas-aura":
-          "radial-gradient(900px 520px at 88% -6%, rgba(124, 76, 228, 0.20), transparent 62%), radial-gradient(780px 480px at 2% 2%, rgba(185, 162, 246, 0.42), transparent 60%), radial-gradient(1100px 700px at 50% 118%, rgba(67, 28, 136, 0.16), transparent 66%), radial-gradient(700px 420px at 96% 96%, rgba(237, 67, 110, 0.07), transparent 62%)",
+          "radial-gradient(900px 520px at 88% -6%, rgba(139, 92, 246, 0.16), transparent 62%), radial-gradient(760px 460px at 4% 4%, rgba(167, 139, 250, 0.10), transparent 60%), radial-gradient(1100px 700px at 50% 120%, rgba(109, 40, 217, 0.18), transparent 65%)",
         "chip-sheen": "linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0))",
-        /** Soft-3D top light: a whisper of violet on the top edge of every
-            card, so panels read as layered glass on the purple canvas. */
-        "surface-sheen":
-          "linear-gradient(180deg, rgba(244,241,254,0.9), rgba(255,255,255,0) 78%)",
       },
       keyframes: {
         "fade-up": {
@@ -198,6 +166,6 @@ const config: Config = {
    * variants (the document sets dir on <html>), so nothing extra is needed.
    */
   plugins: [],
-};
+}
 
 export default config;

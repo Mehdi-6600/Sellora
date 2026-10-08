@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 import { PLANS } from "@/lib/config/pricing";
 import { cx, formatToman } from "@/lib/utils/format";
-import { SelloraEmblem, SelloraLockup, BrandAura } from "@/components/brand/sellora";
+import { SelloraEmblem, BrandAura } from "@/components/brand/sellora";
 import {
   IconBolt,
   IconCheck,
@@ -94,7 +94,7 @@ function StatusIcon({ ok }: { ok: boolean }) {
       aria-label={ok ? "دارد" : "ندارد"}
       className={cx(
         "mx-auto grid h-7 w-7 place-items-center rounded-full",
-        ok ? "bg-emerald-50 text-emerald-600" : "bg-ink-50 text-ink-300"
+        ok ? "bg-emerald-400/15 text-emerald-300" : "bg-ink-50 text-ink-400"
       )}
     >
       {ok ? <IconCheck size={15} /> : <span aria-hidden="true">—</span>}
@@ -111,13 +111,12 @@ export default function WhySelloraPage() {
   return (
     <PublicShell>
       {/* ------------------------------------------------------------- hero */}
-      <section className="relative overflow-hidden border-b border-brand-700/20 bg-brand-gradient text-white">
+      <section className="relative overflow-hidden border-b border-white/10 bg-premium-gradient text-white">
         <BrandAura />
         <span aria-hidden="true" className="pointer-events-none absolute -bottom-16 end-6 opacity-15">
-          <SelloraEmblem size={280} tone="white" feather />
+          <SelloraEmblem size={280} tone="white" />
         </span>
         <div className="relative mx-auto w-full max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
-          <SelloraLockup size={46} variant="bare" priority className="mb-5" />
           <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-[11.5px] font-bold ring-1 ring-white/25 backdrop-blur">
             <IconSparkle size={14} />
             راهنمای کامل سلورا
@@ -130,14 +129,14 @@ export default function WhySelloraPage() {
             محصولات خودتان می‌گوید، مشتری‌های جدی را شناسایی می‌کند و وقتی خوابید یا سرتان شلوغ
             است، تنهایتان نمی‌گذارد.
           </p>
-          <div className="mt-6 max-w-3xl rounded-card border border-white/20 bg-white/12 p-4 text-[13px] leading-8 backdrop-blur">
+          <div className="mt-6 max-w-3xl rounded-card border border-white/20 bg-white/[0.12] p-4 text-[13px] leading-8 backdrop-blur">
             <strong className="font-extrabold">مزیتش چیست؟</strong> دیگر لازم نیست پشت گوشی
             بایستید، پاسخ‌های تکراری بدهید یا نگران مشتری‌هایی باشید که در دایرکت گم می‌شوند.
           </div>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/signup"
-              className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-6 text-[14px] font-extrabold text-brand-700 shadow-soft transition hover:bg-brand-50"
+              className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-6 text-[14px] font-extrabold text-brand-600 shadow-soft transition hover:bg-brand-950"
             >
               شروع رایگان
             </Link>
@@ -256,11 +255,11 @@ export default function WhySelloraPage() {
             تفاوت را حس کنید
           </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <div className="card border-red-200/80 bg-red-50/40 p-5">
-              <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-red-800">
+            <div className="card border-red-400/30 bg-red-400/10 p-5">
+              <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-red-300">
                 <span aria-hidden="true">😰</span> بدون سلورا
               </h3>
-              <ul className="mt-3 space-y-2 text-[12.5px] leading-7 text-red-700/90">
+              <ul className="mt-3 space-y-2 text-[12.5px] leading-7 text-red-300/90">
                 {[
                   "صبح بیدار می‌شوی، ده‌ها پیام نخونده داری",
                   "بعضی‌ها دیر جواب می‌گیری و از دست می‌روند",
@@ -274,11 +273,11 @@ export default function WhySelloraPage() {
                 ))}
               </ul>
             </div>
-            <div className="card border-emerald-200/80 bg-emerald-50/40 p-5">
-              <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-emerald-800">
+            <div className="card border-emerald-400/30 bg-emerald-400/15 p-5">
+              <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-emerald-200">
                 <span aria-hidden="true">🚀</span> با سلورا
               </h3>
-              <ul className="mt-3 space-y-2 text-[12.5px] leading-7 text-emerald-800/90">
+              <ul className="mt-3 space-y-2 text-[12.5px] leading-7 text-emerald-200/90">
                 {[
                   "صبح بیدار می‌شوی، سلورا همه را جواب داده",
                   "فقط داغ‌ها را پیگیری می‌کنی و سفارش می‌گیری",
@@ -286,7 +285,7 @@ export default function WhySelloraPage() {
                   "وقتت صرف فروش و رشد می‌شود",
                 ].map((t) => (
                   <li key={t} className="flex items-start gap-2">
-                    <IconCheck size={15} className="mt-1 shrink-0 text-emerald-600" />
+                    <IconCheck size={15} className="mt-1 shrink-0 text-emerald-300" />
                     {t}
                   </li>
                 ))}
@@ -347,8 +346,8 @@ export default function WhySelloraPage() {
                 className={cx(
                   "rounded-card border p-4 text-center",
                   p.badge
-                    ? "border-brand-200 bg-white shadow-glowSoft ring-1 ring-brand-100"
-                    : "border-ink-100/90 bg-white shadow-card"
+                    ? "border-brand-200 bg-white/[0.06] shadow-glowSoft ring-1 ring-brand-100"
+                    : "border-ink-100/90 bg-white/[0.06] shadow-card"
                 )}
               >
                 <div className="text-[13px] font-bold text-ink-800">{PLAN_LABELS[p.id]}</div>
@@ -372,12 +371,11 @@ export default function WhySelloraPage() {
       {/* --------------------------------------------------------- final CTA */}
       <section className="py-12 sm:py-16">
         <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
-          <div className="relative overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient p-7 text-center text-white shadow-glowSoft sm:p-10">
+          <div className="relative overflow-hidden rounded-card border border-white/10 bg-premium-gradient p-7 text-center text-white shadow-premium sm:p-10">
             <BrandAura />
-            <span aria-hidden="true" className="relative mx-auto mb-3 block w-fit">
-              <SelloraEmblem size={116} tone="white" feather />
+            <span aria-hidden="true" className="relative mx-auto mb-4 block w-fit">
+              <SelloraEmblem size={104} tone="white" />
             </span>
-            <SelloraLockup size={46} variant="bare" className="relative justify-center" />
             <h2 className="relative text-[22px] font-extrabold leading-relaxed sm:text-3xl">
               همین امروز شروع کنید
             </h2>
@@ -388,7 +386,7 @@ export default function WhySelloraPage() {
             <div className="relative mt-6 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/signup"
-                className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-7 text-[14px] font-extrabold text-brand-700 shadow-soft transition hover:bg-brand-50"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-7 text-[14px] font-extrabold text-brand-600 shadow-soft transition hover:bg-brand-950"
               >
                 شروع رایگان
               </Link>

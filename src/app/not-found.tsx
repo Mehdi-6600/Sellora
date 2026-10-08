@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SelloraEmblem, SelloraLockup } from "@/components/brand/sellora";
+import { SelloraEmblem } from "@/components/brand/sellora";
 import { IconArrowRight, IconSearch } from "@/components/layout/icons";
 
 export const metadata = {
@@ -11,13 +11,10 @@ export default function NotFound() {
   return (
     <div className="grid min-h-screen place-items-center px-5 py-10">
       <div className="w-full max-w-md text-center">
-        <div className="mx-auto mb-5 w-fit">
-          <SelloraLockup size={44} />
-        </div>
         <div className="mx-auto w-fit">
-          <SelloraEmblem size={132} feather />
+          <SelloraEmblem size={132} />
         </div>
-        <p className="mt-4 text-[11.5px] font-bold tracking-wide text-brand-600">۴۰۴</p>
+        <p className="mt-4 text-[11.5px] font-bold tracking-wide text-brand-500">۴۰۴</p>
         <h1 className="mt-1 text-[20px] font-extrabold text-ink-950">این صفحه پیدا نشد</h1>
         <p className="mt-2 text-[13px] leading-7 text-ink-500">
           نشانی‌ای که باز کردید وجود ندارد یا جابه‌جا شده است. از داشبورد یا صفحه اصلی ادامه بدهید —

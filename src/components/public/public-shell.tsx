@@ -26,17 +26,8 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
           aria-label="ناوبری اصلی"
           className="mx-auto flex h-16 w-full max-w-6xl items-center gap-3 px-4 sm:px-6"
         >
-          <Link
-            href="/"
-            aria-label="سلورا — صفحه اصلی"
-            className="inline-flex items-center rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
-          >
-            {/* Responsive artwork: full lockup when there is room, the real
-                character alone on the narrowest phones (320–400px). */}
-            <span className="hidden min-[400px]:inline-flex">
-              <SelloraLockup size={38} priority />
-            </span>
-            <SelloraMark size={38} glow className="min-[400px]:hidden" />
+          <Link href="/" className="inline-flex rounded-2xl focus-visible:outline-none">
+            <SelloraLockup size={38} />
           </Link>
 
           <div className="flex-1" />
@@ -68,7 +59,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
           <details className="group relative sm:hidden">
             <summary
               aria-label="منوی صفحه"
-              className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl border border-ink-100 bg-white/70 text-ink-700 transition hover:border-brand-200 hover:bg-white hover:text-brand-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+              className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl border border-ink-100 bg-white/[0.06] text-ink-700 transition hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
             >
               <IconGrid size={18} className="group-open:hidden" />
               <IconClose size={18} className="hidden group-open:block" />
@@ -101,10 +92,10 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="border-t border-ink-100/70 bg-canvas-soft/70 backdrop-blur">
+      <footer className="border-t border-white/10 bg-white/[0.04]">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center">
           <div className="flex items-center gap-3">
-            <SelloraMark size={44} glow />
+            <SelloraMark size={40} glow />
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[14px] font-extrabold text-ink-950">{SITE_NAME}</span>

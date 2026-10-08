@@ -9,13 +9,9 @@
   "orientation": "portrait",
   "dir": "rtl",
   "lang": "fa",
-  "background_color": "#f1ecfc",
-  "theme_color": "#331468",
-  "categories": [
-    "business",
-    "productivity",
-    "shopping"
-  ],
+  "background_color": "#150e2e",
+  "theme_color": "#2e1760",
+  "categories": ["business", "productivity", "shopping"],
   "icons": [
     {
       "src": "/icons/icon-192.png",

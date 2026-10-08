@@ -66,7 +66,7 @@ export function PayForm({ planId }: { planId: "WEEKLY" | "MONTHLY" | "QUARTERLY"
         {error && (
           <div
             role="alert"
-            className="rounded-2xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-[12.5px] font-medium text-red-700"
+            className="rounded-2xl border border-red-400/30 bg-red-400/15 px-3.5 py-2.5 text-[12.5px] font-medium text-red-300"
           >
             {error}
           </div>

@@ -73,7 +73,7 @@ export function StatCard({
     "relative overflow-hidden rounded-card border p-4 text-start",
     featured
       ? "border-brand-700/25 bg-brand-gradient text-white shadow-glowSoft"
-      : "border-ink-100/90 bg-white shadow-card",
+      : "border-white/[0.09] bg-white/[0.05] shadow-card",
     href && !featured && "transition-all duration-200 ease-smooth hover:-translate-y-[2px] hover:border-brand-200/80 hover:shadow-card-hover",
     className
   );
@@ -137,7 +137,7 @@ export function StatusRow({
           strokeLinecap="round"
           strokeLinejoin="round"
           aria-hidden="true"
-          className="shrink-0 text-ink-300 rtl:rotate-180"
+          className="shrink-0 text-ink-400 rtl:rotate-180"
         >
           <path d="m15 18-6-6 6-6" />
         </svg>

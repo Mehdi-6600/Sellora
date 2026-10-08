@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Badge, Dot, StatusPulse } from "@/components/ui/badge";
 import { StatCard, StatusRow } from "@/components/ui/stat";
 import { Avatar } from "@/components/ui/avatar";
-import { SelloraEmblem, SelloraLockup, SelloraMark, BrandAura } from "@/components/brand/sellora";
+import { SelloraEmblem, SelloraMark, BrandAura } from "@/components/brand/sellora";
 import { ensureSubscriptionNotices } from "@/lib/notifications";
 import {
   daysLeft,
@@ -153,7 +153,7 @@ export default async function DashboardPage() {
           {/* ------------------------------------------------------ hero card */}
           <section
             aria-label="خلاصه امروز"
-            className="relative overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient p-5 text-white shadow-glowSoft"
+            className="relative overflow-hidden rounded-card border border-white/10 bg-premium-gradient p-5 text-white shadow-premium"
           >
             <BrandAura />
             <span
@@ -164,8 +164,6 @@ export default async function DashboardPage() {
             </span>
 
             <div className="relative">
-              {/* The original artwork, front and centre on the dashboard. */}
-              <SelloraLockup size={30} variant="bare" className="mb-3" />
               <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold text-white ring-1 ring-white/25 backdrop-blur">
                 <StatusPulse tone={automationOn ? "green" : "amber"} />
                 {automationOn
@@ -234,14 +232,14 @@ export default async function DashboardPage() {
                       {igConnected ? (
                         <>
                           <StatusPulse tone="green" />
-                          <span className="text-emerald-700">
+                          <span className="text-emerald-300">
                             {dict.settings.instagram.statusConnected}
                           </span>
                         </>
                       ) : igNeedsAttention ? (
                         <>
                           <Dot tone={ig?.status === "REAUTH_REQUIRED" ? "red" : "amber"} />
-                          <span className="text-amber-700">
+                          <span className="text-amber-300">
                             {ig?.status === "REAUTH_REQUIRED"
                               ? dict.settings.instagram.statusReauth
                               : dict.settings.instagram.statusDegraded}
@@ -488,7 +486,7 @@ export default async function DashboardPage() {
           {/* --------------------------------------------------------- hot leads */}
           <section aria-label={dict.dashboard.hotLeads}>
             <div className="section-title">
-              <IconFlame size={16} className="text-red-500" />
+              <IconFlame size={16} className="text-red-400" />
               {dict.dashboard.hotLeads}
               <Link
                 href="/leads"
@@ -704,21 +702,21 @@ function AttentionRow({
 }) {
   const tones = {
     amber: {
-      card: "border-amber-200/80 bg-amber-50/70",
-      tile: "border-amber-200 bg-white text-amber-700",
-      title: "text-amber-900",
-      hint: "text-amber-800/90",
-      cta: "text-amber-900",
+      card: "border-amber-400/30 bg-amber-400/15",
+      tile: "border-amber-400/30 bg-white/[0.05] text-amber-300",
+      title: "text-amber-200",
+      hint: "text-amber-200/90",
+      cta: "text-amber-200",
     },
     red: {
-      card: "border-red-200/80 bg-red-50/70",
-      tile: "border-red-200 bg-white text-red-600",
-      title: "text-red-900",
-      hint: "text-red-800/90",
-      cta: "text-red-900",
+      card: "border-red-400/30 bg-red-400/15",
+      tile: "border-red-400/30 bg-white/[0.05] text-red-300",
+      title: "text-red-200",
+      hint: "text-red-200/90",
+      cta: "text-red-200",
     },
     gray: {
-      card: "border-ink-200/80 bg-white",
+      card: "border-white/10 bg-white/[0.04]",
       tile: "border-ink-100 bg-ink-50 text-ink-600",
       title: "text-ink-900",
       hint: "text-ink-600",
@@ -763,11 +761,11 @@ function QuickAction({
   return (
     <Link
       href={href}
-      className="flex min-h-[76px] flex-col items-center justify-center gap-2 rounded-2xl border border-ink-100/80 bg-canvas-soft/60 px-2 py-3 text-center transition-all duration-200 ease-smooth hover:-translate-y-[1px] hover:border-brand-200 hover:bg-white hover:shadow-card"
+      className="flex min-h-[76px] flex-col items-center justify-center gap-2 rounded-2xl border border-ink-100/80 bg-canvas-soft/60 px-2 py-3 text-center transition-all duration-200 ease-smooth hover:-translate-y-[1px] hover:border-brand-200 hover:bg-white/[0.1] hover:shadow-card"
     >
       <span
         aria-hidden="true"
-        className="grid h-10 w-10 place-items-center rounded-xl border border-brand-100 bg-white text-brand-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+        className="grid h-10 w-10 place-items-center rounded-xl border border-brand-100 bg-white/[0.06] text-brand-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
       >
         {icon}
       </span>

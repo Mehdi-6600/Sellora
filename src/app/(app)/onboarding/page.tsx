@@ -4,7 +4,7 @@ import { getServerDict } from "@/lib/i18n";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
-import { SelloraEmblem, SelloraLockup } from "@/components/brand/sellora";
+import { SelloraEmblem } from "@/components/brand/sellora";
 import { Badge } from "@/components/ui/badge";
 import { META_APP_ID } from "@/lib/meta/config";
 import { cx, toPersianDigits } from "@/lib/utils/format";
@@ -95,15 +95,14 @@ export default async function OnboardingPage() {
     <AppShell title={dict.onboarding.welcome} subtitle={dict.onboarding.welcomeDesc}>
       <div className="mx-auto w-full max-w-2xl space-y-4">
         {/* ------------------------------------------------------- progress card */}
-        <section className="relative overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient p-5 text-white shadow-glowSoft">
+        <section className="relative overflow-hidden rounded-card border border-white/10 bg-premium-gradient p-5 text-white shadow-premium">
           <span
             aria-hidden="true"
             className="pointer-events-none absolute -bottom-12 end-0 opacity-25"
           >
-            <SelloraEmblem size={200} tone="white" feather />
+            <SelloraEmblem size={200} tone="white" />
           </span>
-          <SelloraLockup size={38} variant="bare" className="relative mb-4" />
-          <div className="relative flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
+          <div className="relative flex items-center gap-4">
             <SelloraEmblem size={86} />
             <div className="min-w-0 flex-1">
               <h2 className="text-[17px] font-extrabold leading-7">
@@ -146,8 +145,8 @@ export default async function OnboardingPage() {
                 className={cx(
                   "flex items-start gap-3.5 rounded-card border p-4 transition-all duration-200 ease-smooth hover:-translate-y-[2px] hover:shadow-card-hover",
                   s.done
-                    ? "border-emerald-200/70 bg-emerald-50/40"
-                    : "border-ink-100/90 bg-white shadow-card"
+                    ? "border-emerald-400/30 bg-emerald-400/15"
+                    : "border-ink-100/90 bg-white/[0.06] shadow-card"
                 )}
               >
                 <span
@@ -155,7 +154,7 @@ export default async function OnboardingPage() {
                   className={cx(
                     "grid h-11 w-11 shrink-0 place-items-center rounded-2xl border text-[15px] font-extrabold",
                     s.done
-                      ? "border-emerald-200 bg-white text-emerald-600"
+                      ? "border-emerald-400/30 bg-white/[0.06] text-emerald-300"
                       : "border-brand-100 bg-brand-50 text-brand-700"
                   )}
                 >

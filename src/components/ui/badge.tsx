@@ -4,16 +4,17 @@ import { cx } from "@/lib/utils/format";
 type Tone = "brand" | "green" | "red" | "amber" | "gray" | "blue";
 
 /**
- * Soft tinted pills: very light brand-derived surface, hairline ring, no heavy
- * borders. Readable at 11–12px and consistent across every screen.
+ * Soft tinted pills on the Purple Premium canvas: translucent tone surfaces
+ * with light text and a hairline ring of the same hue. Readable at 11–12px
+ * and consistent across every screen.
  */
 const tones: Record<Tone, string> = {
-  brand: "bg-brand-50 text-brand-700 ring-brand-100",
-  green: "bg-emerald-50 text-emerald-700 ring-emerald-100",
-  red: "bg-red-50 text-red-700 ring-red-100",
-  amber: "bg-amber-50 text-amber-800 ring-amber-100",
-  gray: "bg-ink-100/80 text-ink-700 ring-ink-200/70",
-  blue: "bg-sky-50 text-sky-700 ring-sky-100",
+  brand: "bg-brand-500/15 text-brand-700 ring-brand-400/30",
+  green: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/25",
+  red: "bg-red-400/15 text-red-300 ring-red-400/25",
+  amber: "bg-amber-400/15 text-amber-300 ring-amber-400/25",
+  gray: "bg-white/[0.07] text-ink-400 ring-white/10",
+  blue: "bg-sky-400/15 text-sky-300 ring-sky-400/25",
 };
 
 const dotColors: Record<Tone, string> = {

@@ -91,8 +91,8 @@ export async function ConversationList({
                   active
                     ? "border-brand-200 bg-brand-50/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]"
                     : unanswered
-                    ? "border-amber-200/80 bg-amber-50/40 hover:border-amber-300/80 hover:shadow-card"
-                    : "border-ink-100/90 bg-white hover:-translate-y-[1px] hover:border-brand-200/70 hover:shadow-card"
+                    ? "border-amber-400/30 bg-amber-400/15 hover:border-amber-400/30 hover:shadow-card"
+                    : "border-ink-100/90 bg-white/[0.06] hover:-translate-y-[1px] hover:border-brand-200/70 hover:shadow-card"
                 )}
               >
                 {active ? (
@@ -114,7 +114,7 @@ export async function ConversationList({
                   </span>
                   <span className="mt-0.5 flex items-center gap-1.5">
                     {unanswered ? (
-                      <span className="shrink-0 rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold text-amber-700 ring-1 ring-amber-100">
+                      <span className="shrink-0 rounded-md bg-amber-400/15 px-1.5 py-0.5 text-[10px] font-bold text-amber-300 ring-1 ring-amber-400/25">
                         پاسخ نداده
                       </span>
                     ) : null}

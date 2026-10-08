@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { Badge, Dot, StatusPulse } from "@/components/ui/badge";
 import { META_APP_ID } from "@/lib/meta/config";
-import { SelloraEmblem, SelloraLockup } from "@/components/brand/sellora";
+import { SelloraEmblem } from "@/components/brand/sellora";
 import { StatusRefresh } from "./status-refresh";
 import { IconArrowRight, IconCheck, IconInstagram, IconSparkle } from "@/components/layout/icons";
 import { formatRelativeTime } from "@/lib/utils/format";
@@ -59,15 +59,13 @@ export default async function InstagramPage() {
       <div className="mx-auto w-full max-w-3xl space-y-4">
         {/* ================================================ connection card */}
         <section className="card overflow-hidden">
-          <div className="relative overflow-hidden bg-brand-gradient p-5 text-white">
+          <div className="relative overflow-hidden bg-premium-gradient p-5 text-white">
             <span
               aria-hidden="true"
               className="pointer-events-none absolute -bottom-10 end-2 opacity-25"
             >
               <IconInstagram size={140} />
             </span>
-            {/* The real Sellora lockup, right where the connection is made. */}
-            <SelloraLockup size={34} variant="bare" className="relative mb-4" />
             <div className="relative flex items-start gap-4">
               <span
                 aria-hidden="true"
@@ -172,7 +170,7 @@ export default async function InstagramPage() {
                 </a>
               ) : (
                 <div className="space-y-3">
-                  <p className="rounded-2xl border border-amber-200 bg-amber-50 px-3.5 py-3 text-[12px] leading-6 text-amber-800">
+                  <p className="rounded-2xl border border-amber-400/30 bg-amber-400/15 px-3.5 py-3 text-[12px] leading-6 text-amber-300">
                     اپلیکیشن متا هنوز در این محیط پیکربندی نشده است. برای اتصال واقعی، مقادیر{" "}
                     <code dir="ltr" className="font-mono font-bold">
                       META_APP_ID
@@ -200,7 +198,7 @@ export default async function InstagramPage() {
                     key={s.t}
                     className="rounded-2xl border border-ink-100 bg-canvas-soft/60 p-3 text-center"
                   >
-                    <span className="mx-auto grid h-8 w-8 place-items-center rounded-xl bg-white text-[12px] font-extrabold text-brand-700 shadow-soft">
+                    <span className="mx-auto grid h-8 w-8 place-items-center rounded-xl bg-white/[0.06] text-[12px] font-extrabold text-brand-700 shadow-soft">
                       {["۱", "۲", "۳"][i]}
                     </span>
                     <span className="mt-2 block text-[12px] font-bold text-ink-900">{s.t}</span>
@@ -221,8 +219,8 @@ export default async function InstagramPage() {
                 aria-hidden="true"
                 className={
                   connected
-                    ? "mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-emerald-50 text-emerald-600"
-                    : "mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-red-50 text-red-600"
+                    ? "mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-emerald-400/15 text-emerald-300"
+                    : "mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-red-400/15 text-red-300"
                 }
               >
                 <IconCheck size={14} />
@@ -234,7 +232,7 @@ export default async function InstagramPage() {
             <li className="flex items-start gap-2.5">
               <span
                 aria-hidden="true"
-                className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-amber-50 text-amber-700"
+                className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-amber-400/15 text-amber-300"
               >
                 <IconSparkle size={14} />
               </span>
@@ -282,7 +280,7 @@ function Row({
   return (
     <div className="flex items-center justify-between gap-3 px-4 py-3">
       <dt className="text-ink-500">{label}</dt>
-      <dd className={tone === "danger" ? "font-bold text-red-600" : "font-bold text-ink-800"}>
+      <dd className={tone === "danger" ? "font-bold text-red-300" : "font-bold text-ink-800"}>
         {value}
       </dd>
     </div>

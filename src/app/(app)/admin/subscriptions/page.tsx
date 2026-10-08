@@ -169,7 +169,7 @@ export default async function AdminSubscriptionsPage() {
                     {s.rejectionReason ? (
                       <div className="col-span-2">
                         <dt className="text-ink-500">دلیل رد</dt>
-                        <dd className="mt-0.5 font-semibold text-red-600">{s.rejectionReason}</dd>
+                        <dd className="mt-0.5 font-semibold text-red-300">{s.rejectionReason}</dd>
                       </div>
                     ) : null}
                   </dl>

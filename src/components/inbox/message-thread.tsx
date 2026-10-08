@@ -62,7 +62,7 @@ export function MessageThread({
         return (
           <React.Fragment key={m.id}>
             {showDay ? (
-              <div className="mx-auto my-1 rounded-full bg-white/80 px-3 py-1 text-[10.5px] font-semibold text-ink-500 ring-1 ring-ink-100">
+              <div className="mx-auto my-1 rounded-full bg-white/[0.08] px-3 py-1 text-[10.5px] font-semibold text-ink-500 ring-1 ring-ink-100">
                 {day}
               </div>
             ) : null}
@@ -70,19 +70,19 @@ export function MessageThread({
             <div className={cx("flex", inbound ? "justify-start" : "justify-end")}>
               <div className={cx("max-w-[85%] sm:max-w-[75%]", !inbound && "items-end")}>
                 {automated ? (
-                  <div className="mb-1 flex items-center justify-end gap-1 text-[10.5px] font-bold text-brand-600">
+                  <div className="mb-1 flex items-center justify-end gap-1 text-[10.5px] font-bold text-brand-500">
                     <span aria-hidden="true">✦</span>
                     پاسخ خودکار سلورا
                   </div>
                 ) : null}
                 <div
                   className={cx(
-                    "whitespace-pre-wrap break-words px-3.5 py-2.5 text-[13.5px] leading-7 shadow-[0_1px_2px_rgba(31,16,66,0.06)]",
+                    "whitespace-pre-wrap break-words px-3.5 py-2.5 text-[13.5px] leading-7 shadow-[0_1px_2px_rgba(6,3,20,0.05)]",
                     inbound
-                      ? "rounded-2xl rounded-ss-md border border-ink-100 bg-white text-ink-900"
+                      ? "rounded-2xl rounded-ss-md border border-white/10 bg-white/[0.08] text-ink-900"
                       : automated
                       ? "rounded-2xl rounded-se-md bg-brand-gradient text-white shadow-glowSoft"
-                      : "rounded-2xl rounded-se-md bg-ink-900 text-white"
+                      : "rounded-2xl rounded-se-md border border-white/10 bg-ink-50 text-ink-900"
                   )}
                 >
                   {m.text}
@@ -100,7 +100,7 @@ export function MessageThread({
                     <span
                       className={cx(
                         "font-semibold",
-                        failed ? "text-amber-600" : "text-emerald-600"
+                        failed ? "text-amber-300" : "text-emerald-300"
                       )}
                     >
                       • {failed ? "⚠ " : "✓ "}

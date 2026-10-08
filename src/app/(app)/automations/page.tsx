@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { Badge, Dot, StatusPulse } from "@/components/ui/badge";
 import { StatCard } from "@/components/ui/stat";
-import { SelloraEmblem, SelloraLockup } from "@/components/brand/sellora";
+import { SelloraEmblem } from "@/components/brand/sellora";
 import { AutomationSwitch } from "@/components/automation/automation-switch";
 import { IconArrowRight, IconBolt, IconCheck, IconFlame, IconInfo, IconSparkle } from "@/components/layout/icons";
 import { cx, formatRelativeTime, toPersianDigits } from "@/lib/utils/format";
@@ -177,17 +177,15 @@ export default async function AutomationsPage() {
           {/* ------------------------------------------------ master status */}
           <section
             aria-label="وضعیت موتور خودکارسازی"
-            className="relative overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient p-5 text-white shadow-glowSoft"
+            className="relative overflow-hidden rounded-card border border-white/10 bg-premium-gradient p-5 text-white shadow-premium"
           >
             <span
               aria-hidden="true"
               className="pointer-events-none absolute -bottom-10 end-0 opacity-25"
             >
-              <SelloraEmblem size={180} tone="white" feather />
+              <SelloraEmblem size={180} tone="white" />
             </span>
             <div className="relative">
-              {/* The original artwork on the automation engine's own stage. */}
-              <SelloraLockup size={30} variant="bare" className="mb-3" />
               <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold ring-1 ring-white/25 backdrop-blur">
                 <StatusPulse tone={running ? "green" : engineOn ? "amber" : "gray"} />
                 {stateLabel.text}
@@ -361,7 +359,7 @@ export default async function AutomationsPage() {
 
           <section aria-label="پیشنهاد بعدی" className="card p-4">
             <h2 className="flex items-center gap-2 text-[13px] font-bold text-ink-900">
-              <IconSparkle size={16} className="text-brand-600" />
+              <IconSparkle size={16} className="text-brand-500" />
               قدم بعدی
             </h2>
             <p className="mt-1 text-[12px] leading-6 text-ink-500">
@@ -411,8 +409,8 @@ function FlowCard({
   };
   const TONES: Record<Stage["kind"], string> = {
     trigger: "border-brand-100 bg-brand-50 text-brand-700",
-    condition: "border-amber-100 bg-amber-50 text-amber-800",
-    action: "border-emerald-100 bg-emerald-50 text-emerald-700",
+    condition: "border-amber-400/25 bg-amber-400/15 text-amber-300",
+    action: "border-emerald-400/25 bg-emerald-400/15 text-emerald-300",
   };
 
   return (
