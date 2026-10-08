@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PLANS } from "@/lib/config/pricing";
 import { formatToman } from "@/lib/utils/format";
 import { PublicShell } from "@/components/public/public-shell";
+import { SITE_DESCRIPTION, absolute, siteUrl } from "@/lib/config/site";
 
 const PLAN_LABELS: Record<string, string> = {
   WEEKLY: "هفتگی",
@@ -109,6 +110,65 @@ function ChatDemo() {
         </div>
       </div>
     </div>
+  );
+}
+
+
+/**
+ * Structured data, generated from real configuration only:
+ * Organization + WebSite + an OfferCatalog built from the single pricing
+ * source of truth. Prices are emitted in RIALS with the ISO 4217 code IRR
+ * (the display unit toman has no ISO code). No SearchAction: Sellora has no
+ * public search endpoint to back one.
+ */
+function StructuredData() {
+  const base = siteUrl();
+  const data = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${base}/#organization`,
+        name: "Sellora",
+        alternateName: "سلورا",
+        url: base,
+        logo: absolute("/icons/icon-512.png"),
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${base}/#website`,
+        url: base,
+        name: "سلورا",
+        inLanguage: "fa",
+        description: SITE_DESCRIPTION,
+        publisher: { "@id": `${base}/#organization` },
+      },
+      {
+        "@type": "Product",
+        "@id": `${base}/#product`,
+        name: "اشتراک سلورا",
+        description: SITE_DESCRIPTION,
+        brand: { "@id": `${base}/#organization` },
+        offers: {
+          "@type": "OfferCatalog",
+          name: "پلن‌های اشتراک سلورا",
+          itemListElement: PLANS.map((p) => ({
+            "@type": "Offer",
+            name: PLAN_LABELS[p.id],
+            price: p.price * 10,
+            priceCurrency: "IRR",
+            availability: "https://schema.org/InStock",
+            url: absolute("/signup"),
+          })),
+        },
+      },
+    ],
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
   );
 }
 
@@ -292,6 +352,7 @@ export function LandingPage() {
           </Link>
         </div>
       </section>
+      <StructuredData />
     </PublicShell>
   );
 }

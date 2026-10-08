@@ -1,0 +1,35 @@
+{
+  "name": "سلورا — فروشنده و پشتیبان خودکار اینستاگرام",
+  "short_name": "سلورا",
+  "description": "پاسخ خودکار به دایرکت اینستاگرام، شناسایی مشتری داغ و مدیریت گفتگوها برای فروشگاه‌های اینستاگرامی.",
+  "id": "/",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "fa",
+  "background_color": "#fafafc",
+  "theme_color": "#e01d5a",
+  "categories": ["business", "productivity", "shopping"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Self-hosted Vazirmatn variable font (SIL OFL 1.1 — see public/fonts/OFL.txt).
+   One woff2 covers weights 100-900 and removes the render-blocking third-party
+   stylesheet previously loaded from a CDN on every page. */
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("/fonts/vazirmatn-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-persian: "Vazirmatn", "IRANSans", "Tahoma", ui-sans-serif, system-ui, sans-serif;

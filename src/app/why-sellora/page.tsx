@@ -1,5 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PublicShell } from "@/components/public/public-shell";
+import { SITE_NAME, absolute } from "@/lib/config/site";
+
+export const metadata: Metadata = {
+  title: "چرا سلورا؟ تفاوت پاسخ‌گویی هوشمند با ربات ساده",
+  description:
+    "سلورا پیام مشتری را می‌فهمد، قیمت و موجودی را از محصولات خودتان می‌گوید، مشتری داغ را شناسایی می‌کند و گفتگوهای حساس را به شما تحویل می‌دهد. ببینید چه فرقی با یک ربات پاسخ ثابت دارد.",
+  alternates: { canonical: "/why-sellora" },
+  openGraph: {
+    type: "website",
+    url: absolute("/why-sellora"),
+    title: `چرا سلورا؟ | ${SITE_NAME}`,
+    description:
+      "پاسخ‌گویی هوشمند دایرکت اینستاگرام که از خودش قیمت نمی‌سازد؛ مقایسه سلورا با پاسخ دستی و ربات ساده.",
+  },
+};
 import { PLANS } from "@/lib/config/pricing";
 import { formatToman } from "@/lib/utils/format";
 
