@@ -7,6 +7,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatToman, toPersianDigits } from "@/lib/utils/format";
 import { daysLeft, paymentStatusLabel, planLabel, subscriptionStatusLabel } from "@/lib/config/subscription";
+import { SelloraEmblem } from "@/components/brand/sellora";
+import { IconCard } from "@/components/layout/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -25,15 +27,14 @@ export default async function SubscriptionStatusPage() {
   if (!sub) {
     return (
       <AppShell title="وضعیت اشتراک" backHref="/settings/subscription">
-        <Card className="p-6 text-center">
-          <div className="text-ink-500 mb-4">هنوز اشتراکی ثبت نشده است.</div>
-          <Link
-            href="/settings/subscription"
-            className="inline-block bg-brand-600 text-white rounded-xl px-4 py-3 text-sm font-medium"
-          >
-            مشاهده پلن‌ها
-          </Link>
-        </Card>
+        <div className="mx-auto w-full max-w-md">
+          <Card className="flex flex-col items-center gap-3 p-6 text-center">
+            <div className="text-ink-500">هنوز اشتراکی ثبت نشده است.</div>
+            <Link href="/settings/subscription" className="btn-primary w-full min-h-[48px]">
+              مشاهده پلن‌ها
+            </Link>
+          </Card>
+        </div>
       </AppShell>
     );
   }
@@ -45,103 +46,122 @@ export default async function SubscriptionStatusPage() {
 
   return (
     <AppShell title="وضعیت اشتراک" backHref="/settings/subscription">
-      {isPending && (
-        <Card className="p-4 mb-4 border-amber-200 bg-amber-50">
-          <div className="flex items-start gap-3">
-            <div className="text-2xl">⏳</div>
-            <div className="flex-1">
-              <div className="font-semibold text-amber-800 mb-1">درخواست شما در انتظار بررسی است</div>
-              <div className="text-sm text-amber-700 leading-6">
-                درخواست خرید پلن {planLabel(sub.plan)} با کد رهگیری{" "}
-                <span dir="ltr" className="font-mono font-semibold">
-                  {sub.trackingCode}
-                </span>{" "}
-                ثبت شده است. ظرف حداکثر ۲۴ ساعت بررسی و تأیید می‌شود.
-              </div>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {isActive && (
-        <Card className="p-4 mb-4 border-emerald-200 bg-emerald-50">
-          <div className="flex items-start gap-3">
-            <div className="text-2xl">✅</div>
-            <div className="flex-1">
-              <div className="font-semibold text-emerald-800 mb-1">اشتراک شما فعال است</div>
-              <div className="text-sm text-emerald-700 leading-6">
-                پلن {planLabel(sub.plan)} فعال است.
-                {sub.endsAt && (
-                  <>
-                    {" "}
-                    اعتبار تا{" "}
-                    <span className="font-semibold">
-                      {new Date(sub.endsAt).toLocaleDateString("fa-IR")}
-                    </span>
-                    .
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {isRejected && (
-        <Card className="p-4 mb-4 border-red-200 bg-red-50">
-          <div className="flex items-start gap-3">
-            <div className="text-2xl">❌</div>
-            <div className="flex-1">
-              <div className="font-semibold text-red-800 mb-1">درخواست شما رد شد</div>
-              <div className="text-sm text-red-700 leading-6">
-                {sub.rejectionReason || "دلیل رد ثبت نشده است."}
-              </div>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      <Card className="p-4">
-        <div className="text-sm font-semibold mb-3">جزئیات اشتراک</div>
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <span className="text-ink-500">پلن</span>
-            <span className="font-semibold">{planLabel(sub.plan)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-ink-500">مبلغ</span>
-            <span className="font-semibold">{formatToman(sub.amount * 10)} تومان</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-ink-500">کد رهگیری</span>
-            <span className="font-mono font-semibold" dir="ltr">
-              {sub.trackingCode || "—"}
-            </span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-ink-500">وضعیت پرداخت</span>
-            <Badge
-              tone={
-                isApproved ? "green" : isRejected ? "gray" : isPending ? "amber" : "gray"
-              }
-            >
-              {paymentStatusLabel(sub.paymentStatus)}
-            </Badge>
-          </div>
-          {sub.endsAt && (
-            <div className="flex justify-between">
-              <span className="text-ink-500">روزهای باقی‌مانده</span>
-              <span className="font-semibold">
-                {toPersianDigits(Math.max(daysLeft(sub.endsAt) ?? 0, 0))} روز
+      <div className="mx-auto w-full max-w-2xl space-y-4">
+        {isPending && (
+          <Card className="overflow-hidden border-amber-200/80">
+            <div className="flex items-start gap-3.5 bg-amber-50/80 p-4">
+              <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white text-xl shadow-soft">
+                ⏳
               </span>
+              <div className="flex-1">
+                <div className="text-[13.5px] font-bold text-amber-900">
+                  درخواست شما در انتظار بررسی است
+                </div>
+                <p className="mt-1 text-[12px] leading-6 text-amber-800">
+                  درخواست خرید پلن {planLabel(sub.plan)} با کد رهگیری{" "}
+                  <span dir="ltr" className="font-mono font-bold">
+                    {sub.trackingCode}
+                  </span>{" "}
+                  ثبت شده است. حداکثر تا ۲۴ ساعت بررسی و تأیید می‌شود.
+                </p>
+              </div>
             </div>
-          )}
-          <div className="flex justify-between">
-            <span className="text-ink-500">وضعیت اشتراک</span>
-            <Badge tone={isActive ? "green" : "gray"}>{subscriptionStatusLabel(sub.status)}</Badge>
-          </div>
+          </Card>
+        )}
+
+        {isActive && (
+          <Card className="overflow-hidden border-emerald-200/80">
+            <div className="flex items-start gap-3.5 bg-emerald-50/80 p-4">
+              <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white text-xl shadow-soft">
+                ✅
+              </span>
+              <div className="flex-1">
+                <div className="text-[13.5px] font-bold text-emerald-900">اشتراک شما فعال است</div>
+                <p className="mt-1 text-[12px] leading-6 text-emerald-800">
+                  پلن {planLabel(sub.plan)} فعال است.
+                  {sub.endsAt
+                    ? ` اعتبار تا ${new Date(sub.endsAt).toLocaleDateString("fa-IR")}.`
+                    : ""}
+                </p>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        {isRejected && (
+          <Card className="overflow-hidden border-red-200/80">
+            <div className="flex items-start gap-3.5 bg-red-50/80 p-4">
+              <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white text-xl shadow-soft">
+                ❌
+              </span>
+              <div className="flex-1">
+                <div className="text-[13.5px] font-bold text-red-900">درخواست شما رد شد</div>
+                <p className="mt-1 text-[12px] leading-6 text-red-800">
+                  {sub.rejectionReason || "دلیل رد ثبت نشده است."}
+                </p>
+              </div>
+            </div>
+            <div className="p-3">
+              <Link href="/settings/subscription" className="btn-primary w-full min-h-[48px]">
+                ثبت درخواست جدید
+              </Link>
+            </div>
+          </Card>
+        )}
+
+        <Card className="p-4">
+          <h2 className="flex items-center gap-2 text-[13px] font-bold text-ink-900">
+            <IconCard size={16} className="text-brand-500" />
+            جزئیات اشتراک
+          </h2>
+          <dl className="mt-3 space-y-2.5 text-[12.5px]">
+            <Line label="پلن" value={planLabel(sub.plan)} />
+            <Line label="مبلغ" value={`${formatToman(sub.amount * 10)} تومان`} />
+            <Line label="کد رهگیری" value={sub.trackingCode || "—"} mono />
+            {sub.endsAt && (
+              <Line
+                label="روزهای باقی‌مانده"
+                value={`${toPersianDigits(Math.max(daysLeft(sub.endsAt) ?? 0, 0))} روز`}
+              />
+            )}
+            <div className="flex items-center justify-between gap-2">
+              <dt className="text-ink-500">وضعیت پرداخت</dt>
+              <dd>
+                <Badge tone={isApproved ? "green" : isRejected ? "gray" : isPending ? "amber" : "gray"}>
+                  {paymentStatusLabel(sub.paymentStatus)}
+                </Badge>
+              </dd>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <dt className="text-ink-500">وضعیت اشتراک</dt>
+              <dd>
+                <Badge tone={isActive ? "green" : "gray"}>{subscriptionStatusLabel(sub.status)}</Badge>
+              </dd>
+            </div>
+          </dl>
+        </Card>
+
+        <div className="flex flex-col items-center gap-2 pt-2 text-center">
+          <SelloraEmblem size={72} />
+          <p className="text-[11.5px] leading-6 text-ink-500">
+            سوالی دارید؟ صفحه «چرا سلورا؟» پاسخ پرتکرارها را دارد.
+          </p>
+          <Link href="/why-sellora" className="btn-ghost min-h-[44px]">
+            چرا سلورا؟
+          </Link>
         </div>
-      </Card>
+      </div>
     </AppShell>
+  );
+}
+
+function Line({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <dt className="text-ink-500">{label}</dt>
+      <dd className={mono ? "font-mono font-bold text-ink-900" : "font-bold text-ink-900"} dir={mono ? "ltr" : undefined}>
+        {value}
+      </dd>
+    </div>
   );
 }

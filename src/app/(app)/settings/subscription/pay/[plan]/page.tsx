@@ -1,11 +1,13 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card } from "@/components/ui/card";
 import { getPlan } from "@/lib/config/pricing";
-import { formatToman } from "@/lib/utils/format";
+import { formatToman, toPersianDigits } from "@/lib/utils/format";
 import { PAYMENT_INFO } from "@/lib/config/payment";
+import { IconCard, IconInfo } from "@/components/layout/icons";
 import { PayForm } from "./pay-form";
 
 export const dynamic = "force-dynamic";
@@ -38,59 +40,82 @@ export default async function PayPage({ params }: { params: { plan: string } }) 
     redirect("/settings/subscription/status");
   }
 
-  return (
-    <AppShell title="پرداخت" backHref="/settings/subscription">
-      <Card className="p-4 mb-4">
-        <div className="flex items-center justify-between mb-2">
-          <div className="text-sm text-ink-500">پلن انتخابی</div>
-          <div className="font-semibold">
-            {plan.id === "WEEKLY" ? "هفتگی" : plan.id === "MONTHLY" ? "ماهانه" : "سه‌ماهه"}
-          </div>
-        </div>
-        <div className="flex items-center justify-between mb-2">
-          <div className="text-sm text-ink-500">مدت</div>
-          <div className="font-semibold">{plan.durationDays} روز</div>
-        </div>
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-ink-500">مبلغ قابل واریز</div>
-          <div className="text-lg font-bold text-brand-600">
-            {formatToman(plan.price * 10)} تومان
-          </div>
-        </div>
-      </Card>
+  const planName =
+    plan.id === "WEEKLY" ? "هفتگی" : plan.id === "MONTHLY" ? "ماهانه" : "سه‌ماهه";
 
-      <Card className="p-4 mb-4">
-        <div className="text-sm font-semibold mb-3">اطلاعات کارت مقصد</div>
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <span className="text-ink-500">شماره کارت</span>
-            <span className="font-mono font-semibold tracking-wider" dir="ltr">
-              {PAYMENT_INFO.cardNumber}
+  return (
+    <AppShell title="پرداخت" backHref="/settings/subscription" subtitle={planName}>
+      <div className="mx-auto w-full max-w-2xl space-y-4">
+        {/* ---------------------------------------------------- amount summary */}
+        <Card className="overflow-hidden">
+          <div className="flex items-center gap-3.5 border-b border-ink-100/80 bg-brand-gradient-soft p-4">
+            <span
+              aria-hidden="true"
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glowSoft"
+            >
+              <IconCard size={22} />
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="text-[11.5px] font-semibold text-ink-500">پلن انتخابی</div>
+              <div className="text-[15px] font-extrabold text-ink-950">
+                {planName} — {toPersianDigits(plan.durationDays)} روز
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center justify-between p-4">
+            <span className="text-[12.5px] text-ink-600">مبلغ قابل واریز</span>
+            <span className="tnum text-[20px] font-extrabold text-brand-700">
+              {formatToman(plan.price * 10)}
+              <span className="ms-1 text-[11px] font-semibold text-ink-400">تومان</span>
             </span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-ink-500">صاحب حساب</span>
-            <span className="font-semibold">{PAYMENT_INFO.cardHolder}</span>
+        </Card>
+
+        {/* ------------------------------------------------------- card details */}
+        <Card className="overflow-hidden">
+          <div className="border-b border-ink-100/80 px-4 py-3 text-[13px] font-bold text-ink-900">
+            اطلاعات کارت مقصد
           </div>
-          <div className="flex justify-between">
-            <span className="text-ink-500">بانک</span>
-            <span className="font-semibold">{PAYMENT_INFO.bankName}</span>
+          <dl className="divide-y divide-ink-100/70 text-[12.5px]">
+            <div className="flex items-center justify-between gap-3 px-4 py-3">
+              <dt className="text-ink-500">شماره کارت</dt>
+              <dd className="font-mono text-[13.5px] font-bold tracking-wider text-ink-900" dir="ltr">
+                {PAYMENT_INFO.cardNumber}
+              </dd>
+            </div>
+            <div className="flex items-center justify-between gap-3 px-4 py-3">
+              <dt className="text-ink-500">صاحب حساب</dt>
+              <dd className="font-bold text-ink-900">{PAYMENT_INFO.cardHolder}</dd>
+            </div>
+            <div className="flex items-center justify-between gap-3 px-4 py-3">
+              <dt className="text-ink-500">بانک</dt>
+              <dd className="font-bold text-ink-900">{PAYMENT_INFO.bankName}</dd>
+            </div>
+          </dl>
+        </Card>
+
+        {/* ------------------------------------------------------------ steps */}
+        <div className="flex items-start gap-2.5 rounded-card border border-brand-100 bg-brand-50/70 p-3.5">
+          <IconInfo size={17} className="mt-0.5 shrink-0 text-brand-600" />
+          <div className="text-[12px] leading-6 text-brand-900">
+            <div className="font-bold">راهنمای پرداخت</div>
+            <ol className="mt-1 list-decimal space-y-1 ps-4">
+              {PAYMENT_INFO.instructions.map((line, i) => (
+                <li key={i}>{line}</li>
+              ))}
+            </ol>
           </div>
         </div>
-      </Card>
 
-      <Card className="p-4 mb-4 bg-ink-50 border-ink-100">
-        <div className="text-xs leading-6 text-ink-700">
-          <div className="font-semibold mb-1">راهنما:</div>
-          <ol className="list-decimal pr-4 space-y-1">
-            {PAYMENT_INFO.instructions.map((line, i) => (
-              <li key={i}>{line}</li>
-            ))}
-          </ol>
-        </div>
-      </Card>
+        <PayForm planId={plan.id} />
 
-      <PayForm planId={plan.id} />
+        <p className="text-center text-[11.5px] leading-6 text-ink-500">
+          نیاز به کمک دارید؟{" "}
+          <Link href="/why-sellora" className="font-bold text-brand-700 hover:underline">
+            سوال‌های پرتکرار
+          </Link>
+        </p>
+      </div>
     </AppShell>
   );
 }

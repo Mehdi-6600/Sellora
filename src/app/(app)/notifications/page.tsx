@@ -5,8 +5,13 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Empty } from "@/components/ui/empty";
 import { NotificationItem, type NotificationRow } from "@/components/notifications/notification-item";
 import { MarkAllReadButton } from "@/components/notifications/mark-all-read";
-import { listNotifications, notificationHref, unreadCount } from "@/lib/notifications";
-import { formatRelativeTime } from "@/lib/utils/format";
+import {
+  listNotifications,
+  notificationHref,
+  notificationMeta,
+  unreadCount,
+} from "@/lib/notifications";
+import { formatRelativeTime, toPersianDigits } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -28,16 +33,21 @@ export default async function NotificationsPage() {
       unreadCount(auth.businessId),
     ]);
     unread = count;
-    items = rows.map((n: any) => ({
-      id: n.id,
-      kind: n.kind,
-      title: n.title,
-      body: n.body,
-      href: notificationHref(n),
-      readAt: n.readAt ? new Date(n.readAt).toISOString() : null,
-      createdAt: new Date(n.createdAt).toISOString(),
-      relativeTime: formatRelativeTime(n.createdAt, locale),
-    }));
+    items = rows.map((n: any) => {
+      const meta = notificationMeta(n.kind);
+      return {
+        id: n.id,
+        kind: n.kind,
+        title: n.title,
+        body: n.body,
+        href: notificationHref(n),
+        readAt: n.readAt ? new Date(n.readAt).toISOString() : null,
+        createdAt: new Date(n.createdAt).toISOString(),
+        relativeTime: formatRelativeTime(n.createdAt, locale),
+        tone: meta.tone,
+        icon: meta.icon,
+      };
+    });
   } catch (err) {
     console.error("[notifications page]", err);
     failed = true;
@@ -46,23 +56,31 @@ export default async function NotificationsPage() {
   return (
     <AppShell
       title={dict.notifications.title}
-      subtitle={unread > 0 ? `${unread} ${dict.notifications.unreadWord}` : undefined}
+      subtitle={
+        unread > 0 ? `${toPersianDigits(unread)} ${dict.notifications.unreadWord}` : undefined
+      }
       backHref="/dashboard"
       actions={unread > 0 ? <MarkAllReadButton label={dict.notifications.markAllRead} /> : undefined}
     >
-      {failed ? (
-        <div className="card p-6 text-center text-sm text-red-700 border-red-200 bg-red-50">
-          {dict.errors.generic}
-        </div>
-      ) : items.length === 0 ? (
-        <Empty title={dict.notifications.emptyTitle} subtitle={dict.notifications.emptyDesc} />
-      ) : (
-        <div className="space-y-2">
-          {items.map((n) => (
-            <NotificationItem key={n.id} n={n} />
-          ))}
-        </div>
-      )}
+      <div className="mx-auto w-full max-w-2xl space-y-2">
+        {failed ? (
+          <div className="card border-red-200/80 bg-red-50/70 p-6 text-center text-[13px] font-medium text-red-700">
+            {dict.errors.generic}
+          </div>
+        ) : items.length === 0 ? (
+          <Empty
+            title={dict.notifications.emptyTitle}
+            subtitle={dict.notifications.emptyDesc}
+            nextStep="وقتی مشتری داغی شناسایی شود یا گفتگویی به شما سپرده شود، همین‌جا و روی زنگ اعلان می‌بینید."
+          />
+        ) : (
+          <div className="space-y-2">
+            {items.map((n) => (
+              <NotificationItem key={n.id} n={n} />
+            ))}
+          </div>
+        )}
+      </div>
     </AppShell>
   );
 }

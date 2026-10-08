@@ -1,6 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import { notificationMeta } from "@/lib/notifications";
 import { cx } from "@/lib/utils/format";
+import { IconChevronLeft } from "@/components/layout/icons";
 
 export type NotificationRow = {
   id: string;
@@ -11,6 +13,9 @@ export type NotificationRow = {
   readAt: string | null;
   createdAt: string;
   relativeTime: string;
+  /** Presentation derived on the server from the kind (single source: lib/notifications). */
+  tone: "red" | "amber" | "green" | "blue" | "gray";
+  icon: string;
 };
 
 /**
@@ -21,8 +26,18 @@ export type NotificationRow = {
  * navigation, then follows the deep link.
  */
 export function NotificationItem({ n }: { n: NotificationRow }) {
-  const meta = notificationMeta(n.kind);
   const unread = !n.readAt;
+
+  const tile =
+    n.tone === "red"
+      ? "border-red-100 bg-red-50 text-red-600"
+      : n.tone === "amber"
+      ? "border-amber-100 bg-amber-50 text-amber-700"
+      : n.tone === "green"
+      ? "border-emerald-100 bg-emerald-50 text-emerald-700"
+      : n.tone === "blue"
+      ? "border-sky-100 bg-sky-50 text-sky-700"
+      : "border-ink-100 bg-ink-50 text-ink-600";
 
   return (
     <Link
@@ -33,37 +48,42 @@ export function NotificationItem({ n }: { n: NotificationRow }) {
         fetch(`/api/notifications/${n.id}/read`, { method: "POST", keepalive: true }).catch(() => {});
       }}
       className={cx(
-        "card p-4 flex items-start gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300",
-        unread && "border-brand-200 bg-brand-50/40"
+        "card-link flex items-start gap-3 p-3.5 focus-visible:outline-none",
+        unread && "border-brand-200/80 bg-brand-50/40"
       )}
     >
-      <div
+      <span
         aria-hidden="true"
         className={cx(
-          "h-10 w-10 rounded-xl grid place-items-center text-lg flex-shrink-0",
-          meta.tone === "red" && "bg-red-50",
-          meta.tone === "amber" && "bg-amber-50",
-          meta.tone === "green" && "bg-emerald-50",
-          meta.tone === "blue" && "bg-sky-50",
-          meta.tone === "gray" && "bg-ink-100"
+          "grid h-11 w-11 shrink-0 place-items-center rounded-2xl border text-lg",
+          tile
         )}
       >
-        {meta.icon}
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <div className={cx("text-sm truncate", unread ? "font-bold text-ink-900" : "font-medium text-ink-700")}>
+        {n.icon}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="flex items-center gap-2">
+          <span
+            className={cx(
+              "truncate text-[13px]",
+              unread ? "font-bold text-ink-950" : "font-semibold text-ink-700"
+            )}
+          >
             {n.title}
-          </div>
-          {unread && (
-            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-brand-600 flex-shrink-0" />
-          )}
-        </div>
-        <div className="text-xs text-ink-600 leading-6 mt-0.5">{n.body}</div>
-        <div className="text-[11px] text-ink-400 mt-1">
+          </span>
+          {unread ? (
+            <span
+              aria-hidden="true"
+              className="h-2 w-2 shrink-0 rounded-full bg-brand-600"
+            />
+          ) : null}
+        </span>
+        <span className="mt-0.5 block text-[12px] leading-6 text-ink-600">{n.body}</span>
+        <span className="mt-1 block text-[10.5px] text-ink-400">
           <time dateTime={n.createdAt}>{n.relativeTime}</time>
-        </div>
-      </div>
+        </span>
+      </span>
+      <IconChevronLeft size={16} className="mt-3 shrink-0 text-ink-300 rtl:rotate-180" />
     </Link>
   );
 }

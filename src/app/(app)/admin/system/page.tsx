@@ -4,8 +4,10 @@ import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { formatRelativeTime } from "@/lib/utils/format";
+import { formatRelativeTime, toPersianDigits } from "@/lib/utils/format";
 import { getServerDict } from "@/lib/i18n";
+import { StatCard } from "@/components/ui/stat";
+import { IconPulse, IconBolt, IconInfo } from "@/components/layout/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -25,13 +27,15 @@ export default async function AdminSystemPage() {
   if (!auth.user?.isAdmin) {
     return (
       <AppShell title="سلامت سیستم" backHref="/settings">
-        <Card className="p-6 text-center">
-          <div aria-hidden="true" className="text-4xl mb-3">
-            🔒
-          </div>
-          <div className="font-semibold mb-2">دسترسی محدود</div>
-          <div className="text-sm text-ink-500">شما به این بخش دسترسی ندارید.</div>
-        </Card>
+        <div className="mx-auto w-full max-w-md">
+          <Card className="p-6 text-center">
+            <div aria-hidden="true" className="mb-3 text-4xl">
+              🔒
+            </div>
+            <div className="mb-2 text-[15px] font-bold text-ink-900">دسترسی محدود</div>
+            <div className="text-[13px] text-ink-500">شما به این بخش دسترسی ندارید.</div>
+          </Card>
+        </div>
       </AppShell>
     );
   }
@@ -48,15 +52,30 @@ export default async function AdminSystemPage() {
 
   return (
     <AppShell title="سلامت سیستم" backHref="/settings" subtitle="خطاها و کارهای ناموفق پس‌زمینه">
-      <div className="grid grid-cols-2 gap-2 mb-4">
-        <Card className="p-3 text-center">
-          <div className="text-xs text-ink-500 mb-1">کارهای ناموفق</div>
-          <div className="text-xl font-bold text-red-600">{failedJobs.length}</div>
-        </Card>
-        <Card className="p-3 text-center">
-          <div className="text-xs text-ink-500 mb-1">وب‌هوک پردازش‌نشده</div>
-          <div className="text-xl font-bold text-amber-600">{pendingWebhookCount}</div>
-        </Card>
+      <div className="mx-auto w-full max-w-4xl space-y-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
+        <StatCard
+          label="کارهای ناموفق"
+          value={toPersianDigits(failedJobs.length)}
+          hint="در انتظار بررسی"
+          icon={<IconPulse size={18} />}
+          tone={failedJobs.length > 0 ? "danger" : "success"}
+        />
+        <StatCard
+          label="وب‌هوک پردازش‌نشده"
+          value={toPersianDigits(pendingWebhookCount)}
+          hint={pendingWebhookCount > 0 ? "نیاز به بازیابی" : "همه پردازش شده"}
+          icon={<IconInfo size={18} />}
+          tone={pendingWebhookCount > 0 ? "warning" : "success"}
+        />
+        <StatCard
+          label="پیام‌های ناموفق"
+          value={toPersianDigits(stuckMessages.length)}
+          hint="ارسال ناتمام"
+          icon={<IconBolt size={18} />}
+          tone={stuckMessages.length > 0 ? "danger" : "success"}
+          className="col-span-2 lg:col-span-1"
+        />
       </div>
 
       <div className="section-title">کارهای پس‌زمینه ناموفق</div>
@@ -72,9 +91,9 @@ export default async function AdminSystemPage() {
                   {formatRelativeTime(j.lastErrorAt, locale)}
                 </span>
               </div>
-              <div className="text-xs text-ink-600 break-words leading-6">{j.error}</div>
-              <div className="text-[11px] text-ink-400 mt-1">
-                تلاش‌ها: {j.attempts} · فروشگاه: {j.businessId ?? "—"}
+              <div className="break-words text-[12px] leading-6 text-ink-600">{j.error}</div>
+              <div className="mt-1 text-[11px] text-ink-400">
+                تلاش‌ها: {toPersianDigits(j.attempts ?? 0)} · فروشگاه: {j.businessId ?? "—"}
               </div>
             </Card>
           ))}
@@ -94,13 +113,14 @@ export default async function AdminSystemPage() {
                   {formatRelativeTime(m.createdAt, locale)}
                 </span>
               </div>
-              <div className="text-xs text-ink-600 break-words leading-6">
+              <div className="break-words text-[12px] leading-6 text-ink-600">
                 {m.failureReason || "بدون دلیل ثبت‌شده"}
               </div>
             </Card>
           ))}
         </div>
       )}
+      </div>
     </AppShell>
   );
 }

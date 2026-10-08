@@ -4,9 +4,39 @@ import { getServerDict } from "@/lib/i18n";
 import { requireAuth } from "@/lib/auth/session";
 import { AppShell } from "@/components/layout/app-shell";
 import { prisma } from "@/lib/db/prisma";
-import { planLabel, subscriptionStatusLabel } from "@/lib/config/subscription";
+import { Badge, Dot, StatusPulse } from "@/components/ui/badge";
+import { SelloraMark } from "@/components/brand/sellora";
+import { daysLeft, planLabel, subscriptionStatusLabel } from "@/lib/config/subscription";
+import { toPersianDigits } from "@/lib/utils/format";
+import { AutomationSwitch } from "@/components/automation/automation-switch";
+import {
+  IconArrowRight,
+  IconBolt,
+  IconCard,
+  IconCog,
+  IconInstagram,
+  IconLogout,
+  IconSparkle,
+} from "@/components/layout/icons";
 
 export const dynamic = "force-dynamic";
+
+/** Icon tile colour per section state — one definition, used by every row. */
+function tileClass(tone: "brand" | "success" | "danger" | "warning" | "neutral") {
+  const base = "grid h-11 w-11 shrink-0 place-items-center rounded-2xl border";
+  switch (tone) {
+    case "success":
+      return `${base} border-emerald-100 bg-emerald-50 text-emerald-700`;
+    case "danger":
+      return `${base} border-red-100 bg-red-50 text-red-600`;
+    case "warning":
+      return `${base} border-amber-100 bg-amber-50 text-amber-700`;
+    case "neutral":
+      return `${base} border-ink-100 bg-ink-50 text-ink-500`;
+    default:
+      return `${base} border-brand-100 bg-brand-50 text-brand-700`;
+  }
+}
 
 export default async function SettingsPage() {
   const { dict } = await getServerDict();
@@ -23,140 +53,255 @@ export default async function SettingsPage() {
     prisma.subscription.findUnique({ where: { businessId: auth.businessId } }),
   ]);
 
+  const isAdmin = Boolean(auth.user?.isAdmin);
+  const igConnected = ig?.status === "CONNECTED";
+  const left = sub ? daysLeft(sub.endsAt) : null;
+  const initial = (auth.user.name || auth.user.email || "S").slice(0, 1).toUpperCase();
+
   const items = [
-    { href: "/settings/business", label: dict.nav.business, desc: "آدرس، ساعات کاری، ارسال، پرداخت", icon: "🏬" },
+    {
+      href: "/settings/business",
+      label: dict.nav.business,
+      desc: "آدرس، ساعات کاری، ارسال، پرداخت و شرایط بازگشت",
+      icon: <IconCog size={19} />,
+      tone: "brand" as const,
+    },
     {
       href: "/settings/instagram",
       label: dict.nav.instagram,
-      desc:
-        ig?.status === "CONNECTED"
-          ? dict.settings.instagram.statusConnected
-          : dict.settings.instagram.statusDisconnected,
-      icon: "📸",
+      desc: igConnected
+        ? `متصل${ig?.username ? ` — @${ig.username.replace(/^@/, "")}` : ""}`
+        : dict.settings.instagram.statusDisconnected,
+      icon: <IconInstagram size={19} />,
+      tone: igConnected ? ("success" as const) : ("danger" as const),
     },
     {
       href: "/settings/subscription",
       label: dict.nav.subscription,
       desc: sub
-        ? `${planLabel(sub.plan)} — ${subscriptionStatusLabel(sub.status)}`
+        ? `${planLabel(sub.plan)} — ${subscriptionStatusLabel(sub.status)}${
+            sub.status === "ACTIVE" && left !== null
+              ? ` (${toPersianDigits(Math.max(left, 0))} روز مانده)`
+              : ""
+          }`
         : dict.settings.subscription.trial,
-      icon: "💳",
+      icon: <IconCard size={19} />,
+      tone: "warning" as const,
+    },
+    {
+      href: "/automations",
+      label: dict.nav.automations,
+      desc: auto?.enabled ? "پاسخ‌گویی خودکار فعال است" : "پاسخ‌گویی خودکار غیرفعال است",
+      icon: <IconBolt size={19} />,
+      tone: auto?.enabled ? ("success" as const) : ("neutral" as const),
     },
   ];
 
-  const isAdmin = Boolean(auth.user?.isAdmin);
-
   return (
-    <AppShell title={dict.nav.settings}>
-      <div className="card p-4 mb-4 flex items-center gap-3">
-        <div className="h-11 w-11 rounded-full bg-ink-100 grid place-items-center font-semibold">
-          {(auth.user.name || auth.user.email).slice(0, 1).toUpperCase()}
-        </div>
-        <div className="flex-1">
-          <div className="font-semibold">{auth.user.name || auth.business.name}</div>
-          <div className="text-xs text-ink-500">{auth.user.email}</div>
-          {isAdmin && (
-            <div className="text-[10px] text-brand-600 font-semibold mt-0.5">ADMIN</div>
-          )}
-        </div>
-        <form action="/api/auth/logout" method="post">
-          <button type="submit" className="btn-secondary text-xs" style={{ padding: "0.4rem 0.75rem" }}>
-            خروج
-          </button>
-        </form>
-      </div>
-
-      <div className="card overflow-hidden">
-        <div className="p-4 flex items-center justify-between">
-          <div>
-            <div className="text-sm font-semibold">پاسخ‌گویی خودکار</div>
-            <div className="text-xs text-ink-500">Sellora به پیام‌های مشتریان در پس‌زمینه پاسخ بدهد.</div>
-          </div>
-          <AutomationToggle enabled={auto?.enabled ?? false} />
-        </div>
-      </div>
-
-      <div className="section-title">راهنما</div>
-      <div className="space-y-2">
-        <Link href="/why-sellora" className="card p-4 flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-brand-50 grid place-items-center text-xl">✨</div>
-          <div className="flex-1">
-            <div className="font-medium">چرا Sellora؟</div>
-            <div className="text-xs text-ink-500">همه‌ی قابلیت‌ها و مزیت‌های Sellora</div>
-          </div>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink-400 rtl:rotate-180">
-            <path d="m15 18-6-6 6-6" />
-          </svg>
-        </Link>
-      </div>
-
-      {isAdmin && (
-        <>
-          <div className="section-title">پنل مدیریت</div>
-          <div className="space-y-2">
-            <Link href="/admin/subscriptions" className="card p-4 flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-amber-50 grid place-items-center text-xl">👑</div>
-              <div className="flex-1">
-                <div className="font-medium">مدیریت اشتراک‌ها</div>
-                <div className="text-xs text-ink-500">بررسی، تأیید یا رد درخواست‌های پرداخت</div>
+    <AppShell title={dict.nav.settings} subtitle="حساب، فروشگاه و اتصال‌ها" wide>
+      <div className="grid gap-4 lg:grid-cols-3 lg:gap-6">
+        <div className="space-y-4 lg:col-span-2 lg:space-y-5">
+          {/* ------------------------------------------------------- profile */}
+          <section aria-label="حساب کاربری" className="card overflow-hidden">
+            <div className="relative flex items-center gap-3.5 border-b border-ink-100/80 bg-brand-gradient-soft p-4">
+              <span
+                aria-hidden="true"
+                className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-lg font-extrabold text-white shadow-glowSoft"
+              >
+                {initial}
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="truncate text-[15px] font-bold text-ink-900">
+                    {auth.user.name || auth.business.name}
+                  </span>
+                  {isAdmin ? <Badge tone="brand">ADMIN</Badge> : null}
+                </div>
+                <div className="mt-0.5 truncate text-[12px] text-ink-500" dir="ltr">
+                  {auth.user.email}
+                </div>
+                <div className="mt-0.5 truncate text-[11.5px] text-ink-500">
+                  فروشگاه: {auth.business.name}
+                </div>
               </div>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink-400 rtl:rotate-180">
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-            </Link>
-            <Link href="/admin/system" className="card p-4 flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-sky-50 grid place-items-center text-xl">🩺</div>
-              <div className="flex-1">
-                <div className="font-medium">سلامت سیستم</div>
-                <div className="text-xs text-ink-500">کارهای ناموفق، وب‌هوک‌های پردازش‌نشده و پیام‌های گیرکرده</div>
-              </div>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink-400 rtl:rotate-180">
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-            </Link>
-          </div>
-        </>
-      )}
-
-      <div className="section-title">بخش‌ها</div>
-      <div className="space-y-2">
-        {items.map((it) => (
-          <Link key={it.href} href={it.href} className="card p-4 flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-ink-50 grid place-items-center text-xl">{it.icon}</div>
-            <div className="flex-1">
-              <div className="font-medium">{it.label}</div>
-              <div className="text-xs text-ink-500">{it.desc}</div>
+              <SelloraMark size={40} glow className="hidden sm:block" />
             </div>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink-400 rtl:rotate-180">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </Link>
-        ))}
+            <div className="flex items-center gap-2 p-3">
+              <form action="/api/auth/logout" method="post" className="flex-1">
+                <button type="submit" className="btn-secondary w-full min-h-[44px]">
+                  <IconLogout size={17} />
+                  خروج از حساب
+                </button>
+              </form>
+              <Link href="/why-sellora" className="btn-ghost min-h-[44px] flex-1">
+                <IconSparkle size={17} />
+                چرا سلورا؟
+              </Link>
+            </div>
+          </section>
+
+          {/* ---------------------------------------------------- sections list */}
+          <section aria-label="بخش‌های تنظیمات">
+            <div className="section-title">
+              <IconCog size={16} className="text-brand-500" />
+              بخش‌ها
+            </div>
+            <ul className="space-y-2">
+              {items.map((it) =>
+                it.href === "/automations" ? (
+                  // The master switch keeps the one-tap toggle the settings page
+                  // has always had (same POST /api/rules/automation); the link
+                  // below it opens the full automations view.
+                  <li key={it.href}>
+                    <div className="card flex min-h-[68px] items-center gap-3 p-3.5">
+                      <span aria-hidden="true" className={tileClass(it.tone)}>
+                        {it.icon}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-[13.5px] font-bold text-ink-900">
+                          {it.label}
+                        </span>
+                        <span className="mt-0.5 block truncate text-[11.5px] text-ink-500">
+                          {it.desc}
+                        </span>
+                        <Link
+                          href="/automations"
+                          className="mt-1 inline-flex items-center gap-1 text-[11.5px] font-bold text-brand-700 hover:underline"
+                        >
+                          جزئیات و جریان‌ها
+                          <IconArrowRight size={13} className="rtl:rotate-180" />
+                        </Link>
+                      </span>
+                      <AutomationSwitch
+                        enabled={Boolean(auto?.enabled)}
+                        label={dict.nav.automations}
+                      />
+                    </div>
+                  </li>
+                ) : (
+                <li key={it.href}>
+                  <Link href={it.href} className="card-link flex min-h-[68px] items-center gap-3 p-3.5">
+                    <span aria-hidden="true" className={tileClass(it.tone)}>
+                      {it.icon}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[13.5px] font-bold text-ink-900">
+                        {it.label}
+                      </span>
+                      <span className="mt-0.5 block truncate text-[11.5px] text-ink-500">
+                        {it.desc}
+                      </span>
+                    </span>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      className="shrink-0 text-ink-300 rtl:rotate-180"
+                    >
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
+                  </Link>
+                </li>
+                )
+              )}
+            </ul>
+          </section>
+
+          {isAdmin ? (
+            <section aria-label="پنل مدیریت">
+              <div className="section-title">
+                <IconSparkle size={16} className="text-amber-500" />
+                پنل مدیریت
+              </div>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <Link href="/admin/subscriptions" className="card-link flex items-center gap-3 p-3.5">
+                  <span
+                    aria-hidden="true"
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-amber-100 bg-amber-50 text-xl"
+                  >
+                    👑
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[13px] font-bold text-ink-900">مدیریت اشتراک‌ها</span>
+                    <span className="mt-0.5 block text-[11px] text-ink-500">
+                      بررسی و تأیید درخواست‌های پرداخت
+                    </span>
+                  </span>
+                </Link>
+                <Link href="/admin/system" className="card-link flex items-center gap-3 p-3.5">
+                  <span
+                    aria-hidden="true"
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-sky-100 bg-sky-50 text-xl"
+                  >
+                    🩺
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[13px] font-bold text-ink-900">سلامت سیستم</span>
+                    <span className="mt-0.5 block text-[11px] text-ink-500">
+                      کارهای ناموفق و پیام‌های گیرکرده
+                    </span>
+                  </span>
+                </Link>
+              </div>
+            </section>
+          ) : null}
+        </div>
+
+        {/* ------------------------------------------------------------- aside */}
+        <aside className="space-y-4 lg:sticky lg:top-28 lg:self-start">
+          <section aria-label="وضعیت سرویس" className="card p-4">
+            <h2 className="text-[13px] font-bold text-ink-900">وضعیت سرویس</h2>
+            <ul className="mt-3 space-y-3 text-[12px]">
+              <li className="flex items-center justify-between gap-2">
+                <span className="text-ink-600">اینستاگرام</span>
+                {igConnected ? (
+                  <span className="flex items-center gap-1.5 font-bold text-emerald-700">
+                    <StatusPulse tone="green" />
+                    متصل
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1.5 font-bold text-ink-500">
+                    <Dot tone="gray" />
+                    قطع
+                  </span>
+                )}
+              </li>
+              <li className="flex items-center justify-between gap-2">
+                <span className="text-ink-600">پاسخ‌گویی خودکار</span>
+                <Badge tone={auto?.enabled ? "green" : "gray"}>
+                  {auto?.enabled ? "فعال" : "غیرفعال"}
+                </Badge>
+              </li>
+              <li className="flex items-center justify-between gap-2">
+                <span className="text-ink-600">اشتراک</span>
+                <Badge tone={sub?.status === "ACTIVE" ? "green" : "amber"}>
+                  {sub ? subscriptionStatusLabel(sub.status) : dict.settings.subscription.trial}
+                </Badge>
+              </li>
+            </ul>
+          </section>
+
+          <section aria-label="راهنما" className="card overflow-hidden">
+            <div className="border-b border-ink-100/80 bg-brand-gradient-soft p-4">
+              <h2 className="text-[13px] font-bold text-ink-900">چرا Sellora؟</h2>
+              <p className="mt-1 text-[11.5px] leading-6 text-ink-600">
+                همه‌ی قابلیت‌ها، تفاوت با ربات ساده و پاسخ سوال‌های پرتکرار.
+              </p>
+            </div>
+            <div className="p-3">
+              <Link href="/why-sellora" className="btn-secondary w-full min-h-[44px]">
+                مشاهده صفحه راهنما
+              </Link>
+            </div>
+          </section>
+        </aside>
       </div>
     </AppShell>
-  );
-}
-
-function AutomationToggle({ enabled }: { enabled: boolean }) {
-  return (
-    <form action="/api/rules/automation" method="post" className="inline-flex">
-      <input type="hidden" name="enabled" value={enabled ? "false" : "true"} />
-      <button
-        type="submit"
-        role="switch"
-        aria-checked={enabled}
-        aria-label="پاسخ‌گویی خودکار"
-        className={`relative h-7 w-12 rounded-full transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 ${
-          enabled ? "bg-emerald-500" : "bg-ink-200"
-        }`}
-      >
-        <span
-          aria-hidden="true"
-          className={`absolute top-0.5 h-6 w-6 rounded-full bg-white shadow transition-all ${
-            enabled ? "start-0.5" : "start-[calc(100%-1.625rem)]"
-          }`}
-        />
-      </button>
-    </form>
   );
 }
