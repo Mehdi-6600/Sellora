@@ -6,15 +6,10 @@ import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { formatToman } from "@/lib/utils/format";
+import { formatToman, toPersianDigits } from "@/lib/utils/format";
+import { daysLeft, paymentStatusLabel, planLabel, subscriptionStatusLabel } from "@/lib/config/subscription";
 
 export const dynamic = "force-dynamic";
-
-const PLAN_LABELS: Record<string, string> = {
-  WEEKLY: "هفتگی",
-  MONTHLY: "ماهانه",
-  QUARTERLY: "سه‌ماهه",
-};
 
 export default async function SubscriptionStatusPage() {
   const { dict } = await getServerDict();
@@ -59,7 +54,7 @@ export default async function SubscriptionStatusPage() {
             <div className="flex-1">
               <div className="font-semibold text-amber-800 mb-1">درخواست شما در انتظار بررسی است</div>
               <div className="text-sm text-amber-700 leading-6">
-                درخواست خرید پلن {PLAN_LABELS[sub.plan]} با کد رهگیری{" "}
+                درخواست خرید پلن {planLabel(sub.plan)} با کد رهگیری{" "}
                 <span dir="ltr" className="font-mono font-semibold">
                   {sub.trackingCode}
                 </span>{" "}
@@ -77,7 +72,7 @@ export default async function SubscriptionStatusPage() {
             <div className="flex-1">
               <div className="font-semibold text-emerald-800 mb-1">اشتراک شما فعال است</div>
               <div className="text-sm text-emerald-700 leading-6">
-                پلن {PLAN_LABELS[sub.plan]} فعال است.
+                پلن {planLabel(sub.plan)} فعال است.
                 {sub.endsAt && (
                   <>
                     {" "}
@@ -113,7 +108,7 @@ export default async function SubscriptionStatusPage() {
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
             <span className="text-ink-500">پلن</span>
-            <span className="font-semibold">{PLAN_LABELS[sub.plan]}</span>
+            <span className="font-semibold">{planLabel(sub.plan)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-ink-500">مبلغ</span>
@@ -132,18 +127,20 @@ export default async function SubscriptionStatusPage() {
                 isApproved ? "green" : isRejected ? "gray" : isPending ? "amber" : "gray"
               }
             >
-              {isApproved ? "تأیید شده" : isRejected ? "رد شده" : isPending ? "در انتظار" : "نامشخص"}
+              {paymentStatusLabel(sub.paymentStatus)}
             </Badge>
           </div>
+          {sub.endsAt && (
+            <div className="flex justify-between">
+              <span className="text-ink-500">روزهای باقی‌مانده</span>
+              <span className="font-semibold">
+                {toPersianDigits(Math.max(daysLeft(sub.endsAt) ?? 0, 0))} روز
+              </span>
+            </div>
+          )}
           <div className="flex justify-between">
             <span className="text-ink-500">وضعیت اشتراک</span>
-            <Badge tone={isActive ? "green" : "gray"}>
-              {sub.status === "ACTIVE"
-                ? "فعال"
-                : sub.status === "TRIAL"
-                ? "آزمایشی"
-                : sub.status}
-            </Badge>
+            <Badge tone={isActive ? "green" : "gray"}>{subscriptionStatusLabel(sub.status)}</Badge>
           </div>
         </div>
       </Card>

@@ -42,10 +42,13 @@ export async function POST(req: Request) {
   const { plan, trackingCode } = parsed.data;
   const planConfig = getPlan(plan);
   const amount = planConfig.price;
-  const days = planConfig.durationDays;
-  const now = new Date();
-  const endsAt = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
+  // NOTE: submission never sets paidAt / startsAt / endsAt and never touches
+  // the lifecycle status. Payment is only confirmed by an admin review
+  // (approve route); recording paidAt here would mean pretending the money
+  // moved, and forcing status=TRIAL on update would downgrade an ACTIVE
+  // subscription the moment a renewal is submitted.
 
+  const now2 = new Date();
   const existing = await prisma.subscription.findUnique({
     where: { businessId: auth.businessId },
   });
@@ -64,15 +67,11 @@ export async function POST(req: Request) {
           plan,
           amount,
           currency: CURRENCY,
-          status: "TRIAL",
           paymentStatus: "PENDING",
           trackingCode,
-          paidAt: now,
           reviewedAt: null,
           reviewedBy: null,
           rejectionReason: null,
-          startsAt: now,
-          endsAt,
         },
       })
     : await prisma.subscription.create({
@@ -84,9 +83,7 @@ export async function POST(req: Request) {
           status: "TRIAL",
           paymentStatus: "PENDING",
           trackingCode,
-          paidAt: now,
-          startsAt: now,
-          endsAt,
+          startsAt: now2,
         },
       });
 

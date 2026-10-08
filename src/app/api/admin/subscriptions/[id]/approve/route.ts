@@ -38,13 +38,18 @@ export async function POST(_req: Request, ctx: { params: { id: string } }) {
 
   const now = new Date();
   const days = PLAN_DAYS[sub.plan] ?? 30;
-  const endsAt = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
+  // Renewals extend from the later of "now" and the current expiry, so unused
+  // paid time is never lost when an owner renews early.
+  const currentEnd = sub.endsAt ? new Date(sub.endsAt).getTime() : 0;
+  const base = Math.max(now.getTime(), Number.isFinite(currentEnd) ? currentEnd : 0);
+  const endsAt = new Date(base + days * 24 * 60 * 60 * 1000);
 
   const updated = await prisma.subscription.update({
     where: { id },
     data: {
       paymentStatus: "APPROVED",
       status: "ACTIVE",
+      paidAt: now,
       startsAt: now,
       endsAt,
       reviewedAt: now,

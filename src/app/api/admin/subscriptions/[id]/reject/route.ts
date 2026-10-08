@@ -51,11 +51,18 @@ export async function POST(req: Request, ctx: { params: { id: string } }) {
   }
 
   const now = new Date();
+  // A rejected payment must not destroy a subscription that is still live:
+  // ACTIVE stays ACTIVE until its stored endsAt passes, then EXPIRED. Any
+  // other prior status (TRIAL, CANCELED, EXPIRED) is left untouched.
+  const stillWithinPeriod =
+    sub.status === "ACTIVE" && !!sub.endsAt && new Date(sub.endsAt).getTime() > now.getTime();
+  const nextStatus =
+    sub.status === "ACTIVE" ? (stillWithinPeriod ? "ACTIVE" : "EXPIRED") : sub.status;
   const updated = await prisma.subscription.update({
     where: { id },
     data: {
       paymentStatus: "REJECTED",
-      status: "TRIAL",
+      status: nextStatus,
       reviewedAt: now,
       reviewedBy: auth.userId,
       rejectionReason: parsed.data.reason,

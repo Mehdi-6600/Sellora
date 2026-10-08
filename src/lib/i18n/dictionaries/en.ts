@@ -101,8 +101,7 @@ const en: Dict = {
       title: "Subscription", currentPlan: "Current plan", trial: "Trial",
       select: "Choose a plan", bestValue: "Best value",
       weekly: "1 week", monthly: "1 month", quarterly: "3 months",
-      weeklyPrice: "299,000 Toman", monthlyPrice: "899,000 Toman", quarterlyPrice: "2,249,000 Toman",
-      noPayments: "Payment gateway is not enabled in this build. After choosing a plan we'll contact you.",
+      noPayments: "In this version payment is card-to-card with manual review: transfer the amount, submit the tracking code, and the request is reviewed within 24 hours and activated on approval.",
     },
   },
   onboarding: {

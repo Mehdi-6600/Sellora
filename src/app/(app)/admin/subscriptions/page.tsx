@@ -5,15 +5,11 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatToman } from "@/lib/utils/format";
+import { planLabel } from "@/lib/config/subscription";
 import { AdminSubscriptionActions } from "./admin-actions";
 
 export const dynamic = "force-dynamic";
 
-const PLAN_LABELS: Record<string, string> = {
-  WEEKLY: "هفتگی",
-  MONTHLY: "ماهانه",
-  QUARTERLY: "سه‌ماهه",
-};
 
 export default async function AdminSubscriptionsPage() {
   let auth;
@@ -110,7 +106,7 @@ export default async function AdminSubscriptionsPage() {
                 <div className="grid grid-cols-2 gap-2 text-sm mb-3">
                   <div>
                     <div className="text-xs text-ink-500">پلن</div>
-                    <div className="font-semibold">{PLAN_LABELS[s.plan] ?? s.plan}</div>
+                    <div className="font-semibold">{planLabel(s.plan)}</div>
                   </div>
                   <div>
                     <div className="text-xs text-ink-500">مبلغ</div>
@@ -122,9 +118,13 @@ export default async function AdminSubscriptionsPage() {
                       {s.trackingCode || "—"}
                     </div>
                   </div>
+                  <div className="col-span-2">
+                    <div className="text-xs text-ink-500">تاریخ ثبت درخواست</div>
+                    <div>{new Date(s.createdAt).toLocaleString("fa-IR")}</div>
+                  </div>
                   {s.paidAt && (
                     <div className="col-span-2">
-                      <div className="text-xs text-ink-500">تاریخ ثبت</div>
+                      <div className="text-xs text-ink-500">تاریخ تأیید پرداخت</div>
                       <div>{new Date(s.paidAt).toLocaleString("fa-IR")}</div>
                     </div>
                   )}

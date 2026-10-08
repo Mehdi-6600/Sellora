@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
 import { PLANS } from "@/lib/config/pricing";
+import { planLabel, subscriptionStatusLabel } from "@/lib/config/subscription";
 import { formatToman } from "@/lib/utils/format";
 import { SubscribeButton } from "./subscribe-button";
 
@@ -31,10 +32,12 @@ export default async function SubscriptionPage() {
           <div className="flex-1">
             <div className="text-sm text-ink-500">{dict.settings.subscription.currentPlan}</div>
             <div className="font-semibold">
-              {sub.plan} — {formatToman(sub.amount * 10)} تومان
+              {planLabel(sub.plan)} — {formatToman(sub.amount * 10)} تومان
             </div>
           </div>
-          <Badge tone={sub.status === "ACTIVE" ? "green" : sub.status === "TRIAL" ? "amber" : "gray"}>{sub.status}</Badge>
+          <Badge tone={sub.status === "ACTIVE" ? "green" : sub.status === "TRIAL" ? "amber" : "gray"}>
+            {subscriptionStatusLabel(sub.status)}
+          </Badge>
         </Card>
       )}
 
