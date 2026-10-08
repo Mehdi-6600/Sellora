@@ -83,7 +83,7 @@ export function ChatPanel({
 
   return (
     <div className="fixed inset-x-0 bottom-[calc(3.6rem+env(safe-area-inset-bottom,0px))] z-30 lg:static lg:inset-x-auto lg:bottom-auto lg:mt-3">
-      <div className="border-t border-ink-100/80 glass-bar px-3 py-2.5 shadow-nav lg:rounded-card lg:border lg:border-ink-100 lg:bg-white lg:p-3 lg:shadow-card">
+      <div className="border-t border-ink-100/80 glass-bar px-3 py-2.5 shadow-nav lg:rounded-card lg:border lg:border-ink-100 lg:bg-white/[0.06] lg:p-3 lg:shadow-card">
         <div className="mx-auto w-full max-w-[30rem] lg:max-w-none">
           {/* ------------------------------------------------- who is answering */}
           <div className="mb-2 flex items-center gap-2">
@@ -91,7 +91,7 @@ export function ChatPanel({
               className={cx(
                 "inline-flex min-w-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ring-1",
                 human
-                  ? "bg-sky-50 text-sky-700 ring-sky-100"
+                  ? "bg-sky-400/15 text-sky-300 ring-sky-400/25"
                   : "bg-brand-50 text-brand-700 ring-brand-100"
               )}
             >

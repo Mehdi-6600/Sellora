@@ -48,16 +48,16 @@ export default async function SubscriptionStatusPage() {
     <AppShell title="وضعیت اشتراک" backHref="/settings/subscription">
       <div className="mx-auto w-full max-w-2xl space-y-4">
         {isPending && (
-          <Card className="overflow-hidden border-amber-200/80">
-            <div className="flex items-start gap-3.5 bg-amber-50/80 p-4">
-              <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white text-xl shadow-soft">
+          <Card className="overflow-hidden border-amber-400/30">
+            <div className="flex items-start gap-3.5 bg-amber-400/15 p-4">
+              <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/[0.06] text-xl shadow-soft">
                 ⏳
               </span>
               <div className="flex-1">
-                <div className="text-[13.5px] font-bold text-amber-900">
+                <div className="text-[13.5px] font-bold text-amber-200">
                   درخواست شما در انتظار بررسی است
                 </div>
-                <p className="mt-1 text-[12px] leading-6 text-amber-800">
+                <p className="mt-1 text-[12px] leading-6 text-amber-300">
                   درخواست خرید پلن {planLabel(sub.plan)} با کد رهگیری{" "}
                   <span dir="ltr" className="font-mono font-bold">
                     {sub.trackingCode}
@@ -70,14 +70,14 @@ export default async function SubscriptionStatusPage() {
         )}
 
         {isActive && (
-          <Card className="overflow-hidden border-emerald-200/80">
-            <div className="flex items-start gap-3.5 bg-emerald-50/80 p-4">
-              <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white text-xl shadow-soft">
+          <Card className="overflow-hidden border-emerald-400/30">
+            <div className="flex items-start gap-3.5 bg-emerald-400/15 p-4">
+              <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/[0.06] text-xl shadow-soft">
                 ✅
               </span>
               <div className="flex-1">
-                <div className="text-[13.5px] font-bold text-emerald-900">اشتراک شما فعال است</div>
-                <p className="mt-1 text-[12px] leading-6 text-emerald-800">
+                <div className="text-[13.5px] font-bold text-emerald-200">اشتراک شما فعال است</div>
+                <p className="mt-1 text-[12px] leading-6 text-emerald-200">
                   پلن {planLabel(sub.plan)} فعال است.
                   {sub.endsAt
                     ? ` اعتبار تا ${new Date(sub.endsAt).toLocaleDateString("fa-IR")}.`
@@ -89,14 +89,14 @@ export default async function SubscriptionStatusPage() {
         )}
 
         {isRejected && (
-          <Card className="overflow-hidden border-red-200/80">
-            <div className="flex items-start gap-3.5 bg-red-50/80 p-4">
-              <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white text-xl shadow-soft">
+          <Card className="overflow-hidden border-red-400/30">
+            <div className="flex items-start gap-3.5 bg-red-400/15 p-4">
+              <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/[0.06] text-xl shadow-soft">
                 ❌
               </span>
               <div className="flex-1">
-                <div className="text-[13.5px] font-bold text-red-900">درخواست شما رد شد</div>
-                <p className="mt-1 text-[12px] leading-6 text-red-800">
+                <div className="text-[13.5px] font-bold text-red-200">درخواست شما رد شد</div>
+                <p className="mt-1 text-[12px] leading-6 text-red-300">
                   {sub.rejectionReason || "دلیل رد ثبت نشده است."}
                 </p>
               </div>

@@ -33,7 +33,7 @@ export function AuthLayout({
   return (
     <div className="min-h-screen lg:flex">
       {/* ------------------------------------------------------- brand panel */}
-      <aside className="relative hidden overflow-hidden bg-brand-gradient p-10 text-white lg:flex lg:w-[46%] lg:flex-col xl:w-[42%]">
+      <aside className="relative hidden overflow-hidden bg-premium-gradient p-10 text-white lg:flex lg:w-[46%] lg:flex-col xl:w-[42%]">
         <BrandAura />
         <span
           aria-hidden="true"

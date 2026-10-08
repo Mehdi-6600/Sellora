@@ -7,7 +7,7 @@ export default function AppLoading() {
   return (
     <div className="min-h-screen" aria-busy="true" aria-label="در حال بارگذاری">
       {/* desktop sidebar */}
-      <div className="hidden lg:fixed lg:inset-y-0 lg:start-0 lg:flex lg:w-[17.5rem] lg:flex-col lg:gap-4 lg:border-e lg:border-ink-100/80 lg:bg-white/80 lg:px-4 lg:py-6">
+      <div className="hidden lg:fixed lg:inset-y-0 lg:start-0 lg:flex lg:w-[17.5rem] lg:flex-col lg:gap-4 lg:border-e lg:border-ink-100/80 lg:bg-white/[0.08] lg:px-4 lg:py-6">
         <div className="ms-2 h-10 w-32 rounded-2xl skeleton" />
         <div className="mt-2 space-y-2">
           {[0, 1, 2, 3, 4].map((i) => (

@@ -31,7 +31,7 @@ export default async function BusinessSettingsPage() {
     >
       <div className="mx-auto w-full max-w-2xl space-y-4">
         <div className="flex items-start gap-2.5 rounded-card border border-brand-100 bg-brand-50/70 p-3.5">
-          <IconInfo size={17} className="mt-0.5 shrink-0 text-brand-600" />
+          <IconInfo size={17} className="mt-0.5 shrink-0 text-brand-500" />
           <p className="text-[12px] leading-6 text-brand-900">
             هرچه این اطلاعات دقیق‌تر باشد، پاسخ‌های خودکار کامل‌تر می‌شود. سلورا برای سوال‌های ارسال،
             آدرس، پرداخت و بازگشت کالا دقیقاً همین متن‌ها را استفاده می‌کند.

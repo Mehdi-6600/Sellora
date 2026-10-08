@@ -71,7 +71,7 @@ export function BottomNav({
         <div
           onClick={() => setOpen(false)}
           className={cx(
-            "absolute inset-0 bg-ink-950/45 backdrop-blur-[2px] transition-opacity duration-200",
+            "absolute inset-0 bg-canvas-deep/60 backdrop-blur-[2px] transition-opacity duration-200",
             open ? "opacity-100" : "opacity-0"
           )}
         />
@@ -82,7 +82,7 @@ export function BottomNav({
           aria-modal={open ? true : undefined}
           aria-label="بیشتر"
           className={cx(
-            "absolute inset-x-0 bottom-0 rounded-t-sheet border border-ink-100/80 bg-white p-4 pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] shadow-[0_-18px_40px_-24px_rgba(29,32,51,0.35)] transition-transform duration-300 ease-smooth focus:outline-none",
+            "absolute inset-x-0 bottom-0 rounded-t-sheet border border-white/10 bg-canvas-soft p-4 pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] backdrop-blur-xl shadow-[0_-18px_40px_-24px_rgba(6,3,20,0.35)] transition-transform duration-300 ease-smooth focus:outline-none",
             open ? "translate-y-0" : "translate-y-full"
           )}
         >
@@ -101,7 +101,7 @@ export function BottomNav({
                 {userEmail ?? ""}
               </div>
             </div>
-            <IconUser size={18} className="shrink-0 text-ink-300" />
+            <IconUser size={18} className="shrink-0 text-ink-400" />
           </div>
 
           <ul className="mt-3 space-y-1.5">
@@ -117,13 +117,13 @@ export function BottomNav({
                       "flex min-h-[56px] items-center gap-3 rounded-2xl border px-3 transition-colors",
                       active
                         ? "border-brand-100 bg-brand-50/70 text-brand-700"
-                        : "border-ink-100/80 bg-white text-ink-700"
+                        : "border-ink-100/80 bg-white/[0.06] text-ink-700"
                     )}
                   >
                     <span
                       className={cx(
                         "grid h-10 w-10 shrink-0 place-items-center rounded-xl",
-                        active ? "bg-white text-brand-600" : "bg-canvas-soft text-ink-500"
+                        active ? "bg-white/[0.1] text-brand-500" : "bg-canvas-soft text-ink-500"
                       )}
                     >
                       <Icon size={19} active={active} />
@@ -134,7 +134,7 @@ export function BottomNav({
                         {unread}
                       </span>
                     ) : (
-                      <IconArrowRight size={16} className="text-ink-300 rtl:rotate-180" />
+                      <IconArrowRight size={16} className="text-ink-400 rtl:rotate-180" />
                     )}
                   </Link>
                 </li>
@@ -154,19 +154,19 @@ export function BottomNav({
                           "flex min-h-[56px] items-center gap-3 rounded-2xl border px-3 transition-colors",
                           active
                             ? "border-brand-100 bg-brand-50/70 text-brand-700"
-                            : "border-ink-100/80 bg-white text-ink-700"
+                            : "border-ink-100/80 bg-white/[0.06] text-ink-700"
                         )}
                       >
                         <span
                           className={cx(
                             "grid h-10 w-10 shrink-0 place-items-center rounded-xl",
-                            active ? "bg-white text-brand-600" : "bg-canvas-soft text-ink-500"
+                            active ? "bg-white/[0.1] text-brand-500" : "bg-canvas-soft text-ink-500"
                           )}
                         >
                           <Icon size={19} active={active} />
                         </span>
                         <span className="flex-1 text-[13.5px] font-semibold">{item.label}</span>
-                        <IconArrowRight size={16} className="text-ink-300 rtl:rotate-180" />
+                        <IconArrowRight size={16} className="text-ink-400 rtl:rotate-180" />
                       </Link>
                     </li>
                   );
@@ -177,7 +177,7 @@ export function BottomNav({
           <form action="/api/auth/logout" method="post" className="mt-3">
             <button
               type="submit"
-              className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border border-red-100 bg-red-50 text-[13px] font-bold text-red-600 transition active:scale-[0.99]"
+              className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border border-red-400/25 bg-red-400/15 text-[13px] font-bold text-red-300 transition active:scale-[0.99]"
             >
               <IconLogout size={18} />
               خروج از حساب
@@ -200,7 +200,7 @@ export function BottomNav({
                 <Link
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className="flex min-h-[3.6rem] flex-col items-center justify-center gap-1 px-1 py-2 transition-transform duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-brand-100"
+                  className="flex min-h-[3.6rem] flex-col items-center justify-center gap-1 px-1 py-2 transition-transform duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-brand-500/30"
                 >
                   <span
                     className={cx(
@@ -230,7 +230,7 @@ export function BottomNav({
               onClick={() => setOpen(true)}
               aria-expanded={open}
               aria-haspopup="dialog"
-              className="flex min-h-[3.6rem] w-full flex-col items-center justify-center gap-1 px-1 py-2 transition-transform duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-brand-100"
+              className="flex min-h-[3.6rem] w-full flex-col items-center justify-center gap-1 px-1 py-2 transition-transform duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-brand-500/30"
             >
               <span
                 className={cx(

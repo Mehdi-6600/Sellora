@@ -26,11 +26,11 @@ function tileClass(tone: "brand" | "success" | "danger" | "warning" | "neutral")
   const base = "grid h-11 w-11 shrink-0 place-items-center rounded-2xl border";
   switch (tone) {
     case "success":
-      return `${base} border-emerald-100 bg-emerald-50 text-emerald-700`;
+      return `${base} border-emerald-400/25 bg-emerald-400/15 text-emerald-300`;
     case "danger":
-      return `${base} border-red-100 bg-red-50 text-red-600`;
+      return `${base} border-red-400/25 bg-red-400/15 text-red-300`;
     case "warning":
-      return `${base} border-amber-100 bg-amber-50 text-amber-700`;
+      return `${base} border-amber-400/25 bg-amber-400/15 text-amber-300`;
     case "neutral":
       return `${base} border-ink-100 bg-ink-50 text-ink-500`;
     default:
@@ -202,7 +202,7 @@ export default async function SettingsPage() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       aria-hidden="true"
-                      className="shrink-0 text-ink-300 rtl:rotate-180"
+                      className="shrink-0 text-ink-400 rtl:rotate-180"
                     >
                       <path d="m15 18-6-6 6-6" />
                     </svg>
@@ -216,14 +216,14 @@ export default async function SettingsPage() {
           {isAdmin ? (
             <section aria-label="پنل مدیریت">
               <div className="section-title">
-                <IconSparkle size={16} className="text-amber-500" />
+                <IconSparkle size={16} className="text-amber-300" />
                 پنل مدیریت
               </div>
               <div className="grid gap-2 sm:grid-cols-2">
                 <Link href="/admin/subscriptions" className="card-link flex items-center gap-3 p-3.5">
                   <span
                     aria-hidden="true"
-                    className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-amber-100 bg-amber-50 text-xl"
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-amber-400/25 bg-amber-400/15 text-xl"
                   >
                     👑
                   </span>
@@ -237,7 +237,7 @@ export default async function SettingsPage() {
                 <Link href="/admin/system" className="card-link flex items-center gap-3 p-3.5">
                   <span
                     aria-hidden="true"
-                    className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-sky-100 bg-sky-50 text-xl"
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-sky-400/25 bg-sky-400/15 text-xl"
                   >
                     🩺
                   </span>
@@ -261,7 +261,7 @@ export default async function SettingsPage() {
               <li className="flex items-center justify-between gap-2">
                 <span className="text-ink-600">اینستاگرام</span>
                 {igConnected ? (
-                  <span className="flex items-center gap-1.5 font-bold text-emerald-700">
+                  <span className="flex items-center gap-1.5 font-bold text-emerald-300">
                     <StatusPulse tone="green" />
                     متصل
                   </span>

@@ -64,7 +64,7 @@ export default async function NotificationsPage() {
     >
       <div className="mx-auto w-full max-w-2xl space-y-2">
         {failed ? (
-          <div className="card border-red-200/80 bg-red-50/70 p-6 text-center text-[13px] font-medium text-red-700">
+          <div className="card border-red-400/30 bg-red-400/15 p-6 text-center text-[13px] font-medium text-red-300">
             {dict.errors.generic}
           </div>
         ) : items.length === 0 ? (

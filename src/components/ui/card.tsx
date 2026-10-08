@@ -5,7 +5,7 @@ import { cx } from "@/lib/utils/format";
 export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cx("rounded-card border border-ink-100/90 bg-white shadow-card", className)}
+      className={cx("rounded-card border border-white/[0.09] bg-white/[0.05] shadow-card", className)}
       {...props}
     />
   );
@@ -59,12 +59,12 @@ export function SectionHeading({
  * SVG both work; the surface keeps the soft-3D look consistent.
  */
 const TONES = {
-  brand: "border-brand-100 bg-brand-50 text-brand-700",
-  neutral: "border-ink-100 bg-ink-50 text-ink-600",
-  success: "border-emerald-100 bg-emerald-50 text-emerald-700",
-  warning: "border-amber-100 bg-amber-50 text-amber-700",
-  danger: "border-red-100 bg-red-50 text-red-600",
-  info: "border-sky-100 bg-sky-50 text-sky-700",
+  brand: "border-brand-200/70 bg-brand-50 text-brand-400",
+  neutral: "border-white/[0.1] bg-white/[0.05] text-ink-400",
+  success: "border-emerald-400/30 bg-emerald-400/15 text-emerald-300",
+  warning: "border-amber-400/30 bg-amber-400/15 text-amber-300",
+  danger: "border-red-400/30 bg-red-400/15 text-red-300",
+  info: "border-sky-400/30 bg-sky-400/15 text-sky-300",
   white: "border-white/25 bg-white/15 text-white backdrop-blur",
 } as const;
 

@@ -7,7 +7,7 @@ import { cx } from "@/lib/utils/format";
  * 48px tall, soft inset depth, obvious brand focus ring.
  */
 const FIELD =
-  "w-full rounded-2xl border border-ink-200/80 bg-white px-4 py-3 text-sm text-ink-900 shadow-inset transition placeholder:text-ink-400 hover:border-ink-300 focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 disabled:cursor-not-allowed disabled:bg-ink-50 min-h-[48px]";
+  "w-full rounded-2xl border border-white/[0.12] bg-white/[0.05] px-4 py-3 text-sm text-ink-900 shadow-inset transition placeholder:text-ink-400 hover:border-white/20 focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-500/25 disabled:cursor-not-allowed disabled:bg-white/[0.03] min-h-[48px]";
 
 export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   ({ className, ...props }, ref) => (

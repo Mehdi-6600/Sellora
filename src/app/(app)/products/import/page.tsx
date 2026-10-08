@@ -14,7 +14,7 @@ export default async function ImportPage() {
       <div className="mx-auto w-full max-w-xl space-y-4">
         <div className="card overflow-hidden">
           <div className="flex items-center gap-2 border-b border-ink-100/80 bg-canvas-soft/70 px-4 py-2.5 text-[12px] font-bold text-ink-700">
-            <IconInfo size={16} className="text-brand-600" />
+            <IconInfo size={16} className="text-brand-500" />
             قالب هر خط
           </div>
           <pre

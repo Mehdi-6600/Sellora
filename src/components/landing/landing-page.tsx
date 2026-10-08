@@ -94,7 +94,7 @@ function ChatDemo() {
           <SelloraMark size={26} />
           <span className="text-[11.5px] font-bold text-ink-700">سلورا در دایرکت</span>
         </span>
-        <span className="chip bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">آنلاین</span>
+        <span className="chip bg-emerald-400/15 text-emerald-300 ring-1 ring-emerald-400/25">آنلاین</span>
       </div>
 
       <div className="space-y-2 text-[13px]">
@@ -114,7 +114,7 @@ function ChatDemo() {
           </div>
         </div>
         <div className="flex justify-end">
-          <div className="max-w-[85%] rounded-2xl rounded-se-md bg-ink-900 px-3 py-2 leading-6 text-white">
+          <div className="max-w-[85%] rounded-2xl rounded-se-md bg-violet-400/15 px-3 py-2 leading-6 text-violet-200 ring-1 ring-violet-400/25">
             مشتری داغ شناسایی شد 🔥 — گفتگو به صاحب فروشگاه تحویل داده شد.
           </div>
         </div>
@@ -222,7 +222,7 @@ export function LandingPage() {
               {["بدون نیاز به دانش فنی", "رمز اینستاگرام ذخیره نمی‌شود", "لغو در هر زمان"].map(
                 (t) => (
                   <li key={t} className="flex items-center gap-2">
-                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-50 text-emerald-600">
+                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-400/15 text-emerald-300">
                       <IconCheck size={12} />
                     </span>
                     {t}
@@ -255,7 +255,7 @@ export function LandingPage() {
               <li key={p} className="card flex gap-3 p-4 text-[13px] leading-7 text-ink-700">
                 <span
                   aria-hidden="true"
-                  className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-red-50 font-bold text-red-500"
+                  className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-red-400/15 font-bold text-red-400"
                 >
                   ✕
                 </span>
@@ -341,7 +341,7 @@ export function LandingPage() {
                 key={p.id}
                 className={
                   p.badge
-                    ? "relative overflow-hidden rounded-card border border-brand-200 bg-white p-5 shadow-glowSoft ring-1 ring-brand-100"
+                    ? "relative overflow-hidden rounded-card border border-brand-200 bg-white/[0.06] p-5 shadow-glowSoft ring-1 ring-brand-100"
                     : "card p-5"
                 }
               >
@@ -393,7 +393,7 @@ export function LandingPage() {
       {/* ---------------- Final CTA ---------------- */}
       <section className="py-12 sm:py-16">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-          <div className="relative overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient p-7 text-center text-white shadow-glowSoft sm:p-10">
+          <div className="relative overflow-hidden rounded-card border border-white/10 bg-premium-gradient p-7 text-center text-white shadow-premium sm:p-10">
             <BrandAura />
             <span aria-hidden="true" className="relative mx-auto mb-4 block w-fit">
               <SelloraEmblem size={104} tone="white" />
@@ -407,7 +407,7 @@ export function LandingPage() {
             <div className="relative mt-6 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/signup"
-                className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-7 text-[14px] font-extrabold text-brand-700 shadow-soft transition hover:bg-brand-50"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-7 text-[14px] font-extrabold text-brand-600 shadow-soft transition hover:bg-brand-950"
               >
                 شروع رایگان
               </Link>

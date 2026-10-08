@@ -59,7 +59,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
           <details className="group relative sm:hidden">
             <summary
               aria-label="منوی صفحه"
-              className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl border border-ink-100 bg-white/70 text-ink-700 transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+              className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl border border-ink-100 bg-white/[0.06] text-ink-700 transition hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
             >
               <IconGrid size={18} className="group-open:hidden" />
               <IconClose size={18} className="hidden group-open:block" />
@@ -92,7 +92,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="border-t border-ink-100/70 bg-white/70">
+      <footer className="border-t border-white/10 bg-white/[0.04]">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center">
           <div className="flex items-center gap-3">
             <SelloraMark size={40} glow />

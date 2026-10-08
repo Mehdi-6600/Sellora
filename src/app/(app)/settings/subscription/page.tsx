@@ -126,7 +126,7 @@ export default async function SubscriptionPage() {
                   key={p.id}
                   className={
                     best
-                      ? "relative overflow-hidden rounded-card border border-brand-200 bg-white p-4 shadow-glowSoft ring-1 ring-brand-100"
+                      ? "relative overflow-hidden rounded-card border border-brand-200 bg-white/[0.06] p-4 shadow-glowSoft ring-1 ring-brand-100"
                       : "card p-4"
                   }
                 >
@@ -150,7 +150,7 @@ export default async function SubscriptionPage() {
                       "مدیریت محصولات و قیمت‌ها",
                     ].map((f) => (
                       <li key={f} className="flex items-start gap-1.5">
-                        <IconCheck size={14} className="mt-0.5 shrink-0 text-emerald-600" />
+                        <IconCheck size={14} className="mt-0.5 shrink-0 text-emerald-300" />
                         <span className="leading-5">{f}</span>
                       </li>
                     ))}
@@ -162,7 +162,7 @@ export default async function SubscriptionPage() {
           </div>
         </section>
 
-        <p className="rounded-card border border-ink-100/80 bg-white/70 px-4 py-3 text-[11.5px] leading-6 text-ink-500">
+        <p className="rounded-card border border-ink-100/80 bg-white/[0.06] px-4 py-3 text-[11.5px] leading-6 text-ink-500">
           {dict.settings.subscription.noPayments}
         </p>
       </div>

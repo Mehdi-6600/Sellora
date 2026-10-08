@@ -30,13 +30,13 @@ export function NotificationItem({ n }: { n: NotificationRow }) {
 
   const tile =
     n.tone === "red"
-      ? "border-red-100 bg-red-50 text-red-600"
+      ? "border-red-400/25 bg-red-400/15 text-red-300"
       : n.tone === "amber"
-      ? "border-amber-100 bg-amber-50 text-amber-700"
+      ? "border-amber-400/25 bg-amber-400/15 text-amber-300"
       : n.tone === "green"
-      ? "border-emerald-100 bg-emerald-50 text-emerald-700"
+      ? "border-emerald-400/25 bg-emerald-400/15 text-emerald-300"
       : n.tone === "blue"
-      ? "border-sky-100 bg-sky-50 text-sky-700"
+      ? "border-sky-400/25 bg-sky-400/15 text-sky-300"
       : "border-ink-100 bg-ink-50 text-ink-600";
 
   return (
@@ -83,7 +83,7 @@ export function NotificationItem({ n }: { n: NotificationRow }) {
           <time dateTime={n.createdAt}>{n.relativeTime}</time>
         </span>
       </span>
-      <IconChevronLeft size={16} className="mt-3 shrink-0 text-ink-300 rtl:rotate-180" />
+      <IconChevronLeft size={16} className="mt-3 shrink-0 text-ink-400 rtl:rotate-180" />
     </Link>
   );
 }

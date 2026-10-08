@@ -83,7 +83,7 @@ export function CustomerPanel({
         <div className="card p-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-[13px] font-bold text-ink-900">
-              <IconSparkle size={16} className="text-brand-600" />
+              <IconSparkle size={16} className="text-brand-500" />
               امتیاز مشتری
             </div>
             {temp ? <Badge tone={temp.tone}>{temp.label}</Badge> : null}

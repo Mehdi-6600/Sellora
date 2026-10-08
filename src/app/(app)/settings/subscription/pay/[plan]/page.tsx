@@ -96,7 +96,7 @@ export default async function PayPage({ params }: { params: { plan: string } }) 
 
         {/* ------------------------------------------------------------ steps */}
         <div className="flex items-start gap-2.5 rounded-card border border-brand-100 bg-brand-50/70 p-3.5">
-          <IconInfo size={17} className="mt-0.5 shrink-0 text-brand-600" />
+          <IconInfo size={17} className="mt-0.5 shrink-0 text-brand-500" />
           <div className="text-[12px] leading-6 text-brand-900">
             <div className="font-bold">راهنمای پرداخت</div>
             <ol className="mt-1 list-decimal space-y-1 ps-4">

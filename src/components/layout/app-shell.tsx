@@ -102,7 +102,7 @@ export async function AppShell({
               <Link
                 href={backHref}
                 aria-label="بازگشت"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-100 bg-white/70 text-ink-700 transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-100 bg-white/[0.06] text-ink-700 transition hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
               >
                 <IconChevronLeft size={20} className="rtl:rotate-180" />
               </Link>
@@ -138,7 +138,7 @@ export async function AppShell({
               <Link
                 href={backHref}
                 aria-label="بازگشت"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-100 bg-white/70 text-ink-700 transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-100 bg-white/[0.06] text-ink-700 transition hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
               >
                 <IconChevronLeft size={20} className="rtl:rotate-180" />
               </Link>

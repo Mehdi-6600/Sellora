@@ -38,7 +38,7 @@ export function SwitchVisual({
       <span
         aria-hidden="true"
         className={cx(
-          "absolute rounded-full bg-white shadow-[0_2px_5px_rgba(38,12,24,0.28)] transition-all duration-300 ease-smooth",
+          "absolute rounded-full bg-white shadow-[0_2px_5px_rgba(6,3,20,0.28)] transition-all duration-300 ease-smooth",
           knob
         )}
         style={{

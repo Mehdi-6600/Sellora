@@ -14,7 +14,7 @@ export default function NotFound() {
         <div className="mx-auto w-fit">
           <SelloraEmblem size={132} />
         </div>
-        <p className="mt-4 text-[11.5px] font-bold tracking-wide text-brand-600">۴۰۴</p>
+        <p className="mt-4 text-[11.5px] font-bold tracking-wide text-brand-500">۴۰۴</p>
         <h1 className="mt-1 text-[20px] font-extrabold text-ink-950">این صفحه پیدا نشد</h1>
         <p className="mt-2 text-[13px] leading-7 text-ink-500">
           نشانی‌ای که باز کردید وجود ندارد یا جابه‌جا شده است. از داشبورد یا صفحه اصلی ادامه بدهید —
