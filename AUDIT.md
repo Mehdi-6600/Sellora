@@ -246,7 +246,7 @@ app and loads one self-hosted WOFF2 (`/fonts/vazirmatn-var.woff2`, 111 KB) with
 | `/`, `/why-sellora`, `/login`, `/signup` | 200, Persian, `index`/`noindex, follow` respectively |
 | `/robots.txt` | 200 — allows `/`, `/why-sellora`, `/signup`, `/login`; disallows `/dashboard`, `/conversations`, `/leads`, `/products`, `/settings`, `/admin`, `/onboarding`, `/notifications`, `/api`; `Host` + `Sitemap` |
 | `/sitemap.xml` | 200 — exactly 2 absolute public URLs from `siteUrl()` |
-| `/site.webmanifest`, `/favicon.svg`, `/favicon.ico`, `/apple-touch-icon.png`, `/icons/icon-192.png`, `/icons/icon-512.png`, `/og.jpg` | all 200 (`og.jpg` 41 KB, 1200×630) |
+| `/site.webmanifest`, `/favicon.ico`, `/favicon.png`, `/apple-touch-icon.png`, `/icons/icon-192.png`, `/icons/icon-512.png`, `/brand/sellora-mark.webp`, `/brand/sellora-wordmark.webp`, `/og.jpg` | all 200 (`og.jpg` 41 KB, 1200×630; favicons/PWA icons are the ORIGINAL artwork, byte-identical; the old `favicon.svg` recreation was removed) |
 | `/dashboard`, `/conversations`, `/leads`, `/products`, `/settings`, `/onboarding`, `/notifications`, `/admin/subscriptions`, `/admin/system` | 307 → `/login?next=<encoded original path>` (open-redirect safe: only same-origin relative paths) |
 | `/api/products`, `/api/leads`, `/api/conversations`, `/api/rules`, `/api/subscription`, `/api/notifications`, `/api/admin/subscriptions`, `/api/admin/system` | 401 |
 | `/api/health` | 200, no internals leaked |
