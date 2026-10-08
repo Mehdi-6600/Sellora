@@ -77,7 +77,7 @@ export function MessageThread({
                 ) : null}
                 <div
                   className={cx(
-                    "whitespace-pre-wrap break-words px-3.5 py-2.5 text-[13.5px] leading-7 shadow-[0_1px_2px_rgba(38,12,24,0.05)]",
+                    "whitespace-pre-wrap break-words px-3.5 py-2.5 text-[13.5px] leading-7 shadow-[0_1px_2px_rgba(31,16,66,0.06)]",
                     inbound
                       ? "rounded-2xl rounded-ss-md border border-ink-100 bg-white text-ink-900"
                       : automated

@@ -1,17 +1,18 @@
 import * as React from "react";
 import Link from "next/link";
-import { SelloraEmblem, SelloraLockup, BrandAura } from "@/components/brand/sellora";
+import { SelloraEmblem, SelloraLockup, SelloraMark, BrandAura } from "@/components/brand/sellora";
 import { SITE_NAME } from "@/lib/config/site";
 import { IconCheck } from "@/components/layout/icons";
 
 /**
  * Shared shell for the login / signup screens.
  *
- * Phone: brand lockup, a short promise and the form — everything above the
- * fold, comfortable thumb reach.
- * Desktop: a deep brand-gradient panel carrying the character and the product
- * promise next to a white form card, so the first impression is a product, not
- * a form on an empty page.
+ * Phone: brand plate with the original artwork, a short promise and the form —
+ * everything above the fold, comfortable thumb reach.
+ * Desktop: a deep-violet panel carrying the character and the product promise
+ * next to a frosted lavender form card, so the first impression is a product,
+ * not a form on an empty page. The purple canvas is the same as every other
+ * screen; only the depth changes.
  */
 export function AuthLayout({
   title,
@@ -31,19 +32,23 @@ export function AuthLayout({
   ];
 
   return (
-    <div className="min-h-screen lg:flex">
+    <div className="relative min-h-screen lg:flex">
       {/* ------------------------------------------------------- brand panel */}
       <aside className="relative hidden overflow-hidden bg-brand-gradient p-10 text-white lg:flex lg:w-[46%] lg:flex-col xl:w-[42%]">
         <BrandAura />
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute -bottom-16 -start-10 opacity-15"
+          className="pointer-events-none absolute -bottom-16 -start-10 opacity-25"
         >
-          <SelloraEmblem size={340} tone="white" />
+          <SelloraEmblem size={340} tone="white" feather />
         </span>
 
-        <Link href="/" className="relative inline-flex rounded-2xl focus-visible:outline-none">
-          <SelloraLockup size={46} tone="white" />
+        <Link
+          href="/"
+          aria-label="سلورا — صفحه اصلی"
+          className="relative inline-flex w-fit rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
+        >
+          <SelloraLockup size={44} variant="bare" priority />
         </Link>
 
         <div className="relative mt-auto">
@@ -73,10 +78,17 @@ export function AuthLayout({
       <main className="flex flex-1 items-center justify-center px-5 py-8 sm:px-8 lg:py-12">
         <div className="w-full max-w-md">
           <div className="mb-6 flex items-center justify-between lg:hidden">
-            <Link href="/" className="inline-flex rounded-2xl focus-visible:outline-none">
-              <SelloraLockup size={38} />
+            <Link
+              href="/"
+              aria-label="سلورا — صفحه اصلی"
+              className="inline-flex items-center rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+            >
+              <span className="hidden min-[360px]:inline-flex">
+                <SelloraLockup size={38} priority />
+              </span>
+              <SelloraMark size={38} glow className="min-[360px]:hidden" />
             </Link>
-            <Link href="/" className="text-[12px] font-semibold text-ink-500 hover:text-ink-800">
+            <Link href="/" className="text-[12px] font-semibold text-ink-500 hover:text-brand-700">
               صفحه اصلی
             </Link>
           </div>

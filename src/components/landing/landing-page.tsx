@@ -4,7 +4,7 @@ import { PLANS } from "@/lib/config/pricing";
 import { formatToman, toPersianDigits } from "@/lib/utils/format";
 import { PublicShell } from "@/components/public/public-shell";
 import { SITE_DESCRIPTION, absolute, siteUrl } from "@/lib/config/site";
-import { SelloraEmblem, SelloraMark, BrandAura } from "@/components/brand/sellora";
+import { SelloraEmblem, SelloraLockup, SelloraMark, BrandAura } from "@/components/brand/sellora";
 import { IconArrowRight, IconCheck, IconSparkle } from "@/components/layout/icons";
 
 const PLAN_LABELS: Record<string, string> = {
@@ -91,7 +91,7 @@ function ChatDemo() {
     >
       <div className="mb-3 flex items-center justify-between">
         <span className="flex items-center gap-2">
-          <SelloraMark size={26} />
+          <SelloraMark size={28} />
           <span className="text-[11.5px] font-bold text-ink-700">سلورا در دایرکت</span>
         </span>
         <span className="chip bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">آنلاین</span>
@@ -232,13 +232,23 @@ export function LandingPage() {
             </ul>
           </div>
 
-          <div className="relative flex justify-center lg:justify-end">
-            <span
-              aria-hidden="true"
-              className="absolute -top-6 start-0 hidden lg:block"
-            >
-              <SelloraEmblem size={132} />
-            </span>
+          <div className="relative flex flex-col items-center gap-4 lg:items-end">
+            {/* The original character + wordmark on the deep-violet stage. */}
+            <div className="relative w-full max-w-sm overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient px-5 py-6 text-center text-white shadow-glowSoft">
+              <BrandAura />
+              <span className="relative mx-auto mb-3 block w-fit">
+                <SelloraEmblem size={124} tone="white" feather />
+              </span>
+              <SelloraLockup
+                size={44}
+                variant="bare"
+                priority
+                className="relative justify-center"
+              />
+              <p className="relative mt-3 text-[12px] leading-6 text-white/85">
+                فروشنده و پشتیبان خودکار اینستاگرام — همیشه بیدار
+              </p>
+            </div>
             <ChatDemo />
           </div>
         </div>
@@ -269,8 +279,14 @@ export function LandingPage() {
       {/* ---------------- Solution ---------------- */}
       <section className="py-12 sm:py-16" aria-labelledby="solution-title">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-          <div className="rounded-card border border-brand-100 bg-brand-gradient-soft p-5 sm:p-7">
-            <h2 id="solution-title" className="text-[22px] font-extrabold text-ink-950 sm:text-2xl">
+          <div className="relative overflow-hidden rounded-card border border-brand-100 bg-brand-gradient-soft p-5 shadow-card sm:p-7">
+            <span aria-hidden="true" className="pointer-events-none absolute -bottom-8 -start-6 opacity-20">
+              <SelloraEmblem size={168} feather />
+            </span>
+            <span className="relative mb-3 block w-fit">
+              <SelloraMark size={52} glow />
+            </span>
+            <h2 id="solution-title" className="relative text-[22px] font-extrabold text-ink-950 sm:text-2xl">
               سلورا همان کارمند فروش است، بدون شیفت شب
             </h2>
             <p className="mt-3 max-w-3xl text-[13.5px] leading-8 text-ink-600">
@@ -395,9 +411,10 @@ export function LandingPage() {
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
           <div className="relative overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient p-7 text-center text-white shadow-glowSoft sm:p-10">
             <BrandAura />
-            <span aria-hidden="true" className="relative mx-auto mb-4 block w-fit">
-              <SelloraEmblem size={104} tone="white" />
+            <span aria-hidden="true" className="relative mx-auto mb-3 block w-fit">
+              <SelloraEmblem size={116} tone="white" feather />
             </span>
+            <SelloraLockup size={46} variant="bare" className="relative justify-center" />
             <h2 className="relative text-[22px] font-extrabold leading-relaxed sm:text-3xl">
               امشب، دایرکت‌هایت بی‌جواب نمی‌مانند
             </h2>

@@ -102,17 +102,18 @@ export async function AppShell({
               <Link
                 href={backHref}
                 aria-label="بازگشت"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-100 bg-white/70 text-ink-700 transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-100 bg-white/70 text-ink-700 transition hover:border-brand-200 hover:bg-white hover:text-brand-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
               >
                 <IconChevronLeft size={20} className="rtl:rotate-180" />
               </Link>
             ) : (
+              /* Mobile header: the real Sellora character (original artwork). */
               <Link
                 href="/dashboard"
                 aria-label="سلورا — داشبورد"
                 className="shrink-0 rounded-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
               >
-                <SelloraMark size={34} glow />
+                <SelloraMark size={36} glow />
               </Link>
             )}
 
@@ -138,7 +139,7 @@ export async function AppShell({
               <Link
                 href={backHref}
                 aria-label="بازگشت"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-100 bg-white/70 text-ink-700 transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-100 bg-white/70 text-ink-700 transition hover:border-brand-200 hover:bg-white hover:text-brand-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
               >
                 <IconChevronLeft size={20} className="rtl:rotate-180" />
               </Link>

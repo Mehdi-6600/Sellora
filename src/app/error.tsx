@@ -5,7 +5,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { SelloraEmblem } from "@/components/brand/sellora";
+import { SelloraEmblem, SelloraLockup } from "@/components/brand/sellora";
 import { IconAlert } from "@/components/layout/icons";
 
 export default function ErrorBoundary({
@@ -24,8 +24,11 @@ export default function ErrorBoundary({
   return (
     <div className="grid min-h-screen place-items-center px-5 py-10">
       <div className="w-full max-w-md text-center">
+        <div className="mx-auto mb-5 w-fit">
+          <SelloraLockup size={44} />
+        </div>
         <div className="mx-auto w-fit">
-          <SelloraEmblem size={124} />
+          <SelloraEmblem size={124} feather />
         </div>
 
         <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-amber-100 bg-amber-50 px-3 py-1 text-[11px] font-bold text-amber-700">

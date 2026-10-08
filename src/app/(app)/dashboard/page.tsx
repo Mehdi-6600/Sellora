@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Badge, Dot, StatusPulse } from "@/components/ui/badge";
 import { StatCard, StatusRow } from "@/components/ui/stat";
 import { Avatar } from "@/components/ui/avatar";
-import { SelloraEmblem, SelloraMark, BrandAura } from "@/components/brand/sellora";
+import { SelloraEmblem, SelloraLockup, SelloraMark, BrandAura } from "@/components/brand/sellora";
 import { ensureSubscriptionNotices } from "@/lib/notifications";
 import {
   daysLeft,
@@ -164,6 +164,8 @@ export default async function DashboardPage() {
             </span>
 
             <div className="relative">
+              {/* The original artwork, front and centre on the dashboard. */}
+              <SelloraLockup size={30} variant="bare" className="mb-3" />
               <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold text-white ring-1 ring-white/25 backdrop-blur">
                 <StatusPulse tone={automationOn ? "green" : "amber"} />
                 {automationOn

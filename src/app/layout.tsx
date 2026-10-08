@@ -49,10 +49,12 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   icons: {
+    /* The real Sellora artwork, not a stand-in glyph. */
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
     ],
+    shortcut: [{ url: "/favicon.ico" }],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
   manifest: "/site.webmanifest",
@@ -61,7 +63,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#d6255c",
+  /* Violet premium chrome: the browser UI matches the purple canvas. */
+  themeColor: "#331468",
   colorScheme: "light",
 };
 
@@ -81,7 +84,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           crossOrigin="anonymous"
         />
       </head>
-      <body className="min-h-screen bg-ink-50 text-ink-900 antialiased">
+      <body className="min-h-screen bg-canvas text-ink-900 antialiased">
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
