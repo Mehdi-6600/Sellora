@@ -5,6 +5,7 @@ const en: Dict = {
   nav: {
     dashboard: "Dashboard",
     conversations: "Conversations",
+    automations: "Automations",
     leads: "Hot leads",
     products: "Products",
     settings: "Settings",

@@ -21,8 +21,7 @@ export function MarkAllReadButton({ label }: { label: string }) {
       type="button"
       onClick={run}
       disabled={pending}
-      className="btn-secondary text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300"
-      style={{ padding: "0.5rem 0.75rem" }}
+      className="btn-secondary min-h-[40px] px-3 py-2 text-[12px]"
     >
       {pending ? "…" : label}
     </button>

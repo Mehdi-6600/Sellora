@@ -1,8 +1,11 @@
+import * as React from "react";
 import Link from "next/link";
 import { PLANS } from "@/lib/config/pricing";
-import { formatToman } from "@/lib/utils/format";
+import { formatToman, toPersianDigits } from "@/lib/utils/format";
 import { PublicShell } from "@/components/public/public-shell";
 import { SITE_DESCRIPTION, absolute, siteUrl } from "@/lib/config/site";
+import { SelloraEmblem, SelloraMark, BrandAura } from "@/components/brand/sellora";
+import { IconArrowRight, IconCheck, IconSparkle } from "@/components/layout/icons";
 
 const PLAN_LABELS: Record<string, string> = {
   WEEKLY: "هفتگی",
@@ -82,37 +85,47 @@ const FAQ = [
 function ChatDemo() {
   return (
     <div
-      className="card p-4 w-full max-w-sm mx-auto text-start"
+      className="card relative w-full max-w-sm p-4 text-start shadow-raised"
       role="img"
       aria-label="نمایش نمونه‌ای از یک گفتگوی مشتری با سلورا"
     >
-      <div className="text-[11px] text-ink-400 mb-3 text-center">نمایش نمونه گفتگو</div>
-      <div className="space-y-2 text-sm">
+      <div className="mb-3 flex items-center justify-between">
+        <span className="flex items-center gap-2">
+          <SelloraMark size={26} />
+          <span className="text-[11.5px] font-bold text-ink-700">سلورا در دایرکت</span>
+        </span>
+        <span className="chip bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">آنلاین</span>
+      </div>
+
+      <div className="space-y-2 text-[13px]">
         <div className="flex justify-start">
-          <div className="bg-ink-50 border border-ink-100 rounded-2xl rounded-tr-sm px-3 py-2 max-w-[85%] leading-6">
+          <div className="max-w-[85%] rounded-2xl rounded-ss-md border border-ink-100 bg-canvas-soft px-3 py-2 leading-6 text-ink-800">
             سلام، قیمت مانتو آوا چند؟ 🙏
           </div>
         </div>
         <div className="flex justify-end">
-          <div className="bg-brand-600 text-white rounded-2xl rounded-tl-sm px-3 py-2 max-w-[85%] leading-6">
+          <div className="max-w-[85%] rounded-2xl rounded-se-md bg-brand-gradient px-3 py-2 leading-6 text-white shadow-glowSoft">
             سلام! مانتو آوا ۲۴۰٬۰۰۰ تومان موجود است. رنگ‌های مشکی و کرم داریم. 🙂
           </div>
         </div>
         <div className="flex justify-start">
-          <div className="bg-ink-50 border border-ink-100 rounded-2xl rounded-tr-sm px-3 py-2 max-w-[85%] leading-6">
+          <div className="max-w-[85%] rounded-2xl rounded-ss-md border border-ink-100 bg-canvas-soft px-3 py-2 leading-6 text-ink-800">
             همینو میخوام، چطوری سفارش بدم؟
           </div>
         </div>
         <div className="flex justify-end">
-          <div className="bg-ink-900 text-white rounded-2xl rounded-tl-sm px-3 py-2 max-w-[85%] leading-6">
+          <div className="max-w-[85%] rounded-2xl rounded-se-md bg-ink-900 px-3 py-2 leading-6 text-white">
             مشتری داغ شناسایی شد 🔥 — گفتگو به صاحب فروشگاه تحویل داده شد.
           </div>
         </div>
       </div>
+
+      <p className="mt-3 border-t border-ink-100 pt-2.5 text-[10.5px] font-medium leading-5 text-ink-400">
+        پاسخ‌ها از محصولات و اطلاعات خود فروشگاه ساخته می‌شوند.
+      </p>
     </div>
   );
 }
-
 
 /**
  * Structured data, generated from real configuration only:
@@ -176,47 +189,75 @@ export function LandingPage() {
   return (
     <PublicShell>
       {/* ---------------- Hero ---------------- */}
-      <section className="bg-gradient-to-b from-brand-50 via-white to-white">
-        <div className="mx-auto w-full max-w-5xl px-4 pt-14 pb-12 sm:pt-20 sm:pb-16 grid gap-10 sm:grid-cols-2 items-center">
+      <section className="relative overflow-hidden">
+        <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 pb-14 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-2 lg:gap-12 lg:pb-20">
           <div>
-            <p className="text-sm font-semibold text-brand-700 mb-3">
+            <p className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-3 py-1.5 text-[11.5px] font-bold text-brand-700">
+              <IconSparkle size={14} />
               برای فروشگاه‌های اینستاگرامی فارسی‌زبان
             </p>
-            <h1 className="text-3xl sm:text-4xl font-extrabold leading-[1.35] text-ink-950">
+            <h1 className="mt-4 text-[28px] font-extrabold leading-[1.35] text-ink-950 sm:text-[38px]">
               فروشنده‌ای که هیچ‌وقت نمی‌خوابد؛
-              <span className="text-brand-600"> قیمت‌ها را هم از خودت می‌پرسد</span>
+              <span className="bg-gradient-to-l from-brand-600 to-brand-800 bg-clip-text text-transparent">
+                {" "}
+                قیمت‌ها را هم از خودت می‌پرسد
+              </span>
             </h1>
-            <p className="mt-4 text-base leading-8 text-ink-600">
+            <p className="mt-4 max-w-xl text-[14px] leading-8 text-ink-600 sm:text-[15px]">
               سلورا به دایرکت مشتری‌هایت جواب می‌دهد، قیمت و موجودی را از محصولات خودت می‌گوید،
               مشتری‌های داغ را جدا می‌کند و گفتگوهای حساس را به خودت تحویل می‌دهد.
             </p>
-            <div className="mt-6 flex flex-col sm:flex-row gap-3">
-              <Link href="/signup" className="btn-primary text-base min-h-[48px]">
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link href="/signup" className="btn-primary min-h-[52px] text-[15px] sm:w-auto">
                 شروع رایگان
+                <IconArrowRight size={18} className="rtl:rotate-180" />
               </Link>
-              <Link href="/login" className="btn-secondary text-base min-h-[48px]">
-                ورود
+              <Link href="/login" className="btn-secondary min-h-[52px] text-[15px]">
+                ورود به حساب
               </Link>
             </div>
-            <p className="mt-4 text-xs text-ink-500 leading-6">
-              ثبت‌نام فقط با ایمیل. برای پاسخ خودکار، اتصال اینستاگرام کسب‌وکار لازم است.
-            </p>
+
+            <ul className="mt-6 grid gap-2 text-[12.5px] text-ink-600 sm:grid-cols-3">
+              {["بدون نیاز به دانش فنی", "رمز اینستاگرام ذخیره نمی‌شود", "لغو در هر زمان"].map(
+                (t) => (
+                  <li key={t} className="flex items-center gap-2">
+                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-50 text-emerald-600">
+                      <IconCheck size={12} />
+                    </span>
+                    {t}
+                  </li>
+                )
+              )}
+            </ul>
           </div>
-          <ChatDemo />
+
+          <div className="relative flex justify-center lg:justify-end">
+            <span
+              aria-hidden="true"
+              className="absolute -top-6 start-0 hidden lg:block"
+            >
+              <SelloraEmblem size={132} />
+            </span>
+            <ChatDemo />
+          </div>
         </div>
       </section>
 
       {/* ---------------- Problem ---------------- */}
-      <section className="py-12 sm:py-16 bg-white" aria-labelledby="problem-title">
-        <div className="mx-auto w-full max-w-5xl px-4">
-          <h2 id="problem-title" className="text-2xl font-extrabold text-ink-950 mb-6">
+      <section className="py-12 sm:py-16" aria-labelledby="problem-title">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+          <h2 id="problem-title" className="mb-6 text-[22px] font-extrabold text-ink-950 sm:text-2xl">
             فروش در اینستاگرام یعنی جواب دادن، دوباره و دوباره
           </h2>
           <ul className="grid gap-3 sm:grid-cols-2">
             {PROBLEMS.map((p) => (
-              <li key={p} className="card p-4 text-sm leading-7 text-ink-700 flex gap-3">
-                <span aria-hidden="true" className="text-red-500 font-bold">
-                  ✗
+              <li key={p} className="card flex gap-3 p-4 text-[13px] leading-7 text-ink-700">
+                <span
+                  aria-hidden="true"
+                  className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-red-50 font-bold text-red-500"
+                >
+                  ✕
                 </span>
                 {p}
               </li>
@@ -226,24 +267,30 @@ export function LandingPage() {
       </section>
 
       {/* ---------------- Solution ---------------- */}
-      <section className="py-12 sm:py-16 bg-ink-50" aria-labelledby="solution-title">
-        <div className="mx-auto w-full max-w-5xl px-4">
-          <h2 id="solution-title" className="text-2xl font-extrabold text-ink-950 mb-4">
-            سلورا همان کارمند فروش است، بدون شیفت شب
-          </h2>
-          <p className="text-base leading-8 text-ink-600 max-w-3xl mb-8">
-            سلورا یک ربات پاسخ‌ ثابت نیست: پیام مشتری را می‌فهمد، محصول موردنظرش را پیدا می‌کند،
-            قیمت و موجودی را لحظه‌ای از دیتابیس شما می‌خواند و اگر مطمئن نباشد، به‌جای حدس زدن،
-            گفتگو را به شما می‌سپارد.
-          </p>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" id="features">
+      <section className="py-12 sm:py-16" aria-labelledby="solution-title">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+          <div className="rounded-card border border-brand-100 bg-brand-gradient-soft p-5 sm:p-7">
+            <h2 id="solution-title" className="text-[22px] font-extrabold text-ink-950 sm:text-2xl">
+              سلورا همان کارمند فروش است، بدون شیفت شب
+            </h2>
+            <p className="mt-3 max-w-3xl text-[13.5px] leading-8 text-ink-600">
+              سلورا یک ربات پاسخ‌ ثابت نیست: پیام مشتری را می‌فهمد، محصول موردنظرش را پیدا می‌کند،
+              قیمت و موجودی را لحظه‌ای از دیتابیس شما می‌خواند و اگر مطمئن نباشد، به‌جای حدس زدن،
+              گفتگو را به شما می‌سپارد.
+            </p>
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" id="features">
             {FEATURES.map((f) => (
               <article key={f.title} className="card p-5">
-                <div aria-hidden="true" className="text-2xl mb-3">
+                <div
+                  aria-hidden="true"
+                  className="grid h-12 w-12 place-items-center rounded-2xl border border-brand-100 bg-brand-50 text-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+                >
                   {f.icon}
                 </div>
-                <h3 className="font-bold text-ink-900 mb-1">{f.title}</h3>
-                <p className="text-sm leading-7 text-ink-600">{f.desc}</p>
+                <h3 className="mt-3 text-[14px] font-bold text-ink-900">{f.title}</h3>
+                <p className="mt-1 text-[12.5px] leading-7 text-ink-600">{f.desc}</p>
               </article>
             ))}
           </div>
@@ -251,28 +298,28 @@ export function LandingPage() {
       </section>
 
       {/* ---------------- How it works ---------------- */}
-      <section className="py-12 sm:py-16 bg-white" aria-labelledby="how-title">
-        <div className="mx-auto w-full max-w-5xl px-4">
-          <h2 id="how-title" className="text-2xl font-extrabold text-ink-950 mb-8">
+      <section className="py-12 sm:py-16" aria-labelledby="how-title">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+          <h2 id="how-title" className="mb-8 text-[22px] font-extrabold text-ink-950 sm:text-2xl">
             در سه قدم روشن می‌شود
           </h2>
           <ol className="grid gap-4 sm:grid-cols-3">
             {STEPS.map((s) => (
-              <li key={s.n} className="card p-5">
+              <li key={s.n} className="card relative p-5">
                 <div
                   aria-hidden="true"
-                  className="h-10 w-10 rounded-2xl bg-brand-600 text-white grid place-items-center font-bold mb-3"
+                  className="grid h-11 w-11 place-items-center rounded-2xl bg-brand-gradient text-[15px] font-extrabold text-white shadow-glowSoft"
                 >
                   {s.n}
                 </div>
-                <h3 className="font-bold text-ink-900 mb-1">{s.title}</h3>
-                <p className="text-sm leading-7 text-ink-600">{s.desc}</p>
+                <h3 className="mt-3 text-[14px] font-bold text-ink-900">{s.title}</h3>
+                <p className="mt-1 text-[12.5px] leading-7 text-ink-600">{s.desc}</p>
               </li>
             ))}
           </ol>
-          <p className="mt-6 text-sm text-ink-600">
+          <p className="mt-6 text-[13px] text-ink-600">
             می‌خواهی بدانی سلورا چه فرقی با یک ربات ساده دارد؟{" "}
-            <Link href="/why-sellora" className="text-brand-600 font-semibold hover:underline">
+            <Link href="/why-sellora" className="font-bold text-brand-700 hover:underline">
               چرا سلورا؟
             </Link>
           </p>
@@ -280,31 +327,36 @@ export function LandingPage() {
       </section>
 
       {/* ---------------- Pricing ---------------- */}
-      <section className="py-12 sm:py-16 bg-ink-50" id="pricing" aria-labelledby="pricing-title">
-        <div className="mx-auto w-full max-w-5xl px-4">
-          <h2 id="pricing-title" className="text-2xl font-extrabold text-ink-950 mb-2">
+      <section className="py-12 sm:py-16" id="pricing" aria-labelledby="pricing-title">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+          <h2 id="pricing-title" className="text-[22px] font-extrabold text-ink-950 sm:text-2xl">
             قیمت‌ها
           </h2>
-          <p className="text-sm text-ink-600 mb-8 leading-7">
+          <p className="mb-8 mt-2 text-[13px] leading-7 text-ink-600">
             بدون قرارداد بلندمدت. پرداخت کارت‌به‌کارت با بررسی دستی؛ پس از تأیید، اشتراک فعال می‌شود.
           </p>
           <div className="grid gap-4 sm:grid-cols-3">
             {PLANS.map((p) => (
               <article
                 key={p.id}
-                className={`card p-5 relative overflow-hidden ${
-                  p.badge ? "border-brand-400 ring-2 ring-brand-100" : ""
-                }`}
+                className={
+                  p.badge
+                    ? "relative overflow-hidden rounded-card border border-brand-200 bg-white p-5 shadow-glowSoft ring-1 ring-brand-100"
+                    : "card p-5"
+                }
               >
-                {p.badge && (
-                  <span className="chip bg-brand-600 text-white absolute top-3 end-3">{p.badge}</span>
-                )}
-                <h3 className="font-bold text-ink-900">{PLAN_LABELS[p.id]}</h3>
-                <div className="mt-3 text-2xl font-extrabold text-ink-950">
-                  {formatToman(p.price * 10)} <span className="text-sm font-medium text-ink-500">تومان</span>
+                {p.badge ? (
+                  <span className="chip absolute end-4 top-4 bg-brand-600 text-white">{p.badge}</span>
+                ) : null}
+                <h3 className="text-[14px] font-bold text-ink-900">{PLAN_LABELS[p.id]}</h3>
+                <div className="tnum mt-3 text-[26px] font-extrabold text-ink-950">
+                  {formatToman(p.price * 10)}
+                  <span className="ms-1 text-[12px] font-semibold text-ink-400">تومان</span>
                 </div>
-                <div className="text-xs text-ink-500 mt-1">{p.durationDays} روز</div>
-                <Link href="/signup" className="btn-secondary w-full mt-4 min-h-[44px] text-sm">
+                <div className="mt-1 text-[11.5px] text-ink-500">
+                  {toPersianDigits(p.durationDays)} روز اعتبار
+                </div>
+                <Link href="/signup" className="btn-secondary mt-4 w-full min-h-[44px]">
                   شروع با این پلن
                 </Link>
               </article>
@@ -314,21 +366,24 @@ export function LandingPage() {
       </section>
 
       {/* ---------------- FAQ ---------------- */}
-      <section className="py-12 sm:py-16 bg-white" aria-labelledby="faq-title">
-        <div className="mx-auto w-full max-w-3xl px-4">
-          <h2 id="faq-title" className="text-2xl font-extrabold text-ink-950 mb-6">
+      <section className="py-12 sm:py-16" aria-labelledby="faq-title">
+        <div className="mx-auto w-full max-w-3xl px-4 sm:px-6">
+          <h2 id="faq-title" className="mb-6 text-[22px] font-extrabold text-ink-950 sm:text-2xl">
             سوال‌های پرتکرار
           </h2>
           <div className="space-y-3">
             {FAQ.map((f) => (
-              <details key={f.q} className="card p-4 group">
-                <summary className="cursor-pointer font-semibold text-ink-900 text-sm leading-7 list-none flex items-center justify-between gap-3 min-h-[44px]">
+              <details key={f.q} className="card group p-4">
+                <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-3 text-[13.5px] font-bold leading-7 text-ink-900">
                   {f.q}
-                  <span aria-hidden="true" className="text-ink-400 transition group-open:rotate-45">
+                  <span
+                    aria-hidden="true"
+                    className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-canvas-soft text-ink-500 transition group-open:rotate-45"
+                  >
                     ＋
                   </span>
                 </summary>
-                <p className="text-sm leading-8 text-ink-600 mt-2">{f.a}</p>
+                <p className="mt-2 text-[12.5px] leading-8 text-ink-600">{f.a}</p>
               </details>
             ))}
           </div>
@@ -336,20 +391,31 @@ export function LandingPage() {
       </section>
 
       {/* ---------------- Final CTA ---------------- */}
-      <section className="py-12 sm:py-16 bg-gradient-to-br from-brand-600 to-brand-800 text-white">
-        <div className="mx-auto w-full max-w-3xl px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-extrabold leading-relaxed mb-3">
-            امشب، دایرکت‌هایت بی‌جواب نمی‌مانند
-          </h2>
-          <p className="text-sm sm:text-base leading-8 text-white/85 mb-6 max-w-xl mx-auto">
-            حسابت را بساز، محصولاتت را اضافه کن و بقیه‌اش با سلورا.
-          </p>
-          <Link
-            href="/signup"
-            className="inline-flex items-center justify-center rounded-xl bg-white text-brand-700 font-bold px-8 min-h-[48px] hover:bg-brand-50"
-          >
-            شروع رایگان
-          </Link>
+      <section className="py-12 sm:py-16">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+          <div className="relative overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient p-7 text-center text-white shadow-glowSoft sm:p-10">
+            <BrandAura />
+            <span aria-hidden="true" className="relative mx-auto mb-4 block w-fit">
+              <SelloraEmblem size={104} tone="white" />
+            </span>
+            <h2 className="relative text-[22px] font-extrabold leading-relaxed sm:text-3xl">
+              امشب، دایرکت‌هایت بی‌جواب نمی‌مانند
+            </h2>
+            <p className="relative mx-auto mt-3 max-w-xl text-[13px] leading-8 text-white/85 sm:text-[14px]">
+              حسابت را بساز، محصولاتت را اضافه کن و بقیه‌اش با سلورا.
+            </p>
+            <div className="relative mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link
+                href="/signup"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-7 text-[14px] font-extrabold text-brand-700 shadow-soft transition hover:bg-brand-50"
+              >
+                شروع رایگان
+              </Link>
+              <Link href="/why-sellora" className="btn-glass min-h-[48px] px-7 text-[14px]">
+                چرا سلورا؟
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
       <StructuredData />
