@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import { cx } from "@/lib/utils/format";
 import { IconChevronLeft } from "@/components/layout/icons";
@@ -19,14 +20,52 @@ export type NotificationRow = {
 };
 
 /**
+ * Marks one notification read on the server (tenant-scoped by the API route).
+ * Non-fatal: if the request fails we still navigate, and the server state
+ * stays the single source of truth for the unread badge.
+ */
+function postMarkRead(id: string): Promise<void> {
+  return fetch(`/api/notifications/${id}/read`, { method: "POST" })
+    .then(() => undefined)
+    .catch(() => undefined);
+}
+
+/**
  * One notification row.
  *
  * Rendered as a real <Link> (keyboard + screen-reader friendly). Clicking an
- * unread row marks it read with a keepalive POST so the request survives the
- * navigation, then follows the deep link.
+ * unread row:
+ *   1. waits for the mark-read request to finish (so the destination is
+ *      rendered from DB state that already counts it as read — no race),
+ *   2. navigates to the deep link with a full document load, which bypasses
+ *      Next's client router cache (it can replay a previously visited page
+ *      with the stale unread badge).
+ * Modified / middle clicks keep the browser's native behaviour.
  */
 export function NotificationItem({ n }: { n: NotificationRow }) {
+  const [opening, setOpening] = React.useState(false);
   const unread = !n.readAt;
+
+  function onClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (!unread) return;
+    const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
+    if (modified) {
+      // New tab / window: let the browser open it; still record the read.
+      void postMarkRead(n.id);
+      return;
+    }
+    e.preventDefault();
+    if (opening) return;
+    setOpening(true);
+    void (async () => {
+      await postMarkRead(n.id);
+      // Full document navigation: the deep-link page is rendered fresh from the
+      // DB, which already holds the read state committed by the POST above.
+      // A client-side push can replay a cached page with the old unread count
+      // (router.refresh() + push race), so the badge would look stuck.
+      window.location.assign(n.href);
+    })();
+  }
 
   const tile =
     n.tone === "red"
@@ -42,11 +81,7 @@ export function NotificationItem({ n }: { n: NotificationRow }) {
   return (
     <Link
       href={n.href}
-      onClick={() => {
-        if (!unread) return;
-        // keepalive lets the mark-read request finish after navigation starts.
-        fetch(`/api/notifications/${n.id}/read`, { method: "POST", keepalive: true }).catch(() => {});
-      }}
+      onClick={onClick}
       className={cx(
         "card-link flex items-start gap-3 p-3.5 focus-visible:outline-none",
         unread && "border-brand-200/80 bg-brand-50/40"
