@@ -57,7 +57,7 @@ export function SelloraMark({
       className={cx(
         "relative inline-flex shrink-0 items-center justify-center",
         frosted && "rounded-[26%] ring-2 ring-white/60 shadow-[0_12px_32px_-14px_rgba(6,3,20,0.7)]",
-        glow && "drop-shadow-[0_18px_28px_rgba(214,37,92,0.35)]",
+        glow && "drop-shadow-[0_4px_8px_rgba(24,39,65,0.10)]",
         className
       )}
       style={{ width: size, height: size, ...style }}
@@ -80,7 +80,7 @@ export function SelloraMark({
  * Professional lockup of the REAL character + the Sellora wordmark, with the
  * thin underline from the reference artwork (public/og.jpg).
  * `tone="white"` is for deep premium-gradient surfaces; the default sits on
- * the purple canvas.
+ * the light canvas.
  */
 export function SelloraLockup({
   size = 36,
@@ -163,15 +163,15 @@ export function SelloraEmblem({
         style={{
           background: onDeep
             ? "radial-gradient(circle at 50% 45%, rgba(255,255,255,0.20), transparent 68%)"
-            : "radial-gradient(circle at 50% 45%, rgba(139,92,246,0.35), transparent 68%)",
+            : "radial-gradient(circle at 50% 45%, rgba(0,122,255,0.08), transparent 68%)",
         }}
       />
       {pulse ? (
-        <span className="absolute inset-3 rounded-full border border-violet-400/50 animate-pulse-ring" />
+        <span className="absolute inset-3 rounded-full border border-blue-400/50 animate-pulse-ring" />
       ) : null}
       {/* Small satellite spheres — violet + brand rose, the artwork's bokeh. */}
       <span
-        className="absolute rounded-full bg-gradient-to-br from-violet-400/70 to-fuchsia-500/40 blur-[2px]"
+        className="absolute rounded-full bg-gradient-to-br from-blue-100 to-blue-50 blur-[2px]"
         style={{ width: size * 0.14, height: size * 0.14, top: size * 0.06, insetInlineEnd: 0 }}
       />
       <span
@@ -183,7 +183,7 @@ export function SelloraEmblem({
           insetInlineStart: size * 0.02,
         }}
       />
-      <SelloraMark size={Math.round(size * 0.72)} tone={onDeep ? "white" : "brand"} glow className="animate-float" />
+      <SelloraMark size={Math.round(size * 0.72)} tone={onDeep ? "white" : "brand"} glow  />
     </span>
   );
 }
@@ -193,12 +193,6 @@ export function SelloraEmblem({
  * plus a brand-rose whisper, matching the new Purple Premium canvas.
  * Purely presentational.
  */
-export function BrandAura({ className }: { className?: string }) {
-  return (
-    <span aria-hidden="true" className={cx("pointer-events-none absolute inset-0 overflow-hidden", className)}>
-      <span className="absolute -top-16 end-[-3rem] h-56 w-56 rounded-full bg-violet-400/20 blur-2xl" />
-      <span className="absolute bottom-[-4rem] start-[-2rem] h-52 w-52 rounded-full bg-fuchsia-500/15 blur-2xl" />
-      <span className="absolute top-1/3 start-1/3 h-24 w-24 rounded-full bg-brand-300/20 blur-xl" />
-    </span>
-  );
+export function BrandAura({ className: _className }: { className?: string }) {
+  return null;
 }

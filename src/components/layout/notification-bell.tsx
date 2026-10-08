@@ -1,3 +1,6 @@
+"use client";
+
+import { useUnreadCount } from "@/components/notifications/use-unread-count";
 import Link from "next/link";
 import { cx, toPersianDigits } from "@/lib/utils/format";
 import { IconBell } from "./icons";
@@ -10,7 +13,7 @@ import { IconBell } from "./icons";
  * page never issues the same count twice.
  */
 export function NotificationBell({
-  unread,
+  unread: initialUnread,
   label,
   className,
 }: {
@@ -18,6 +21,7 @@ export function NotificationBell({
   label: string;
   className?: string;
 }) {
+  const unread = useUnreadCount(initialUnread);
   const ariaLabel = unread > 0 ? `${label} — ${toPersianDigits(unread)}` : label;
 
   return (
@@ -25,7 +29,7 @@ export function NotificationBell({
       href="/notifications"
       aria-label={ariaLabel}
       className={cx(
-        "relative grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-transparent text-ink-600 transition hover:border-ink-100 hover:bg-canvas-soft hover:text-ink-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200",
+        "relative grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-transparent text-ink-600 transition hover:border-ink-100 hover:bg-canvas-soft hover:text-ink-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200",
         className
       )}
     >

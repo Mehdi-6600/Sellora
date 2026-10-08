@@ -50,8 +50,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             key={t.id}
             className={cx(
               "animate-fade-up pointer-events-auto flex w-[min(92vw,420px)] items-start gap-2.5 rounded-2xl border px-4 py-3 text-[13px] font-medium shadow-raised backdrop-blur",
-              t.tone === "success" && "border-emerald-400/30 bg-emerald-400/15 text-emerald-200",
-              t.tone === "error" && "border-red-400/30 bg-red-400/15 text-red-200",
+              t.tone === "success" && "border-emerald-400/30 bg-emerald-400/15 text-emerald-700",
+              t.tone === "error" && "border-red-400/30 bg-red-400/15 text-red-700",
               t.tone === "info" && "border-white/[0.12] bg-canvas-soft text-ink-800"
             )}
           >

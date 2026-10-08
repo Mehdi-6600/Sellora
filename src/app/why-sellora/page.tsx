@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getSession } from "@/lib/auth/session";
 import { PublicShell } from "@/components/public/public-shell";
 import { SITE_NAME, absolute } from "@/lib/config/site";
 
@@ -94,7 +95,7 @@ function StatusIcon({ ok }: { ok: boolean }) {
       aria-label={ok ? "دارد" : "ندارد"}
       className={cx(
         "mx-auto grid h-7 w-7 place-items-center rounded-full",
-        ok ? "bg-emerald-400/15 text-emerald-300" : "bg-ink-50 text-ink-400"
+        ok ? "bg-emerald-400/15 text-emerald-700" : "bg-ink-50 text-ink-400"
       )}
     >
       {ok ? <IconCheck size={15} /> : <span aria-hidden="true">—</span>}
@@ -107,9 +108,11 @@ function StatusIcon({ ok }: { ok: boolean }) {
  * it differs from a plain auto-reply bot. No authentication required — the
  * page contains no tenant data.
  */
-export default function WhySelloraPage() {
+export default async function WhySelloraPage() {
+  const session = await getSession();
   return (
     <PublicShell>
+      <div className="mx-auto w-full max-w-6xl px-4 py-3 sm:px-6"><Link href={session ? "/more" : "/"} className="btn-secondary">← {session ? "بازگشت به برنامه" : "صفحه اصلی"}</Link></div>
       {/* ------------------------------------------------------------- hero */}
       <section className="relative overflow-hidden border-b border-white/10 bg-premium-gradient text-white">
         <BrandAura />
@@ -136,7 +139,7 @@ export default function WhySelloraPage() {
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/signup"
-              className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-6 text-[14px] font-extrabold text-brand-600 shadow-soft transition hover:bg-brand-950"
+              className="btn-primary min-h-[48px] px-6 text-sm"
             >
               شروع رایگان
             </Link>
@@ -256,10 +259,10 @@ export default function WhySelloraPage() {
           </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <div className="card border-red-400/30 bg-red-400/10 p-5">
-              <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-red-300">
+              <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-red-700">
                 <span aria-hidden="true">😰</span> بدون سلورا
               </h3>
-              <ul className="mt-3 space-y-2 text-[12.5px] leading-7 text-red-300/90">
+              <ul className="mt-3 space-y-2 text-[12.5px] leading-7 text-red-700/90">
                 {[
                   "صبح بیدار می‌شوی، ده‌ها پیام نخونده داری",
                   "بعضی‌ها دیر جواب می‌گیری و از دست می‌روند",
@@ -274,10 +277,10 @@ export default function WhySelloraPage() {
               </ul>
             </div>
             <div className="card border-emerald-400/30 bg-emerald-400/15 p-5">
-              <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-emerald-200">
+              <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-emerald-700">
                 <span aria-hidden="true">🚀</span> با سلورا
               </h3>
-              <ul className="mt-3 space-y-2 text-[12.5px] leading-7 text-emerald-200/90">
+              <ul className="mt-3 space-y-2 text-[12.5px] leading-7 text-emerald-700/90">
                 {[
                   "صبح بیدار می‌شوی، سلورا همه را جواب داده",
                   "فقط داغ‌ها را پیگیری می‌کنی و سفارش می‌گیری",
@@ -285,7 +288,7 @@ export default function WhySelloraPage() {
                   "وقتت صرف فروش و رشد می‌شود",
                 ].map((t) => (
                   <li key={t} className="flex items-start gap-2">
-                    <IconCheck size={15} className="mt-1 shrink-0 text-emerald-300" />
+                    <IconCheck size={15} className="mt-1 shrink-0 text-emerald-700" />
                     {t}
                   </li>
                 ))}
@@ -386,7 +389,7 @@ export default function WhySelloraPage() {
             <div className="relative mt-6 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/signup"
-                className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-7 text-[14px] font-extrabold text-brand-600 shadow-soft transition hover:bg-brand-950"
+                className="btn-primary min-h-[48px] px-7 text-sm"
               >
                 شروع رایگان
               </Link>

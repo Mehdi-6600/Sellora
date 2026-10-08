@@ -73,7 +73,7 @@ export function StatCard({
     "relative overflow-hidden rounded-card border p-4 text-start",
     featured
       ? "border-brand-700/25 bg-brand-gradient text-white shadow-glowSoft"
-      : "border-white/[0.09] bg-white/[0.05] shadow-card",
+      : "border-ink-100 bg-white shadow-card",
     href && !featured && "transition-all duration-200 ease-smooth hover:-translate-y-[2px] hover:border-brand-200/80 hover:shadow-card-hover",
     className
   );

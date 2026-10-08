@@ -91,7 +91,7 @@ export function ChatPanel({
               className={cx(
                 "inline-flex min-w-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ring-1",
                 human
-                  ? "bg-sky-400/15 text-sky-300 ring-sky-400/25"
+                  ? "bg-sky-400/15 text-sky-700 ring-sky-400/25"
                   : "bg-brand-50 text-brand-700 ring-brand-100"
               )}
             >

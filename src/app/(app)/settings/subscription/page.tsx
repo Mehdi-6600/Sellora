@@ -150,7 +150,7 @@ export default async function SubscriptionPage() {
                       "مدیریت محصولات و قیمت‌ها",
                     ].map((f) => (
                       <li key={f} className="flex items-start gap-1.5">
-                        <IconCheck size={14} className="mt-0.5 shrink-0 text-emerald-300" />
+                        <IconCheck size={14} className="mt-0.5 shrink-0 text-emerald-700" />
                         <span className="leading-5">{f}</span>
                       </li>
                     ))}

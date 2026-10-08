@@ -5,16 +5,14 @@ import { usePathname } from "next/navigation";
 import { cx } from "@/lib/utils/format";
 import { SelloraLockup } from "@/components/brand/sellora";
 import {
-  ACCOUNT_NAV,
-  ADMIN_NAV,
   PRIMARY_NAV,
-  SECONDARY_NAV,
+  MAIN_NAV,
   isActive,
   type NavItem,
 } from "./nav-items";
 
 function NavLink({ item, pathname, badge }: { item: NavItem; pathname: string; badge?: number }) {
-  const active = isActive(pathname, item);
+  const active = item.href === "/more" ? !PRIMARY_NAV.some((i) => isActive(pathname, i)) : isActive(pathname, item);
   const Icon = item.Icon;
 
   return (
@@ -94,21 +92,18 @@ export type SidebarProps = {
   role: string;
 };
 
-export function SidebarNav({ unread, isAdmin, userName, userEmail, businessName, role }: SidebarProps) {
+export function SidebarNav({ userName, userEmail, businessName, role }: SidebarProps) {
   const pathname = usePathname() || "";
   const initials = (userName || userEmail || "س").trim().slice(0, 1);
 
   return (
-    <aside className="hidden lg:fixed lg:inset-y-0 lg:start-0 lg:z-40 lg:flex lg:w-[17.5rem] lg:flex-col lg:border-e lg:border-ink-100/80 lg:bg-white/[0.08] lg:px-4 lg:py-6 lg:shadow-side lg:backdrop-blur-xl">
+    <aside className="hidden lg:fixed lg:inset-y-0 lg:start-0 lg:z-40 lg:flex lg:w-[17.5rem] lg:flex-col lg:border-e lg:border-ink-100/80 lg:bg-white/90 lg:px-4 lg:py-6 lg:shadow-side lg:backdrop-blur-xl">
       <Link href="/dashboard" className="mx-2 mb-6 inline-flex rounded-2xl focus-visible:outline-none">
         <SelloraLockup size={40} />
       </Link>
 
       <nav aria-label="ناوبری اصلی" className="flex-1 space-y-5 overflow-y-auto">
-        <Group title="میزکار" items={PRIMARY_NAV} pathname={pathname} />
-        <Group title="رشد و راه‌اندازی" items={SECONDARY_NAV} pathname={pathname} />
-        <Group title="حساب" items={ACCOUNT_NAV} pathname={pathname} badge={unread} />
-        {isAdmin ? <Group title="مدیریت" items={ADMIN_NAV} pathname={pathname} /> : null}
+        <Group title="میزکار" items={MAIN_NAV} pathname={pathname} />
       </nav>
 
       <div className="mt-4 rounded-card border border-ink-100/80 bg-canvas-soft/70 p-3">
@@ -131,7 +126,7 @@ export function SidebarNav({ unread, isAdmin, userName, userEmail, businessName,
         <form action="/api/auth/logout" method="post" className="mt-2.5">
           <button
             type="submit"
-            className="flex min-h-[38px] w-full items-center justify-center gap-2 rounded-xl border border-ink-100 bg-white/[0.06] px-3 text-[12px] font-semibold text-ink-600 transition hover:border-red-400/30 hover:bg-red-400/15 hover:text-red-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/30"
+            className="flex min-h-[38px] w-full items-center justify-center gap-2 rounded-xl border border-ink-100 bg-white/[0.06] px-3 text-[12px] font-semibold text-ink-600 transition hover:border-red-400/30 hover:bg-red-400/15 hover:text-red-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/30"
           >
             خروج از حساب
           </button>

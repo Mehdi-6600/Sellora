@@ -28,7 +28,7 @@ export default function ErrorBoundary({
           <SelloraEmblem size={124} />
         </div>
 
-        <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-amber-400/25 bg-amber-400/15 px-3 py-1 text-[11px] font-bold text-amber-300">
+        <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-amber-400/25 bg-amber-400/15 px-3 py-1 text-[11px] font-bold text-amber-700">
           <IconAlert size={14} />
           خطای موقت
         </span>

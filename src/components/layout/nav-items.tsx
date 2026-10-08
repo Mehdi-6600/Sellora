@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  IconGrid,
   IconBag,
   IconBolt,
   IconBell,
@@ -19,7 +20,7 @@ import {
  * Rules this file exists to enforce:
  *  · Every item points at a route that really exists and really works —
  *    no dead links, no "coming soon" placeholders in the nav.
- *  · Sidebar (desktop), bottom bar (phone) and the "بیشتر" sheet all read from
+ *  · Sidebar (desktop), bottom bar (phone) and the More page all read from
  *    this one list, so labels and icons can never drift apart.
  */
 
@@ -39,7 +40,10 @@ export const PRIMARY_NAV: NavItem[] = [
   { href: "/products", label: "محصولات", Icon: IconBag },
 ];
 
-/** Growth surfaces — always visible on desktop, behind "بیشتر" on phones. */
+export const MORE_NAV: NavItem = { href: "/more", label: "بیشتر", Icon: IconGrid };
+export const MAIN_NAV = [...PRIMARY_NAV, MORE_NAV];
+
+/** Secondary tools, grouped on More on every screen. */
 export const SECONDARY_NAV: NavItem[] = [
   { href: "/leads", label: "مشتری‌های داغ", Icon: IconFlame },
   { href: "/onboarding", label: "راه‌اندازی سریع", Icon: IconSparkle },
@@ -53,7 +57,7 @@ export const ACCOUNT_NAV: NavItem[] = [
   { href: "/why-sellora", label: "چرا Sellora؟", Icon: IconSparkle },
 ];
 
-/** Everything the phone cannot fit, in one sheet. */
+/** Secondary destinations for the More page. */
 export const SHEET_NAV: NavItem[] = [...SECONDARY_NAV, ...ACCOUNT_NAV];
 
 /** Admin-only operational screens (wired to real admin routes). */

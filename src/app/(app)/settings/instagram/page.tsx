@@ -4,9 +4,8 @@ import { getServerDict } from "@/lib/i18n";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
-import { Badge, Dot, StatusPulse } from "@/components/ui/badge";
+import { Dot, StatusPulse } from "@/components/ui/badge";
 import { META_APP_ID } from "@/lib/meta/config";
-import { SelloraEmblem } from "@/components/brand/sellora";
 import { StatusRefresh } from "./status-refresh";
 import { IconArrowRight, IconCheck, IconInstagram, IconSparkle } from "@/components/layout/icons";
 import { formatRelativeTime } from "@/lib/utils/format";
@@ -89,7 +88,7 @@ export default async function InstagramPage({
         {justConnected ? (
           <p
             role="status"
-            className="rounded-2xl border border-emerald-400/25 bg-emerald-400/15 px-4 py-3 text-[12.5px] font-semibold leading-6 text-emerald-300"
+            className="rounded-2xl border border-emerald-400/25 bg-emerald-400/15 px-4 py-3 text-[12.5px] font-semibold leading-6 text-emerald-700"
           >
             حساب اینستاگرام با موفقیت از طریق Meta متصل شد ✅
           </p>
@@ -97,7 +96,7 @@ export default async function InstagramPage({
         {oauthError ? (
           <p
             role="alert"
-            className="rounded-2xl border border-red-400/30 bg-red-400/15 px-4 py-3 text-[12.5px] font-medium leading-6 text-red-300"
+            className="rounded-2xl border border-red-400/30 bg-red-400/15 px-4 py-3 text-[12.5px] font-medium leading-6 text-red-700"
           >
             {oauthError}
           </p>
@@ -106,12 +105,7 @@ export default async function InstagramPage({
         {/* ================================================ connection card */}
         <section className="card overflow-hidden">
           <div className="relative overflow-hidden bg-premium-gradient p-5 text-white">
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute -bottom-10 end-2 opacity-25"
-            >
-              <IconInstagram size={140} />
-            </span>
+
             <div className="relative flex items-start gap-4">
               <span
                 aria-hidden="true"
@@ -196,7 +190,6 @@ export default async function InstagramPage({
           ) : (
             <div className="space-y-4 p-5">
               <div className="flex flex-col items-center gap-3 text-center">
-                <SelloraEmblem size={112} pulse={needsReauth} />
                 <h3 className="text-[15px] font-bold text-ink-900">
                   {needsReauth
                     ? "برای ادامه، دوباره وارد اینستاگرام شوید"
@@ -204,7 +197,7 @@ export default async function InstagramPage({
                 </h3>
                 <p className="max-w-md text-[12.5px] leading-6 text-ink-500">
                   {needsReauth
-                    ? "دسترسی قبلی منقضی شده است. اتصال دوباره از طریق ورود رسمی متا انجام می‌شود و کمتر از یک دقیقه وقت می‌گیرد."
+                    ? "دسترسی قبلی منقضی شده است. اتصال دوباره از طریق ورود رسمی متا انجام می‌شود و پس از تأیید دسترسی، به سلورا برمی‌گردید."
                     : "سلورا بدون اتصال نمی‌تواند پیام‌های مشتری‌ها را ببیند یا پاسخ بدهد. اتصال از طریق ورود رسمی متا (Graph API) انجام می‌شود و رمز عبور اینستاگرام شما هرگز ذخیره نمی‌شود."}
                 </p>
               </div>
@@ -223,7 +216,7 @@ export default async function InstagramPage({
                 </a>
               ) : (
                 <div className="space-y-3">
-                  <p className="rounded-2xl border border-amber-400/30 bg-amber-400/15 px-3.5 py-3 text-[12px] leading-6 text-amber-300">
+                  <p className="rounded-2xl border border-amber-400/30 bg-amber-400/15 px-3.5 py-3 text-[12px] leading-6 text-amber-700">
                     اپلیکیشن متا هنوز در این محیط پیکربندی نشده است. برای اتصال واقعی، مقادیر{" "}
                     <code dir="ltr" className="font-mono font-bold">
                       META_APP_ID
@@ -244,14 +237,14 @@ export default async function InstagramPage({
               <ol className="grid gap-2 sm:grid-cols-3">
                 {[
                   { t: "ورود به متا", d: "با حساب فیسبوک؛ رمز اینستاگرام لازم نیست." },
-                  { t: "تأیید دسترسی", d: "فقط برای پیام‌ها و کامنت‌های همین صفحه." },
-                  { t: "فعال شدن سلورا", d: "همین لحظه پاسخ‌گویی خودکار شروع می‌شود." },
+                  { t: "تأیید دسترسی", d: "دسترسی‌های درخواستی و صفحهٔ متصل را بررسی کنید." },
+                  { t: "بازگشت به سلورا", d: "وضعیت اتصال را ببینید؛ سپس خودکارسازی را فعال کنید." },
                 ].map((s, i) => (
                   <li
                     key={s.t}
-                    className="rounded-2xl border border-ink-100 bg-canvas-soft/60 p-3 text-center"
+                    className="rounded-xl border border-ink-100 bg-canvas-soft/60 p-3"
                   >
-                    <span className="mx-auto grid h-8 w-8 place-items-center rounded-xl bg-white/[0.06] text-[12px] font-extrabold text-brand-700 shadow-soft">
+                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-white text-xs font-bold text-brand-700">
                       {["۱", "۲", "۳"][i]}
                     </span>
                     <span className="mt-2 block text-[12px] font-bold text-ink-900">{s.t}</span>
@@ -272,8 +265,8 @@ export default async function InstagramPage({
                 aria-hidden="true"
                 className={
                   connected
-                    ? "mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-emerald-400/15 text-emerald-300"
-                    : "mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-red-400/15 text-red-300"
+                    ? "mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-emerald-400/15 text-emerald-700"
+                    : "mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-red-400/15 text-red-700"
                 }
               >
                 <IconCheck size={14} />
@@ -285,7 +278,7 @@ export default async function InstagramPage({
             <li className="flex items-start gap-2.5">
               <span
                 aria-hidden="true"
-                className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-amber-400/15 text-amber-300"
+                className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-amber-400/15 text-amber-700"
               >
                 <IconSparkle size={14} />
               </span>
@@ -297,7 +290,7 @@ export default async function InstagramPage({
         <section className="card p-4">
           <h2 className="text-[13px] font-bold text-ink-900">بعد از اتصال چه می‌شود؟</h2>
           <p className="mt-1 text-[12px] leading-6 text-ink-500">
-            سلورا پیام‌های تکراری را خودش جواب می‌دهد و گفتگوهای حساس را به شما می‌سپارد. می‌توانید
+            پس از بررسی اطلاعات فروشگاه و فعال کردن خودکارسازی، سلورا پیام‌های تکراری را پاسخ می‌دهد. می‌توانید
             هر لحظه پاسخ‌گویی خودکار را خاموش کنید.
           </p>
           <div className="mt-3 grid grid-cols-2 gap-2">
@@ -333,7 +326,7 @@ function Row({
   return (
     <div className="flex items-center justify-between gap-3 px-4 py-3">
       <dt className="text-ink-500">{label}</dt>
-      <dd className={tone === "danger" ? "font-bold text-red-300" : "font-bold text-ink-800"}>
+      <dd className={tone === "danger" ? "font-bold text-red-700" : "font-bold text-ink-800"}>
         {value}
       </dd>
     </div>

@@ -70,8 +70,8 @@ export function AutomationSwitch({
       onClick={toggle}
       disabled={busy}
       className={cx(
-        "relative rounded-full p-0.5 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 disabled:opacity-70",
-        checked && "drop-shadow-[0_6px_14px_rgba(103,51,208,0.45)]"
+        "relative min-h-[44px] min-w-[52px] rounded-full p-0.5 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 disabled:opacity-70",
+        checked && "drop-shadow-sm"
       )}
     >
       <SwitchVisual checked={checked} size={size} />

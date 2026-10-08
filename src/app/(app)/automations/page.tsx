@@ -6,9 +6,8 @@ import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { Badge, Dot, StatusPulse } from "@/components/ui/badge";
 import { StatCard } from "@/components/ui/stat";
-import { SelloraEmblem } from "@/components/brand/sellora";
 import { AutomationSwitch } from "@/components/automation/automation-switch";
-import { IconArrowRight, IconBolt, IconCheck, IconFlame, IconInfo, IconSparkle } from "@/components/layout/icons";
+import { IconArrowRight, IconBolt, IconCheck, IconInfo, IconSparkle } from "@/components/layout/icons";
 import { cx, formatRelativeTime, toPersianDigits } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
@@ -162,14 +161,7 @@ export default async function AutomationsPage() {
       title={dict.nav.automations}
       subtitle="چه چیزی، چه زمانی و با چه شرطی خودکار پاسخ داده می‌شود"
       wide
-      actions={
-        <div className="flex items-center gap-2">
-          <span className="hidden text-[11.5px] font-bold text-ink-600 sm:inline">
-            {stateLabel.text}
-          </span>
-          <AutomationSwitch enabled={engineOn} label="پاسخ‌گویی خودکار" />
-        </div>
-      }
+
     >
       <div className="grid gap-4 lg:grid-cols-3 lg:gap-6">
         {/* ================================================ main column */}
@@ -179,13 +171,12 @@ export default async function AutomationsPage() {
             aria-label="وضعیت موتور خودکارسازی"
             className="relative overflow-hidden rounded-card border border-white/10 bg-premium-gradient p-5 text-white shadow-premium"
           >
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute -bottom-10 end-0 opacity-25"
-            >
-              <SelloraEmblem size={180} tone="white" />
-            </span>
+
             <div className="relative">
+              <div className="mb-4 flex items-center justify-between gap-3 border-b border-ink-200 pb-3">
+                <span className="text-sm font-bold">پاسخ‌گویی خودکار</span>
+                <AutomationSwitch enabled={engineOn} label="پاسخ‌گویی خودکار" />
+              </div>
               <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold ring-1 ring-white/25 backdrop-blur">
                 <StatusPulse tone={running ? "green" : engineOn ? "amber" : "gray"} />
                 {stateLabel.text}
@@ -275,40 +266,9 @@ export default async function AutomationsPage() {
 
         {/* ================================================ side column */}
         <aside className="space-y-4 lg:space-y-5">
-          {/* ------------------------------------------------------- controls */}
-          <section aria-label="کنترل موتور" className="card p-4">
-            <div className="flex items-start gap-3">
-              <span
-                aria-hidden="true"
-                className={cx(
-                  "grid h-11 w-11 shrink-0 place-items-center rounded-2xl border",
-                  running
-                    ? "border-brand-100 bg-brand-50 text-brand-700"
-                    : "border-ink-100 bg-ink-50 text-ink-500"
-                )}
-              >
-                <IconBolt size={20} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-[13px] font-bold text-ink-900">پاسخ‌گویی خودکار</span>
-                  <Badge tone={stateLabel.tone}>{stateLabel.text}</Badge>
-                </div>
-                <p className="mt-1 text-[12px] leading-6 text-ink-500">
-                  این کلید، همه‌ی جریان‌های زیر را با هم روشن یا خاموش می‌کند. گفتگوهایی که خودتان
-                  تحویل گرفته‌اید همیشه دست شما می‌مانند.
-                </p>
-              </div>
-            </div>
-            <div className="mt-3 flex items-center justify-between rounded-2xl border border-ink-100/70 bg-canvas-soft/70 px-3 py-2.5">
-              <span className="text-[12px] font-semibold text-ink-700">وضعیت کلی</span>
-              <AutomationSwitch enabled={engineOn} label="پاسخ‌گویی خودکار" />
-            </div>
-          </section>
-
           {/* ---------------------------------------------------- capabilities */}
-          <section aria-label="قابلیت‌های موتور" className="card p-4">
-            <h2 className="text-[13px] font-bold text-ink-900">قابلیت‌های موتور</h2>
+          <details className="card p-4">
+            <summary className="cursor-pointer text-sm font-bold text-ink-900">قابلیت‌های موتور</summary>
             <p className="mt-1 text-[11.5px] leading-6 text-ink-500">
               وضعیت واقعی تنظیمات خودکارسازی این فروشگاه.
             </p>
@@ -329,14 +289,11 @@ export default async function AutomationsPage() {
               این دو قابلیت به‌صورت پیش‌فرض خاموش‌اند و از سمت سرور فعال می‌شوند؛ وضعیت آن‌ها همین‌جا
               درست نمایش داده می‌شود تا هیچ‌وقت ادعای اشتباه نداشته باشیم.
             </p>
-          </section>
+          </details>
 
           {/* -------------------------------------------------------- guardrails */}
-          <section aria-label="قوانین ایمنی" className="card p-4">
-            <h2 className="flex items-center gap-2 text-[13px] font-bold text-ink-900">
-              <IconFlame size={16} className="text-brand-500" />
-              قوانین ایمنی
-            </h2>
+          <details className="card p-4">
+            <summary className="cursor-pointer text-sm font-bold text-ink-900">قوانین ایمنی</summary>
             <ul className="mt-3 space-y-2 text-[11.5px] leading-6 text-ink-600">
               <li className="flex gap-2">
                 <Dot tone="green" />
@@ -355,7 +312,7 @@ export default async function AutomationsPage() {
                 <span>برای اطلاعات ناموجود، سلورا «نمی‌دانم» می‌گوید و از شما می‌پرسد.</span>
               </li>
             </ul>
-          </section>
+          </details>
 
           <section aria-label="پیشنهاد بعدی" className="card p-4">
             <h2 className="flex items-center gap-2 text-[13px] font-bold text-ink-900">
@@ -409,8 +366,8 @@ function FlowCard({
   };
   const TONES: Record<Stage["kind"], string> = {
     trigger: "border-brand-100 bg-brand-50 text-brand-700",
-    condition: "border-amber-400/25 bg-amber-400/15 text-amber-300",
-    action: "border-emerald-400/25 bg-emerald-400/15 text-emerald-300",
+    condition: "border-amber-400/25 bg-amber-400/15 text-amber-700",
+    action: "border-emerald-400/25 bg-emerald-400/15 text-emerald-700",
   };
 
   return (
@@ -420,7 +377,7 @@ function FlowCard({
           aria-hidden="true"
           className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-ink-100 bg-canvas-soft text-lg"
         >
-          {flow.icon}
+          <IconBolt size={20} className="text-brand-700" />
         </span>
         <div className="min-w-0 flex-1">
           <h3 className="text-[13.5px] font-bold text-ink-900">{flow.title}</h3>
@@ -429,6 +386,8 @@ function FlowCard({
         <Badge tone={empty ? "gray" : "green"}>{empty ? "غیرفعال" : "فعال"}</Badge>
       </div>
 
+      <details className="mt-3 border-t border-ink-100 pt-2">
+      <summary className="flex cursor-pointer items-center text-xs font-bold text-brand-700">نحوه پاسخ‌گویی و شرایط +</summary>
       <ol className="mt-3 space-y-0">
         {flow.stages.map((stage, i) => (
           <li key={stage.kind} className="relative ps-0">
@@ -459,6 +418,7 @@ function FlowCard({
         <span className="text-[10.5px] font-medium text-ink-500">منبع پاسخ</span>
         <span className="text-[10.5px] font-bold text-ink-700">{flow.source}</span>
       </div>
+      </details>
     </article>
   );
 }

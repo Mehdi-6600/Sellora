@@ -3,7 +3,7 @@
 // Last-resort boundary for failures inside the root layout itself. It replaces
 // the whole document, so it must stand on its own: no shared components and no
 // dependency on component classes — only a few inline styles that mirror the
-// Purple Premium palette, and the REAL Sellora artwork (public/icons/icon-512.png)
+// light application palette, and the REAL Sellora artwork (public/icons/icon-512.png)
 // so the fallback still looks like Sellora.
 
 export default function GlobalError({ reset }: { error: Error; reset: () => void }) {
@@ -16,9 +16,8 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
           display: "grid",
           placeItems: "center",
           padding: "32px 20px",
-          background:
-            "radial-gradient(900px 520px at 88% -6%, rgba(139,92,246,0.22), transparent 62%), radial-gradient(1100px 700px at 50% 120%, rgba(109,40,217,0.28), transparent 65%), #150e2e",
-          color: "#f1eefb",
+          background: "#f7f9fc",
+          color: "#182335",
           fontFamily:
             "Vazirmatn, system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif",
         }}
@@ -28,8 +27,8 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
             maxWidth: 420,
             width: "100%",
             textAlign: "center",
-            background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.12)",
+            background: "#ffffff",
+            border: "1px solid #e8edf2",
             borderRadius: 24,
             padding: "28px 22px",
             boxShadow: "0 18px 44px -24px rgba(6,3,20,0.8)",
@@ -51,7 +50,7 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
             }}
           />
           <h1 style={{ fontSize: 19, fontWeight: 800, margin: "0 0 8px" }}>خطایی پیش آمد</h1>
-          <p style={{ fontSize: 13, lineHeight: 2, color: "#9c93c4", margin: "0 0 20px" }}>
+          <p style={{ fontSize: 13, lineHeight: 2, color: "#566579", margin: "0 0 20px" }}>
             بارگذاری برنامه ممکن نشد. داده‌های شما دست‌نخورده است؛ یک‌بار دیگر تلاش کنید.
           </p>
           <button
@@ -66,7 +65,7 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
               fontSize: 14,
               fontWeight: 700,
               color: "#ffffff",
-              background: "linear-gradient(135deg, #f0567f, #d6255c 55%, #8e0f39)",
+              background: "#0066d6",
               boxShadow: "0 12px 24px -14px rgba(214,37,92,0.75)",
             }}
           >

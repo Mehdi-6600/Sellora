@@ -50,7 +50,7 @@ export function ProductActions({
       <span
         className={cx(
           "text-[10.5px] font-bold",
-          available ? "text-emerald-300" : "text-ink-400"
+          available ? "text-emerald-700" : "text-ink-400"
         )}
       >
         {available ? "موجود" : "ناموجود"}

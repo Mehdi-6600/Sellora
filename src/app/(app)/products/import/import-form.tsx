@@ -122,15 +122,15 @@ export function ImportForm({ dict }: { dict: Dict }) {
                       </span>
                     </>
                   ) : (
-                    <span className="block truncate text-red-300">{r.error}</span>
+                    <span className="block truncate text-red-700">{r.error}</span>
                   )}
                 </span>
                 <span
                   aria-hidden="true"
                   className={
                     r.valid
-                      ? "grid h-7 w-7 place-items-center rounded-lg bg-emerald-400/15 text-emerald-300"
-                      : "grid h-7 w-7 place-items-center rounded-lg bg-red-400/15 text-red-300"
+                      ? "grid h-7 w-7 place-items-center rounded-lg bg-emerald-400/15 text-emerald-700"
+                      : "grid h-7 w-7 place-items-center rounded-lg bg-red-400/15 text-red-700"
                   }
                 >
                   {r.valid ? <IconCheck size={15} /> : <IconClose size={15} />}

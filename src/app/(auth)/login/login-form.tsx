@@ -59,7 +59,7 @@ export function LoginForm({ dict }: { dict: Dict }) {
       {err && (
         <div
           role="alert"
-          className="rounded-2xl border border-red-400/30 bg-red-400/15 px-3.5 py-2.5 text-[12.5px] font-medium text-red-300"
+          className="rounded-2xl border border-red-400/30 bg-red-400/15 px-3.5 py-2.5 text-[12.5px] font-medium text-red-700"
         >
           {err}
         </div>
