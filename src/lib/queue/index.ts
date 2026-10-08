@@ -8,6 +8,7 @@
 
 import { prisma } from "@/lib/db/prisma";
 import { sendMessageWithEncryptedToken } from "@/lib/meta/client";
+import { notify, NOTIFICATION_KINDS } from "@/lib/notifications";
 
 export type JobName = "send.message" | "process.webhook";
 
@@ -42,15 +43,27 @@ export async function enqueue(job: JobName, payload: Record<string, unknown>, op
     return { queued: true as const, backend: "inline" as const };
   } catch (err) {
     console.error("[queue] inline job failed", err);
+    const businessId = (payload.businessId as string) ?? null;
     await prisma.failedJob.create({
       data: {
-        businessId: (payload.businessId as string) ?? null,
+        businessId,
         jobType: job,
         payload: payload as any,
         error: err instanceof Error ? err.message : String(err),
         attempts: 1,
       },
     });
+    if (businessId) {
+      // SYSTEM_WARNING: surface a background-job failure to the tenant instead
+      // of leaving it only in server logs / the FailedJob table.
+      await notify({
+        businessId,
+        kind: NOTIFICATION_KINDS.SYSTEM_WARNING,
+        title: "یک کار پس‌زمینه ناموفق بود",
+        body: "ارسال یک پیام به‌صورت موقت ناموفق ماند و برای تلاش دوباره ثبت شد.",
+        href: "/conversations",
+      });
+    }
     return { queued: false as const, backend: "inline" as const };
   }
 }
@@ -117,10 +130,21 @@ async function handleSendMessage(p: {
     if (status === 401 || status === 403 || code === 190 || code === 102) {
       nextState = "FAILED";
       // Mark Instagram connection as needing re-auth
+      const wasConnected = ig.status === "CONNECTED";
       await prisma.instagramAccount.update({
         where: { id: ig.id },
         data: { status: "REAUTH_REQUIRED" },
       });
+      // Tell the owner immediately — automated replies stop until re-auth.
+      if (wasConnected) {
+        await notify({
+          businessId: message.businessId,
+          kind: NOTIFICATION_KINDS.INSTAGRAM_DISCONNECTED,
+          title: "اتصال اینستاگرام قطع شد",
+          body: "دسترسی اینستاگرام نیاز به ورود مجدد دارد. تا اتصال دوباره، پاسخ‌گویی خودکار متوقف است.",
+          href: "/settings/instagram",
+        });
+      }
     } else if (status === 429) {
       nextState = "RETRYING";
       // backoff handled by QStash or manual retry

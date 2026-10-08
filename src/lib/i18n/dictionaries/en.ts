@@ -75,6 +75,14 @@ const en: Dict = {
     score: "Score", reason: "Why hot?", cold: "Cold", warm: "Warm", hot: "Hot",
     viewConversation: "View conversation",
   },
+  notifications: {
+    title: "Notifications",
+    bellAria: "Notifications",
+    unreadWord: "unread",
+    markAllRead: "Mark all read",
+    emptyTitle: "No notifications",
+    emptyDesc: "We'll let you know here when a hot lead is detected, a conversation needs you, or your subscription changes.",
+  },
   settings: {
     business: {
       title: "Business information", address: "Address", phone: "Phone", hours: "Working hours",

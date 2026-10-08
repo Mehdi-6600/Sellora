@@ -58,6 +58,14 @@ const ar: Dict = {
     score: "النقاط", reason: "سبب الاهتمام", cold: "بارد", warm: "دافئ", hot: "ساخن",
     viewConversation: "عرض المحادثة",
   },
+  notifications: {
+    title: "الإشعارات",
+    bellAria: "الإشعارات",
+    unreadWord: "غير مقروء",
+    markAllRead: "تعليم الكل كمقروء",
+    emptyTitle: "لا توجد إشعارات",
+    emptyDesc: "سنخبرك هنا عند رصد عميل مهتم، أو عند حاجة محادثة إلى تدخلك، أو عند تغيّر حالة اشتراكك.",
+  },
   settings: {
     business: {
       title: "معلومات المتجر", address: "العنوان", phone: "الهاتف", hours: "ساعات العمل",

@@ -126,6 +126,14 @@ const fa = {
     hot: "داغ",
     viewConversation: "مشاهده گفتگو",
   },
+  notifications: {
+    title: "اعلان‌ها",
+    bellAria: "اعلان‌ها",
+    unreadWord: "خوانده‌نشده",
+    markAllRead: "خواندن همه",
+    emptyTitle: "اعلانی ندارید",
+    emptyDesc: "وقتی مشتری داغ شناسایی شود، گفتگویی به شما تحویل داده شود یا وضعیت اشتراک تغییر کند، همین‌جا خبر می‌دهیم.",
+  },
   settings: {
     business: {
       title: "اطلاعات کسب‌وکار",

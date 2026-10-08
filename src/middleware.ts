@@ -16,7 +16,7 @@ const PUBLIC_PATHS = [
   "/favicon",
 ];
 
-const PROTECTED_PREFIXES = ["/dashboard", "/conversations", "/leads", "/products", "/settings", "/onboarding", "/api/business", "/api/products", "/api/rules", "/api/conversations", "/api/leads", "/api/subscription", "/api/instagram/connect", "/api/instagram/callback", "/api/instagram/disconnect", "/api/instagram/status"];
+const PROTECTED_PREFIXES = ["/dashboard", "/conversations", "/leads", "/products", "/settings", "/onboarding", "/notifications", "/admin", "/api/business", "/api/products", "/api/rules", "/api/conversations", "/api/leads", "/api/subscription", "/api/instagram/connect", "/api/instagram/callback", "/api/instagram/disconnect", "/api/instagram/status"];
 
 function hasSession(req: NextRequest): boolean {
   return !!req.cookies.get("sellora_session")?.value;

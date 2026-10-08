@@ -69,6 +69,7 @@ export async function POST(req: Request, ctx: { params: { id: string } }) {
         kind: "subscription.rejected",
         title: "درخواست اشتراک رد شد",
         body: `دلیل: ${parsed.data.reason}`,
+        href: "/settings/subscription/status",
       },
     });
   } catch {

@@ -97,6 +97,7 @@ export async function POST(req: Request) {
         kind: "subscription.pending",
         title: "درخواست خرید اشتراک در انتظار بررسی",
         body: `پلن ${plan} با کد رهگیری ${trackingCode} ثبت شد.`,
+        href: "/settings/subscription/status",
       },
     });
   } catch {

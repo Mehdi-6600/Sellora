@@ -61,6 +61,7 @@ export async function POST(_req: Request, ctx: { params: { id: string } }) {
         kind: "subscription.approved",
         title: "اشتراک شما تأیید شد",
         body: `پلن ${sub.plan} فعال شد. اعتبار تا ${endsAt.toISOString().slice(0, 10)}.`,
+        href: "/settings/subscription/status",
       },
     });
   } catch {
