@@ -149,12 +149,16 @@ Every customer-facing answer uses:
 2. Active business rules (versioned)
 3. Current conversation context (active product/variant/city)
 4. Historical snapshot (product snapshot on conversations)
-5. Optional AI fallback (off by default, gated by `AI_ENABLED=true` and
-   `OPENAI_API_KEY`, and used ONLY when deterministic confidence is UNKNOWN)
 
-AI never invents price, availability, shipping cost, delivery time, hours,
-address, refunds or payments. If Sellora doesn't know the answer, it asks
-a clarification question or escalates to the owner.
+Nothing else can override that hierarchy. Sellora never invents price,
+availability, shipping cost, delivery time, hours, address, refunds or
+payments: if the answer is not in the database or the business rules, it asks a
+clarification question or escalates to the owner (`/conversations/[id]` →
+handoff, which raises an owner notification).
+
+> **Not implemented:** an optional LLM fallback for `UNKNOWN` confidence is a
+> roadmap item only — no code in `src/` reads `OPENAI_API_KEY` or `AI_ENABLED`
+> today, so those variables have no effect.
 
 ## Project structure
 
