@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { createSession, getSession } from "@/lib/auth/session";
 import { z } from "zod";
+import { readJsonBody } from "@/lib/utils/http";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,8 +13,9 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-    const body = await req.json();
-    const parsed = Schema.safeParse(body);
+    const bodyRes = await readJsonBody(req, 5_000);
+    if (!bodyRes.ok) return NextResponse.json({ error: bodyRes.error }, { status: bodyRes.status });
+    const parsed = Schema.safeParse(bodyRes.json);
     if (!parsed.success) return NextResponse.json({ error: "invalid_input" }, { status: 400 });
     const membership = await prisma.businessMember.findUnique({
       where: { businessId_userId: { businessId: parsed.data.businessId, userId: session.uid } },

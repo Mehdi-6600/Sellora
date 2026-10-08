@@ -58,6 +58,14 @@ const ar: Dict = {
     score: "النقاط", reason: "سبب الاهتمام", cold: "بارد", warm: "دافئ", hot: "ساخن",
     viewConversation: "عرض المحادثة",
   },
+  notifications: {
+    title: "الإشعارات",
+    bellAria: "الإشعارات",
+    unreadWord: "غير مقروء",
+    markAllRead: "تعليم الكل كمقروء",
+    emptyTitle: "لا توجد إشعارات",
+    emptyDesc: "سنخبرك هنا عند رصد عميل مهتم، أو عند حاجة محادثة إلى تدخلك، أو عند تغيّر حالة اشتراكك.",
+  },
   settings: {
     business: {
       title: "معلومات المتجر", address: "العنوان", phone: "الهاتف", hours: "ساعات العمل",
@@ -76,8 +84,7 @@ const ar: Dict = {
       title: "الاشتراك", currentPlan: "الخطة الحالية", trial: "تجريبي",
       select: "اختر خطة", bestValue: "أفضل قيمة",
       weekly: "أسبوع", monthly: "شهر", quarterly: "٣ أشهر",
-      weeklyPrice: "٢٩٩٬٠٠٠ تومان", monthlyPrice: "٨٩٩٬٠٠٠ تومان", quarterlyPrice: "٢٬٢٤٩٬٠٠٠ تومان",
-      noPayments: "بوابة الدفع غير مفعلة في هذه النسخة. بعد اختيار الخطة سنتواصل معك.",
+      noPayments: "في هذه النسخة يتم الدفع بتحويل بطاقي مع مراجعة يدوية: حوّل المبلغ وأدخل رمز المتابعة، ويُراجع الطلب خلال ٢٤ ساعة ويُفعّل عند الموافقة.",
     },
   },
   onboarding: {
@@ -89,6 +96,15 @@ const ar: Dict = {
     new: "جديد", active: "نشط", waitingCustomer: "بانتظار العميل",
     waitingOwner: "بانتظارك", ownerActive: "أنت ترد الآن",
     qualified: "مهتم", completed: "مكتمل", expired: "منتهي",
+    delivery: {
+      PENDING: "في قائمة الإرسال",
+      SENDING: "جارٍ الإرسال",
+      SENT: "أُرسلت",
+      FAILED: "فشل الإرسال",
+      RETRYING: "إعادة المحاولة",
+      EXPIRED: "منتهية",
+      BLOCKED: "محظورة",
+    },
   },
   errors: {
     generic: "حدث خطأ. حاول مرة أخرى.",

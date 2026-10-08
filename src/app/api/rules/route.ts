@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { requireAuth } from "@/lib/auth/session";
 import { rulesetSchema } from "@/lib/validation/schemas";
+import { readJsonBody } from "@/lib/utils/http";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,8 +24,9 @@ export async function GET() {
 export async function PUT(req: NextRequest) {
   try {
     const auth = await requireAuth();
-    const body = await req.json();
-    const parsed = rulesetSchema.safeParse(body);
+    const bodyRes = await readJsonBody(req, 100_000);
+    if (!bodyRes.ok) return NextResponse.json({ error: bodyRes.error }, { status: bodyRes.status });
+    const parsed = rulesetSchema.safeParse(bodyRes.json);
     if (!parsed.success) return NextResponse.json({ error: "invalid_input" }, { status: 400 });
     const current = await prisma.businessRuleset.findFirst({
       where: { businessId: auth.businessId, isActive: true },

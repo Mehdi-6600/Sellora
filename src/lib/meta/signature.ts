@@ -20,10 +20,11 @@ export function verifyWebhookSignature(rawBody: string, signatureHeader: string 
   const provided = signatureHeader.slice("sha256=".length);
   const secrets = configuredSecrets();
   if (secrets.length === 0) {
-    // Dev fallback: if no secret configured, accept (with warning).
-    // In production this should NEVER happen.
-    console.warn("[meta] No app secret configured; accepting webhook without verification");
-    return true;
+    // SECURITY (fail closed): with no app secret configured we cannot verify
+    // anything, so we must reject. Accepting unsigned webhooks would let anyone
+    // inject conversations, messages and lead scores into any connected tenant.
+    console.warn("[meta] Rejecting webhook: no META_APP_SECRET configured.");
+    return false;
   }
   for (const secret of secrets) {
     const expected = crypto.createHmac("sha256", secret).update(rawBody).digest("hex");

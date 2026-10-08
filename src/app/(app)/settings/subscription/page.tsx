@@ -8,6 +8,8 @@ import { Card } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
 import { PLANS } from "@/lib/config/pricing";
+import { planLabel, subscriptionStatusLabel } from "@/lib/config/subscription";
+import { ensureSubscriptionNotices } from "@/lib/notifications";
 import { formatToman } from "@/lib/utils/format";
 import { SubscribeButton } from "./subscribe-button";
 
@@ -23,6 +25,16 @@ export default async function SubscriptionPage() {
   }
   const sub = await prisma.subscription.findUnique({ where: { businessId: auth.businessId } });
 
+  // Owners who open their plan page should also see an expiry notice, not only
+  // those who land on the dashboard. Best effort, never fatal.
+  if (sub) {
+    try {
+      await ensureSubscriptionNotices(sub);
+    } catch (err) {
+      console.error("[subscription] notice failed:", err);
+    }
+  }
+
   return (
     <AppShell title={dict.settings.subscription.title} backHref="/settings">
       {sub && (
@@ -31,10 +43,12 @@ export default async function SubscriptionPage() {
           <div className="flex-1">
             <div className="text-sm text-ink-500">{dict.settings.subscription.currentPlan}</div>
             <div className="font-semibold">
-              {sub.plan} — {formatToman(sub.amount * 10)} تومان
+              {planLabel(sub.plan)} — {formatToman(sub.amount * 10)} تومان
             </div>
           </div>
-          <Badge tone={sub.status === "ACTIVE" ? "green" : sub.status === "TRIAL" ? "amber" : "gray"}>{sub.status}</Badge>
+          <Badge tone={sub.status === "ACTIVE" ? "green" : sub.status === "TRIAL" ? "amber" : "gray"}>
+            {subscriptionStatusLabel(sub.status)}
+          </Badge>
         </Card>
       )}
 

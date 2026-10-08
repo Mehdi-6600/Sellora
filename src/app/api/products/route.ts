@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db/prisma";
 import { requireAuth } from "@/lib/auth/session";
 import { productCreateSchema } from "@/lib/validation/schemas";
 import { clientId, rateLimit } from "@/lib/security/rate-limit";
+import { readJsonBody } from "@/lib/utils/http";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,8 +13,12 @@ export async function GET(req: NextRequest) {
     const auth = await requireAuth();
     const { searchParams } = new URL(req.url);
     const q = searchParams.get("q")?.trim();
-    const status = searchParams.get("status");
-    const take = Math.min(200, Number(searchParams.get("take") || 100));
+    const rawStatus = searchParams.get("status");
+    const status = ["AVAILABLE", "UNAVAILABLE", "ARCHIVED"].includes(rawStatus || "")
+      ? rawStatus
+      : undefined;
+    const takeRaw = Number(searchParams.get("take"));
+    const take = Number.isFinite(takeRaw) ? Math.min(200, Math.max(1, takeRaw || 100)) : 100;
     const products = await prisma.product.findMany({
       where: {
         businessId: auth.businessId,
@@ -37,8 +42,9 @@ export async function POST(req: NextRequest) {
   if (!rl.ok) return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   try {
     const auth = await requireAuth();
-    const body = await req.json();
-    const parsed = productCreateSchema.safeParse(body);
+    const bodyRes = await readJsonBody(req, 200_000);
+    if (!bodyRes.ok) return NextResponse.json({ error: bodyRes.error }, { status: bodyRes.status });
+    const parsed = productCreateSchema.safeParse(bodyRes.json);
     if (!parsed.success) return NextResponse.json({ error: "invalid_input", issues: parsed.error.flatten() }, { status: 400 });
     const data = parsed.data;
     const existing = data.sku

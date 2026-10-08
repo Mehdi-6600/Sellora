@@ -96,8 +96,7 @@ npm install
 Copy `.env.example` to `.env.local` (or set via Vercel) and fill in:
 
 ```
-DATABASE_URL=postgres://...            # Neon: use the pooled connection string
-DIRECT_URL=postgres://...              # Neon: direct (non-pooled) for migrations
+SELLORA_DATABASE_URL=postgres://...    # Neon pooled string (schema.prisma reads this exact name)
 NEXTAUTH_SECRET=<long random secret>
 META_APP_ID=...
 META_APP_SECRET=...
@@ -113,7 +112,9 @@ npx prisma migrate dev         # local dev (creates & applies migrations)
 ```
 
 > **Do not use SQLite / in-memory DBs.** The schema is written for Postgres
-> (Neon). A `DATABASE_URL` pointing at a real Postgres database is required.
+> (Neon). A `SELLORA_DATABASE_URL` pointing at a real Postgres database is
+> required — `prisma generate` and `prisma migrate deploy` both read that exact
+> variable name from `prisma/schema.prisma`.
 
 ### 4. Run
 
@@ -127,7 +128,7 @@ to fill in catalog/business info and **Settings → Instagram** to connect.
 ## Production on Vercel
 
 1. Link the repo to Vercel project `sellora-main`.
-2. Configure all environment variables (DATABASE_URL, DIRECT_URL, NEXTAUTH_SECRET,
+2. Configure all environment variables (SELLORA_DATABASE_URL, NEXTAUTH_SECRET,
    META_APP_ID, META_APP_SECRET, META_WEBHOOK_VERIFY_TOKEN, QSTASH_TOKEN).
 3. In Meta App dashboard:
    - Add the webhook URL: `https://<your-domain>/api/webhooks/meta`
@@ -148,12 +149,16 @@ Every customer-facing answer uses:
 2. Active business rules (versioned)
 3. Current conversation context (active product/variant/city)
 4. Historical snapshot (product snapshot on conversations)
-5. Optional AI fallback (off by default, gated by `AI_ENABLED=true` and
-   `OPENAI_API_KEY`, and used ONLY when deterministic confidence is UNKNOWN)
 
-AI never invents price, availability, shipping cost, delivery time, hours,
-address, refunds or payments. If Sellora doesn't know the answer, it asks
-a clarification question or escalates to the owner.
+Nothing else can override that hierarchy. Sellora never invents price,
+availability, shipping cost, delivery time, hours, address, refunds or
+payments: if the answer is not in the database or the business rules, it asks a
+clarification question or escalates to the owner (`/conversations/[id]` →
+handoff, which raises an owner notification).
+
+> **Not implemented:** an optional LLM fallback for `UNKNOWN` confidence is a
+> roadmap item only — no code in `src/` reads `OPENAI_API_KEY` or `AI_ENABLED`
+> today, so those variables have no effect.
 
 ## Project structure
 

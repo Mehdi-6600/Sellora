@@ -1,5 +1,6 @@
 import * as React from "react";
 import { BottomNav } from "./bottom-nav";
+import { NotificationBell } from "./notification-bell";
 import Link from "next/link";
 
 export function AppShell({
@@ -32,6 +33,7 @@ export function AppShell({
             </Link>
           )}
           <div className="flex-1" />
+          <NotificationBell />
           {actions}
         </div>
         {(title || subtitle) && (

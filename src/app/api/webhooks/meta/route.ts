@@ -29,7 +29,14 @@ export async function GET(req: NextRequest) {
   const mode = searchParams.get("hub.mode");
   const token = searchParams.get("hub.verify_token");
   const challenge = searchParams.get("hub.challenge");
-  if (mode === "subscribe" && token === META_WEBHOOK_VERIFY_TOKEN && challenge) {
+  // SECURITY: require a configured, non-empty verify token — otherwise an empty
+  // hub.verify_token would match an unset META_WEBHOOK_VERIFY_TOKEN.
+  if (
+    META_WEBHOOK_VERIFY_TOKEN &&
+    mode === "subscribe" &&
+    token === META_WEBHOOK_VERIFY_TOKEN &&
+    challenge
+  ) {
     return new NextResponse(challenge, { status: 200 });
   }
   return new NextResponse("forbidden", { status: 403 });
@@ -53,14 +60,30 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
-  // 2. Fast-ACK: respond 200 to Meta within 1s to avoid retries on our
-  // critical path. Persisting the WebhookEvent happens inside processMetaWebhook
-  // but does not block the response (it is started but not awaited).
-  const response = NextResponse.json({ ok: true });
-  void processMetaWebhook(payload, true).catch((err) => {
+  // 2. Process before ACKing. A serverless function is frozen as soon as the
+  // response is sent, so work started with `void ...` after returning can be
+  // dropped mid-flight (lost webhooks, lost auto-replies). Processing here is a
+  // handful of indexed writes; if it throws we record a FailedJob and still
+  // ACK so Meta does not retry-storm an event we already persisted.
+  try {
+    await processMetaWebhook(payload, true);
+  } catch (err) {
     console.error("[meta-webhook] processing error:", err);
-  });
-  return response;
+    try {
+      await prisma.failedJob.create({
+        data: {
+          businessId: null,
+          jobType: "process.webhook",
+          payload: payload as any,
+          error: err instanceof Error ? err.message : String(err),
+          attempts: 1,
+        },
+      });
+    } catch {
+      // persistence of the failure record is best-effort
+    }
+  }
+  return NextResponse.json({ ok: true });
 }
 
 async function processMetaWebhook(payload: any, signatureOk: boolean) {

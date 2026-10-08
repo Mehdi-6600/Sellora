@@ -1,5 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { SITE_NAME, absolute } from "@/lib/config/site";
+
+export const metadata: Metadata = {
+  title: `ورود | ${SITE_NAME}`,
+  description: "ورود به حساب سلورا برای مدیریت گفتگوها، محصولات و مشتری‌های داغ.",
+  robots: { index: false, follow: true },
+  alternates: { canonical: "/login" },
+  openGraph: { url: absolute("/login"), title: `ورود | ${SITE_NAME}` },
+};
 import { getServerDict } from "@/lib/i18n";
 import { LoginForm } from "./login-form";
 

@@ -45,6 +45,27 @@ export function formatDate(iso: string | Date, locale: "fa" | "en" | "ar" = "fa"
   });
 }
 
+/**
+ * Human relative time, e.g. «۵ دقیقه پیش» / «همین حالا».
+ * Used by the notification center. Falls back to an absolute date for
+ * anything older than 30 days, where "x months ago" stops being useful.
+ */
+export function formatRelativeTime(iso: string | Date, locale: "fa" | "en" | "ar" = "fa"): string {
+  const d = typeof iso === "string" ? new Date(iso) : iso;
+  const diffMs = Date.now() - d.getTime();
+  if (!Number.isFinite(diffMs)) return formatDate(iso, locale);
+  const lang = locale === "fa" ? "fa-IR" : locale === "ar" ? "ar-EG" : "en-US";
+  const rtf = new Intl.RelativeTimeFormat(lang, { numeric: "auto" });
+  const minutes = Math.round(diffMs / 60_000);
+  if (diffMs < 45_000) return rtf.format(0, "minute");
+  if (Math.abs(minutes) < 60) return rtf.format(-minutes, "minute");
+  const hours = Math.round(minutes / 60);
+  if (Math.abs(hours) < 24) return rtf.format(-hours, "hour");
+  const days = Math.round(hours / 24);
+  if (Math.abs(days) <= 30) return rtf.format(-days, "day");
+  return formatDate(iso, locale);
+}
+
 export function cx(...classes: Array<string | false | null | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/input";
+import { Label, Textarea } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toaster";
 import { Badge } from "@/components/ui/badge";
 import type { Dict } from "@/lib/i18n/dictionaries/fa";
@@ -46,7 +46,9 @@ export function ImportForm({ dict }: { dict: Dict }) {
 
   return (
     <div className="space-y-4">
+      <Label htmlFor="import-text">{dict.products.importHelp}</Label>
       <Textarea
+        id="import-text"
         value={text}
         onChange={(e) => setText(e.target.value)}
         rows={10}

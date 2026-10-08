@@ -8,6 +8,7 @@ import {
 } from "@/lib/auth/session";
 import { loginSchema, signupSchema } from "@/lib/validation/schemas";
 import { clientId, rateLimit } from "@/lib/security/rate-limit";
+import { readJsonBody } from "@/lib/utils/http";
 import { uniqueSlug } from "@/lib/utils/slug";
 import { encrypt } from "@/lib/security/crypto";
 
@@ -20,8 +21,11 @@ async function handleLogin(req: NextRequest) {
     return NextResponse.json({ error: { code: "rate_limited", message: "too many attempts" } }, { status: 429 });
   }
 
-  const body = await req.json().catch(() => null);
-  const parsed = loginSchema.safeParse(body);
+  const bodyRes = await readJsonBody(req, 20_000);
+  if (!bodyRes.ok) {
+    return NextResponse.json({ error: { code: bodyRes.error } }, { status: bodyRes.status });
+  }
+  const parsed = loginSchema.safeParse(bodyRes.json);
   if (!parsed.success) {
     return NextResponse.json({ error: { code: "invalid_input", message: "invalidCredentials" } }, { status: 400 });
   }
@@ -52,8 +56,11 @@ async function handleSignup(req: NextRequest) {
   if (!rl.ok) {
     return NextResponse.json({ error: { code: "rate_limited" } }, { status: 429 });
   }
-  const body = await req.json().catch(() => null);
-  const parsed = signupSchema.safeParse(body);
+  const bodyRes = await readJsonBody(req, 20_000);
+  if (!bodyRes.ok) {
+    return NextResponse.json({ error: { code: bodyRes.error } }, { status: bodyRes.status });
+  }
+  const parsed = signupSchema.safeParse(bodyRes.json);
   if (!parsed.success) {
     return NextResponse.json({ error: { code: "invalid_input" } }, { status: 400 });
   }

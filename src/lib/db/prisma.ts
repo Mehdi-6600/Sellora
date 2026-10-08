@@ -106,7 +106,7 @@ function buildPgClient(pool: Pool) {
       let i = 1;
       for (const [k, v] of Object.entries(obj)) {
         if (v === undefined) continue;
-        const col = k.replace(/[A-Z]/g, (m) => "_" + m.toLowerCase()).replace(/^_/, "");
+        const _col = k.replace(/[A-Z]/g, (m) => "_" + m.toLowerCase()).replace(/^_/, "");
         // Map common camelCase columns that we actually keep in DB as camelCase (we used quoted identifiers with Prisma names)
         const dbCol = '"' + k + '"';
         cols.push(dbCol);
@@ -207,7 +207,7 @@ function buildPgClient(pool: Pool) {
     async function runFind(sql: string, vals: any[], args: any) {
       const r = await pool.query(sql, vals);
       if (r.rowCount === 0) return null;
-      let row = snakeToCamelRow(r.rows[0]);
+      const row = snakeToCamelRow(r.rows[0]);
       if (args?.include) {
         for (const [rel, flag] of Object.entries(args.include)) {
           if (!flag) continue;
@@ -276,7 +276,7 @@ function buildPgClient(pool: Pool) {
           const o = toValues(args.data);
           return { cols: o.cols.map((c, i) => c + " = " + o.placeholders[i]), vals: o.vals };
         })();
-        const { sql: wsql, vals: wvals, nextIdx } = whereClause(args.where, setVals.length + 1);
+        const { sql: wsql, vals: wvals, nextIdx: _nextIdx } = whereClause(args.where, setVals.length + 1);
         const sql = "UPDATE " + tname + " SET " + cols.join(",") + wsql + " RETURNING *";
         const r = await pool.query(sql, [...setVals, ...wvals]);
         return r.rows[0] ? snakeToCamelRow(r.rows[0]) : null;

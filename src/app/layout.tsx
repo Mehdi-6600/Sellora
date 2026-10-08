@@ -1,17 +1,68 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { getServerDict } from "@/lib/i18n";
-import { Toaster } from "@/components/ui/toaster";
+import { ToastProvider } from "@/components/ui/toaster";
+import {
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  SITE_NAME_LATIN,
+  absolute,
+  siteUrl,
+} from "@/lib/config/site";
+
+const DEFAULT_TITLE = `${SITE_NAME} — فروشنده و پشتیبان خودکار اینستاگرام`;
 
 export const metadata: Metadata = {
-  title: "Sellora — فروشنده شما در اینستاگرام",
-  description: "سلورا؛ فروشنده و پشتیبان خودکار اینستاگرام برای کسب‌وکارهای کوچک.",
+  metadataBase: new URL(siteUrl()),
+  title: { default: DEFAULT_TITLE, template: `%s | ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME_LATIN, url: siteUrl() }],
+  creator: SITE_NAME_LATIN,
+  publisher: SITE_NAME_LATIN,
+  category: "business",
+  formatDetection: { telephone: false, address: false, email: false },
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "fa_IR",
+    url: absolute("/"),
+    siteName: SITE_NAME,
+    title: DEFAULT_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: absolute("/og.jpg"),
+        width: 1200,
+        height: 630,
+        alt: DEFAULT_TITLE,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: DEFAULT_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [absolute("/og.jpg")],
+  },
+  robots: { index: true, follow: true },
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "48x48" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  manifest: "/site.webmanifest",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#ffffff",
+  themeColor: "#e01d5a",
+  colorScheme: "light",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -19,15 +70,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        {/* Self-hosted Vazirmatn (SIL OFL 1.1, see public/fonts/OFL.txt).
+            One variable woff2 covers weights 100–900 and replaces the
+            previously render-blocking third-party stylesheet from jsdelivr. */}
         <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/vazirmatn@33.0.3/Vazirmatn-font-face.css"
+          rel="preload"
+          href="/fonts/vazirmatn-var.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
         />
       </head>
       <body className="min-h-screen bg-ink-50 text-ink-900 antialiased">
-        {children}
-        <Toaster />
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );

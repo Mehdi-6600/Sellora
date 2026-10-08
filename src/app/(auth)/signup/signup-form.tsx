@@ -41,20 +41,20 @@ export function SignupForm({ dict }: { dict: Dict }) {
   return (
     <form onSubmit={submit} className="space-y-4">
       <div>
-        <Label>{dict.auth.businessName}</Label>
-        <Input required value={state.businessName} onChange={(e) => setState({ ...state, businessName: e.target.value })} placeholder="مثلا: فروشگاه مانتو آوا" />
+        <Label htmlFor="signup-business">{dict.auth.businessName}</Label>
+        <Input id="signup-business" name="businessName" required value={state.businessName} onChange={(e) => setState({ ...state, businessName: e.target.value })} placeholder="مثلا: فروشگاه مانتو آوا" />
       </div>
       <div>
-        <Label>{dict.auth.name}</Label>
-        <Input required value={state.name} onChange={(e) => setState({ ...state, name: e.target.value })} placeholder="نام شما" />
+        <Label htmlFor="signup-name">{dict.auth.name}</Label>
+        <Input id="signup-name" name="name" autoComplete="name" required value={state.name} onChange={(e) => setState({ ...state, name: e.target.value })} placeholder="نام شما" />
       </div>
       <div>
-        <Label>{dict.auth.email}</Label>
-        <Input type="email" dir="ltr" required value={state.email} onChange={(e) => setState({ ...state, email: e.target.value })} placeholder="you@example.com" />
+        <Label htmlFor="signup-email">{dict.auth.email}</Label>
+        <Input id="signup-email" name="email" autoComplete="email" type="email" dir="ltr" required value={state.email} onChange={(e) => setState({ ...state, email: e.target.value })} placeholder="you@example.com" />
       </div>
       <div>
-        <Label>{dict.auth.password}</Label>
-        <Input type="password" required minLength={8} value={state.password} onChange={(e) => setState({ ...state, password: e.target.value })} placeholder="حداقل ۸ کاراکتر" />
+        <Label htmlFor="signup-password">{dict.auth.password}</Label>
+        <Input id="signup-password" name="new-password" autoComplete="new-password" type="password" required minLength={8} value={state.password} onChange={(e) => setState({ ...state, password: e.target.value })} placeholder="حداقل ۸ کاراکتر" />
       </div>
       {err && <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2">{err}</div>}
       <Button type="submit" disabled={loading} className="w-full" size="lg">

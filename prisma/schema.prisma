@@ -536,10 +536,12 @@ model Notification {
   kind       String
   title      String
   body       String
+  href       String?
   readAt     DateTime?
   createdAt  DateTime @default(now())
 
   business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
   @@index([businessId, readAt])
+  @@index([businessId, createdAt])
 }

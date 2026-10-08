@@ -31,6 +31,13 @@ export async function handleInboundMessage(input: {
   const { businessId, igAccountId, igSid, text, igMessageId } = input;
 
     return prisma.$transaction(async (tx: any) => {
+    // Know whether this inbound message opens a brand-new conversation so we
+    // can raise a NEW_CONVERSATION notification (one per conversation, ever).
+    const existingConvo = await tx.conversation.findUnique({
+      where: { businessId_igAccountId_igSid: { businessId, igAccountId, igSid } },
+      select: { id: true },
+    });
+
     // Upsert conversation
     const convo = await tx.conversation.upsert({
       where: { businessId_igAccountId_igSid: { businessId, igAccountId, igSid } },
@@ -218,14 +225,29 @@ export async function handleInboundMessage(input: {
       },
     });
 
-    // Create hot-lead notification
-    if (scored.temperature === "HOT" && prevLead && prevLead.temperature !== "HOT") {
+    // First message of a brand-new conversation → NEW_CONVERSATION notice.
+    if (!existingConvo) {
+      await tx.notification.create({
+        data: {
+          businessId,
+          kind: "conversation.new",
+          title: "گفتگوی جدید با یک مشتری",
+          body: `${convo.customerName || convo.customerUsername || "یک مشتری جدید"} اولین پیام خود را فرستاده است.`,
+          href: `/conversations/${convo.id}`,
+        },
+      });
+    }
+
+    // Create hot-lead notification. Also fires when the very first message of
+    // a new conversation is already high-intent (prevLead === null).
+    if (scored.temperature === "HOT" && (!prevLead || prevLead.temperature !== "HOT")) {
       await tx.notification.create({
         data: {
           businessId,
           kind: "lead.hot",
           title: "مشتری داغ جدید",
           body: `یک مشتری جدید با قصد بالا در گفتگو "${activeProduct?.name ?? convo.customerUsername ?? convo.igSid}" شناسایی شد.`,
+          href: `/conversations/${convo.id}`,
         },
       });
     }
@@ -256,6 +278,7 @@ export async function handleInboundMessage(input: {
           kind: "conversation.needs_owner",
           title: "گفتگو نیاز به بررسی شما دارد",
           body: replyText.slice(0, 120),
+          href: `/conversations/${convo.id}`,
         },
       });
     }

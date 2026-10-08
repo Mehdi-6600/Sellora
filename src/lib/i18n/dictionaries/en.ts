@@ -75,6 +75,14 @@ const en: Dict = {
     score: "Score", reason: "Why hot?", cold: "Cold", warm: "Warm", hot: "Hot",
     viewConversation: "View conversation",
   },
+  notifications: {
+    title: "Notifications",
+    bellAria: "Notifications",
+    unreadWord: "unread",
+    markAllRead: "Mark all read",
+    emptyTitle: "No notifications",
+    emptyDesc: "We'll let you know here when a hot lead is detected, a conversation needs you, or your subscription changes.",
+  },
   settings: {
     business: {
       title: "Business information", address: "Address", phone: "Phone", hours: "Working hours",
@@ -93,8 +101,7 @@ const en: Dict = {
       title: "Subscription", currentPlan: "Current plan", trial: "Trial",
       select: "Choose a plan", bestValue: "Best value",
       weekly: "1 week", monthly: "1 month", quarterly: "3 months",
-      weeklyPrice: "299,000 Toman", monthlyPrice: "899,000 Toman", quarterlyPrice: "2,249,000 Toman",
-      noPayments: "Payment gateway is not enabled in this build. After choosing a plan we'll contact you.",
+      noPayments: "In this version payment is card-to-card with manual review: transfer the amount, submit the tracking code, and the request is reviewed within 24 hours and activated on approval.",
     },
   },
   onboarding: {
@@ -107,6 +114,15 @@ const en: Dict = {
     new: "New", active: "Active", waitingCustomer: "Waiting for customer",
     waitingOwner: "Waiting for you", ownerActive: "You are replying",
     qualified: "Interested", completed: "Completed", expired: "Expired",
+    delivery: {
+      PENDING: "Queued",
+      SENDING: "Sending",
+      SENT: "Sent",
+      FAILED: "Failed",
+      RETRYING: "Retrying",
+      EXPIRED: "Expired",
+      BLOCKED: "Blocked",
+    },
   },
   errors: {
     generic: "Something went wrong. Please try again.",

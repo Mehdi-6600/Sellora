@@ -4,6 +4,7 @@ import { getServerDict } from "@/lib/i18n";
 import { requireAuth } from "@/lib/auth/session";
 import { AppShell } from "@/components/layout/app-shell";
 import { prisma } from "@/lib/db/prisma";
+import { planLabel, subscriptionStatusLabel } from "@/lib/config/subscription";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +38,7 @@ export default async function SettingsPage() {
       href: "/settings/subscription",
       label: dict.nav.subscription,
       desc: sub
-        ? `${sub.plan} — ${sub.status}`
+        ? `${planLabel(sub.plan)} — ${subscriptionStatusLabel(sub.status)}`
         : dict.settings.subscription.trial,
       icon: "💳",
     },
@@ -103,6 +104,16 @@ export default async function SettingsPage() {
                 <path d="m15 18-6-6 6-6" />
               </svg>
             </Link>
+            <Link href="/admin/system" className="card p-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-sky-50 grid place-items-center text-xl">🩺</div>
+              <div className="flex-1">
+                <div className="font-medium">سلامت سیستم</div>
+                <div className="text-xs text-ink-500">کارهای ناموفق، وب‌هوک‌های پردازش‌نشده و پیام‌های گیرکرده</div>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink-400 rtl:rotate-180">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </Link>
           </div>
         </>
       )}
@@ -132,12 +143,17 @@ function AutomationToggle({ enabled }: { enabled: boolean }) {
       <input type="hidden" name="enabled" value={enabled ? "false" : "true"} />
       <button
         type="submit"
-        className={`relative h-7 w-12 rounded-full transition ${enabled ? "bg-emerald-500" : "bg-ink-200"}`}
-        aria-label="toggle automation"
+        role="switch"
+        aria-checked={enabled}
+        aria-label="پاسخ‌گویی خودکار"
+        className={`relative h-7 w-12 rounded-full transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 ${
+          enabled ? "bg-emerald-500" : "bg-ink-200"
+        }`}
       >
         <span
+          aria-hidden="true"
           className={`absolute top-0.5 h-6 w-6 rounded-full bg-white shadow transition-all ${
-            enabled ? "right-0.5" : "right-[calc(100%-1.625rem)]"
+            enabled ? "start-0.5" : "start-[calc(100%-1.625rem)]"
           }`}
         />
       </button>

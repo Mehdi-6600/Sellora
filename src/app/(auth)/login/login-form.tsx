@@ -28,7 +28,14 @@ export function LoginForm({ dict }: { dict: Dict }) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setErr(data.error?.message ? dict.errors[data.error.message as keyof typeof dict.errors] ?? dict.errors.generic : dict.errors.generic);
+        const code = data?.error?.message || data?.error?.code;
+        // The API answers with message:"invalidCredentials" which lives in the
+        // auth dictionary, not the errors dictionary.
+        setErr(
+          code === "invalidCredentials"
+            ? dict.auth.invalidCredentials
+            : (dict.errors as Record<string, string>)[code] ?? dict.errors.generic
+        );
         return;
       }
       toast.push("خوش آمدید!", "success");
@@ -42,12 +49,12 @@ export function LoginForm({ dict }: { dict: Dict }) {
   return (
     <form onSubmit={submit} className="space-y-4">
       <div>
-        <Label>{dict.auth.email}</Label>
-        <Input type="email" dir="ltr" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+        <Label htmlFor="login-email">{dict.auth.email}</Label>
+        <Input id="login-email" name="email" autoComplete="email" type="email" dir="ltr" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
       </div>
       <div>
-        <Label>{dict.auth.password}</Label>
-        <Input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
+        <Label htmlFor="login-password">{dict.auth.password}</Label>
+        <Input id="login-password" name="password" autoComplete="current-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
       </div>
       {err && <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2">{err}</div>}
       <Button type="submit" disabled={loading} className="w-full" size="lg">

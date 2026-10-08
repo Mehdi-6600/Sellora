@@ -80,6 +80,7 @@ export function ChatPanel({
         </div>
         <div className="flex gap-2 items-end pb-1">
           <textarea
+            aria-label={dict.conversations.typingPlaceholder}
             className="input resize-none"
             rows={1}
             placeholder={human ? dict.conversations.typingPlaceholder : "برای ارسال پیام ابتدا گفتگو را تحویل بگیرید"}

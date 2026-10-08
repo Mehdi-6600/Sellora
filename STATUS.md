@@ -1,5 +1,12 @@
 # Sellora — Deployment Readiness Status
 
+> ⚠️ **STALE (2026-10-08):** this document describes branch
+> `arena/4a49fc1e-sellora` and predates the manual payment-review flow, the
+> admin panel, the notification center, the public landing page and the SEO
+> work on `main`. Several claims below no longer match the code (e.g. IDs are
+> `cuid()`, not `gen_random_uuid()`; the database variable is
+> `SELLORA_DATABASE_URL`). See `AUDIT.md` for the current, verified state.
+
 Branch: `arena/4a49fc1e-sellora`
 Date: 2026-10-06 (Asia/Tehran)
 

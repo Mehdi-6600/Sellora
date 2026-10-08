@@ -13,9 +13,8 @@ async function requireAdmin() {
 }
 
 export async function GET(req: Request) {
-  let auth;
   try {
-    auth = await requireAdmin();
+    await requireAdmin();
   } catch (e) {
     if (e instanceof Response) return e;
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });

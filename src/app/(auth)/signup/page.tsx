@@ -1,5 +1,16 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getServerDict } from "@/lib/i18n";
+import { SITE_NAME, absolute } from "@/lib/config/site";
+
+export const metadata: Metadata = {
+  title: `ثبت‌نام | ${SITE_NAME}`,
+  description:
+    "حساب سلورا را بسازید: پاسخ خودکار دایرکت اینستاگرام، شناسایی مشتری داغ و مدیریت محصولات در یک داشبورد ساده.",
+  robots: { index: false, follow: true },
+  alternates: { canonical: "/signup" },
+  openGraph: { url: absolute("/signup"), title: `ثبت‌نام | ${SITE_NAME}` },
+};
 import { SignupForm } from "./signup-form";
 
 export default async function SignupPage() {

@@ -16,7 +16,7 @@ const PUBLIC_PATHS = [
   "/favicon",
 ];
 
-const PROTECTED_PREFIXES = ["/dashboard", "/conversations", "/leads", "/products", "/settings", "/onboarding", "/api/business", "/api/products", "/api/rules", "/api/conversations", "/api/leads", "/api/subscription", "/api/instagram/connect", "/api/instagram/callback", "/api/instagram/disconnect", "/api/instagram/status"];
+const PROTECTED_PREFIXES = ["/dashboard", "/conversations", "/leads", "/products", "/settings", "/onboarding", "/notifications", "/admin", "/api/business", "/api/products", "/api/rules", "/api/conversations", "/api/leads", "/api/subscription", "/api/instagram/connect", "/api/instagram/callback", "/api/instagram/disconnect", "/api/instagram/status"];
 
 function hasSession(req: NextRequest): boolean {
   return !!req.cookies.get("sellora_session")?.value;
@@ -52,13 +52,9 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Redirect root to dashboard (or login if not authed)
-  if (pathname === "/" || pathname === "") {
-    const url = req.nextUrl.clone();
-    url.pathname = hasSession(req) ? "/dashboard" : "/login";
-    return NextResponse.redirect(url);
-  }
-
+  // "/" is handled by the root page itself: authenticated visitors are
+  // redirected to /dashboard there, anonymous visitors get the public landing
+  // page (which must stay crawlable).
   return res;
 }
 
