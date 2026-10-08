@@ -9,10 +9,15 @@ import { Badge } from "@/components/ui/badge";
 import { formatToman } from "@/lib/utils/format";
 import { Button } from "@/components/ui/button";
 import { ProductActions } from "./product-actions";
+import { ProductForm } from "./product-form";
 
 export const dynamic = "force-dynamic";
 
-export default async function ProductsPage({ searchParams }: { searchParams?: { q?: string } }) {
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams?: { q?: string; new?: string };
+}) {
   const { dict } = await getServerDict();
   let auth;
   try {
@@ -21,6 +26,16 @@ export default async function ProductsPage({ searchParams }: { searchParams?: { 
     redirect("/login");
   }
   const q = (searchParams?.q || "").trim();
+  const creating = searchParams?.new === "1";
+
+  if (creating) {
+    return (
+      <AppShell title={dict.products.addNew} backHref="/products">
+        <ProductForm dict={dict} />
+      </AppShell>
+    );
+  }
+
   const products = await prisma.product.findMany({
     where: {
       businessId: auth.businessId,
@@ -46,9 +61,14 @@ export default async function ProductsPage({ searchParams }: { searchParams?: { 
         </div>
       }
     >
-      <form className="mb-4" action="/products" method="get">
+      <form className="mb-4" action="/products" method="get" role="search">
+        <label htmlFor="product-search" className="sr-only">
+          {dict.common.search}
+        </label>
         <input
+          id="product-search"
           name="q"
+          type="search"
           defaultValue={q}
           placeholder={dict.common.search}
           className="input"
@@ -73,9 +93,21 @@ export default async function ProductsPage({ searchParams }: { searchParams?: { 
             <div key={p.id} className="card p-3 flex items-center gap-3">
               <div className="h-12 w-12 rounded-xl bg-ink-100 flex-shrink-0 overflow-hidden grid place-items-center text-ink-400">
                 {p.imageUrl ? (
+                  // Remote owner-supplied URLs are not in next/image remotePatterns,
+                  // so keep a plain img but make it lazy and CLS-safe.
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={p.imageUrl} alt="" className="h-full w-full object-cover" />
-                ) : "🛍"}
+                  <img
+                    src={p.imageUrl}
+                    alt={p.name}
+                    width={48}
+                    height={48}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <span aria-hidden="true">🛍</span>
+                )}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-ink-900 truncate">{p.name}</div>
