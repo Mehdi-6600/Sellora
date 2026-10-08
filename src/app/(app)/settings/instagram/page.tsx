@@ -14,6 +14,25 @@ import { formatRelativeTime } from "@/lib/utils/format";
 export const dynamic = "force-dynamic";
 
 /**
+ * Messages for the query flags the OAuth callback redirects back with
+ * (GET /api/instagram/callback → /settings/instagram?connected=1 | ?error=…).
+ * Unknown codes fall back to the generic message.
+ */
+const OAUTH_ERROR_MESSAGES: Record<string, string> = {
+  no_instagram_business_account:
+    "هیچ حساب اینستاگرام کسب‌وکاری به صفحه‌های Facebook انتخاب‌شده وصل نبود. حساب اینستاگرام را در تنظیمات به یک Facebook Page وصل کنید (حساب حرفه‌ای)، سپس در صفحه ورود Meta همان صفحه را انتخاب کنید و دوباره تلاش کنید.",
+  access_denied: "اتصال لغو شد یا دسترسی‌های لازم تأیید نشد. برای ادامه، دوباره اتصال را بزنید.",
+  user_denied: "اتصال لغو شد یا دسترسی‌های لازم تأیید نشد. برای ادامه، دوباره اتصال را بزنید.",
+  no_code: "اتصال لغو شد یا دسترسی‌های لازم تأیید نشد. برای ادامه، دوباره اتصال را بزنید.",
+  token_exchange: "دریافت توکن از Meta ناموفق بود. چند دقیقه بعد دوباره تلاش کنید.",
+  state_missing: "نشست اتصال معتبر نیست یا منقضی شده است. از همین صفحه دوباره اتصال را شروع کنید.",
+  state_mismatch: "نشست اتصال معتبر نیست یا منقضی شده است. از همین صفحه دوباره اتصال را شروع کنید.",
+  forbidden: "شما عضو فروشگاه فعال نیستید؛ اتصال انجام نشد.",
+  meta_not_configured: "اپلیکیشن متا در این محیط پیکربندی نشده است.",
+};
+const OAUTH_ERROR_GENERIC = "اتصال کامل نشد. دوباره تلاش کنید؛ اگر تکرار شد، با پشتیبانی تماس بگیرید.";
+
+/**
  * Instagram connection — deliberately one of the most polished screens in the
  * product, because nothing works until this is green.
  *
@@ -21,7 +40,11 @@ export const dynamic = "force-dynamic";
  *              two controls that matter (health check, disconnect).
  * Disconnected: the Sellora character, why it matters and one dominant CTA.
  */
-export default async function InstagramPage() {
+export default async function InstagramPage({
+  searchParams,
+}: {
+  searchParams?: { connected?: string; error?: string };
+}) {
   const { dict, locale } = await getServerDict();
   let auth;
   try {
@@ -42,6 +65,12 @@ export default async function InstagramPage() {
     select: { createdAt: true },
   });
 
+  // Result of the last OAuth round-trip, shown once at the top of the page.
+  const justConnected = searchParams?.connected === "1" && connected;
+  const oauthError = searchParams?.error
+    ? OAUTH_ERROR_MESSAGES[searchParams.error] ?? OAUTH_ERROR_GENERIC
+    : null;
+
   const statusChip = connected
     ? { label: dict.settings.instagram.statusConnected, tone: "green" as const }
     : needsReauth
@@ -57,6 +86,23 @@ export default async function InstagramPage() {
       backHref="/settings"
     >
       <div className="mx-auto w-full max-w-3xl space-y-4">
+        {justConnected ? (
+          <p
+            role="status"
+            className="rounded-2xl border border-emerald-400/25 bg-emerald-400/15 px-4 py-3 text-[12.5px] font-semibold leading-6 text-emerald-300"
+          >
+            حساب اینستاگرام با موفقیت از طریق Meta متصل شد ✅
+          </p>
+        ) : null}
+        {oauthError ? (
+          <p
+            role="alert"
+            className="rounded-2xl border border-red-400/30 bg-red-400/15 px-4 py-3 text-[12.5px] font-medium leading-6 text-red-300"
+          >
+            {oauthError}
+          </p>
+        ) : null}
+
         {/* ================================================ connection card */}
         <section className="card overflow-hidden">
           <div className="relative overflow-hidden bg-premium-gradient p-5 text-white">
@@ -160,6 +206,13 @@ export default async function InstagramPage() {
                   {needsReauth
                     ? "دسترسی قبلی منقضی شده است. اتصال دوباره از طریق ورود رسمی متا انجام می‌شود و کمتر از یک دقیقه وقت می‌گیرد."
                     : "سلورا بدون اتصال نمی‌تواند پیام‌های مشتری‌ها را ببیند یا پاسخ بدهد. اتصال از طریق ورود رسمی متا (Graph API) انجام می‌شود و رمز عبور اینستاگرام شما هرگز ذخیره نمی‌شود."}
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-brand-100 bg-brand-50/60 p-3.5 text-center">
+                <p className="text-[12.5px] font-bold text-ink-900">اتصال رسمی Instagram از طریق Meta</p>
+                <p className="mt-1 text-[11.5px] leading-6 text-ink-600">
+                  برای اتصال Instagram Business، Meta شما را به صفحه ورود Facebook/Meta هدایت می‌کند. بعد از ورود، صفحه‌ای را که حساب اینستاگرام کسب‌وکار به آن وصل است انتخاب کنید.
                 </p>
               </div>
 

@@ -5,7 +5,7 @@ import { requireAuth } from "@/lib/auth/session";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function POST() {
+export async function POST(req: Request) {
   try {
     const auth = await requireAuth();
     await prisma.instagramAccount.update({
@@ -19,7 +19,9 @@ export async function POST() {
         action: "instagram.disconnect",
       },
     });
-    return NextResponse.redirect(new URL("/settings/instagram", process.env.APP_URL || "/"), { status: 303 });
+    // APP_URL is optional in dev: `new URL(path, "/")` throws, so fall back to
+    // the request's own origin (the DB update above has already committed).
+    return NextResponse.redirect(new URL("/settings/instagram", process.env.APP_URL || req.url), { status: 303 });
   } catch (e) {
     if (e instanceof Response) return e;
     return NextResponse.json({ error: "internal" }, { status: 500 });

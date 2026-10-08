@@ -48,6 +48,9 @@ export const SECONDARY_NAV: NavItem[] = [
 export const ACCOUNT_NAV: NavItem[] = [
   { href: "/notifications", label: "اعلان‌ها", Icon: IconBell },
   { href: "/settings", label: "تنظیمات", Icon: IconCog },
+  // Public feature/comparison page — reachable for signed-in owners from the
+  // sidebar and the phone "بیشتر" sheet (both read this list).
+  { href: "/why-sellora", label: "چرا Sellora؟", Icon: IconSparkle },
 ];
 
 /** Everything the phone cannot fit, in one sheet. */
