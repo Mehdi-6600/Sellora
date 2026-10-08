@@ -17,15 +17,7 @@ export const metadata: Metadata = {
   },
 };
 import { PLANS } from "@/lib/config/pricing";
-import { cx, formatToman } from "@/lib/utils/format";
-import { SelloraEmblem, BrandAura } from "@/components/brand/sellora";
-import {
-  IconBolt,
-  IconCheck,
-  IconShield,
-  IconSparkle,
-  IconUser,
-} from "@/components/layout/icons";
+import { formatToman } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -89,15 +81,13 @@ const PLAN_LABELS: Record<string, string> = {
 };
 
 function StatusIcon({ ok }: { ok: boolean }) {
-  return (
-    <span
-      aria-label={ok ? "دارد" : "ندارد"}
-      className={cx(
-        "mx-auto grid h-7 w-7 place-items-center rounded-full",
-        ok ? "bg-emerald-50 text-emerald-600" : "bg-ink-50 text-ink-300"
-      )}
-    >
-      {ok ? <IconCheck size={15} /> : <span aria-hidden="true">—</span>}
+  return ok ? (
+    <span aria-label="دارد" className="text-emerald-600 font-bold text-lg">
+      ✓
+    </span>
+  ) : (
+    <span aria-label="ندارد" className="text-red-400 font-bold text-lg">
+      ✗
     </span>
   );
 }
@@ -110,68 +100,38 @@ function StatusIcon({ ok }: { ok: boolean }) {
 export default function WhySelloraPage() {
   return (
     <PublicShell>
-      {/* ------------------------------------------------------------- hero */}
-      <section className="relative overflow-hidden border-b border-brand-700/20 bg-brand-gradient text-white">
-        <BrandAura />
-        <span aria-hidden="true" className="pointer-events-none absolute -bottom-16 end-6 opacity-15">
-          <SelloraEmblem size={280} tone="white" />
-        </span>
-        <div className="relative mx-auto w-full max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-[11.5px] font-bold ring-1 ring-white/25 backdrop-blur">
-            <IconSparkle size={14} />
-            راهنمای کامل سلورا
-          </span>
-          <h1 className="mt-4 max-w-3xl text-[26px] font-extrabold leading-[1.45] sm:text-[38px]">
+      <section className="bg-gradient-to-br from-brand-600 via-brand-500 to-pink-500 text-white">
+        <div className="mx-auto w-full max-w-5xl px-4 py-14 sm:py-20">
+          <h1 className="text-3xl sm:text-4xl font-extrabold leading-[1.4] mb-4">
             سلورا کارمند فروشی است که ۲۴ ساعته بیدار است
           </h1>
-          <p className="mt-4 max-w-3xl text-[14px] leading-9 text-white/90 sm:text-[15px]">
+          <p className="text-white/90 text-base leading-9 max-w-3xl mb-6">
             به پیام‌های اینستاگرام مشتری‌هایتان خودکار جواب می‌دهد، قیمت و موجودی را از روی
-            محصولات خودتان می‌گوید، مشتری‌های جدی را شناسایی می‌کند و وقتی خوابید یا سرتان شلوغ
-            است، تنهایتان نمی‌گذارد.
+            محصولات خودتان می‌گوید، مشتری‌های جدی را شناسایی می‌کند و وقتی خوابید یا سرتان
+            شلوغ است، تنهایتان نمی‌گذارد.
           </p>
-          <div className="mt-6 max-w-3xl rounded-card border border-white/20 bg-white/12 p-4 text-[13px] leading-8 backdrop-blur">
-            <strong className="font-extrabold">مزیتش چیست؟</strong> دیگر لازم نیست پشت گوشی
-            بایستید، پاسخ‌های تکراری بدهید یا نگران مشتری‌هایی باشید که در دایرکت گم می‌شوند.
-          </div>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/signup"
-              className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-6 text-[14px] font-extrabold text-brand-700 shadow-soft transition hover:bg-brand-50"
-            >
-              شروع رایگان
-            </Link>
-            <Link href="/login" className="btn-glass min-h-[48px] px-6 text-[14px]">
-              ورود به حساب
-            </Link>
+          <div className="bg-white/15 rounded-2xl p-4 text-sm leading-8 backdrop-blur max-w-3xl">
+            <strong>مزیتش چیست؟</strong> دیگر لازم نیست پشت گوشی بایستید، پاسخ‌های تکراری
+            بدهید یا نگران مشتری‌هایی باشید که در دایرکت گم می‌شوند.
           </div>
         </div>
       </section>
 
-      {/* --------------------------------------------------- who & how */}
-      <section className="py-12 sm:py-16" aria-labelledby="who-title">
-        <div className="mx-auto grid w-full max-w-5xl gap-4 px-4 sm:px-6 lg:grid-cols-2">
-          <div className="card p-5 sm:p-6">
-            <span aria-hidden="true" className="icon-tile icon-tile-brand">
-              <IconUser size={20} />
-            </span>
-            <h2 id="who-title" className="mt-3 text-[18px] font-extrabold text-ink-950 sm:text-xl">
+      <section className="py-12 sm:py-16 bg-white" aria-labelledby="who-title">
+        <div className="mx-auto w-full max-w-5xl px-4 grid gap-8 sm:grid-cols-2">
+          <div>
+            <h2 id="who-title" className="text-2xl font-extrabold text-ink-950 mb-4">
               سلورا برای چه کسانی است؟
             </h2>
-            <p className="mt-2 text-[13px] leading-8 text-ink-600">
+            <p className="text-sm leading-8 text-ink-600">
               برای فروشگاه‌های اینستاگرامی که فروش‌شان در دایرکت اتفاق می‌افتد: پوشاک، کیف و
               کفش، اکسسوری، لوازم خانگی کوچک، آرایشی و بهداشتی و هر کسب‌وکاری که روزانه ده‌ها
               پیام تکراری می‌گیرد و می‌خواهد هیچ مشتری‌ای بی‌جواب نماند.
             </p>
           </div>
-
-          <div className="card p-5 sm:p-6">
-            <span aria-hidden="true" className="icon-tile icon-tile-brand">
-              <IconBolt size={20} />
-            </span>
-            <h2 className="mt-3 text-[18px] font-extrabold text-ink-950 sm:text-xl">
-              چطور کار می‌کند؟
-            </h2>
-            <ol className="mt-2 list-decimal space-y-1.5 ps-5 text-[13px] leading-8 text-ink-600">
+          <div>
+            <h2 className="text-2xl font-extrabold text-ink-950 mb-4">چطور کار می‌کند؟</h2>
+            <ol className="text-sm leading-8 text-ink-600 list-decimal pr-5 space-y-1">
               <li>محصولات و اطلاعات کسب‌وکار (آدرس، ارسال، ساعات کاری) را ثبت می‌کنید.</li>
               <li>حساب اینستاگرام کسب‌وکار را از طریق ورود رسمی متا متصل می‌کنید.</li>
               <li>سلورا پیام‌ها را می‌فهمد، جواب می‌دهد و داغ‌ها را با اعلان به شما می‌دهد.</li>
@@ -180,33 +140,27 @@ export default function WhySelloraPage() {
         </div>
       </section>
 
-      {/* -------------------------------------------------------- comparison */}
-      <section className="py-12 sm:py-16" aria-labelledby="compare-title">
-        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
-          <h2 id="compare-title" className="text-[22px] font-extrabold text-ink-950 sm:text-2xl">
-            مقایسه با پاسخ دستی و ربات ساده
+      <section className="py-12 sm:py-16 bg-ink-50" aria-labelledby="compare-title">
+        <div className="mx-auto w-full max-w-5xl px-4">
+          <h2 id="compare-title" className="text-2xl font-extrabold text-ink-950 mb-6">
+            سلورا در برابر راه‌های دیگر
           </h2>
-          <p className="mt-2 text-[13px] leading-7 text-ink-600">
-            این جدول همان چیزی است که در عمل تفاوت ایجاد می‌کند.
-          </p>
-
-          <div className="card mt-6 overflow-hidden">
-            <div className="grid grid-cols-4 border-b border-ink-100/80 bg-canvas-soft/70 text-[11.5px] font-bold">
-              <div className="p-3 text-start text-ink-500">ویژگی</div>
-              <div className="p-3 text-center text-brand-700">سلورا</div>
+          <div className="card overflow-hidden">
+            <div className="grid grid-cols-4 text-xs font-semibold bg-ink-50 border-b border-ink-100">
+              <div className="p-3 text-start">ویژگی</div>
+              <div className="p-3 text-center text-brand-600">سلورا</div>
               <div className="p-3 text-center text-ink-500">دستی</div>
               <div className="p-3 text-center text-ink-500">ربات ساده</div>
             </div>
             {COMPARISON.map((row, i) => (
               <div
                 key={row.label}
-                className={cx(
-                  "grid grid-cols-4 items-center text-[12.5px]",
-                  i < COMPARISON.length - 1 && "border-b border-ink-100/70"
-                )}
+                className={`grid grid-cols-4 text-xs items-center ${
+                  i < COMPARISON.length - 1 ? "border-b border-ink-100" : ""
+                }`}
               >
-                <div className="p-3 text-start font-semibold text-ink-800">{row.label}</div>
-                <div className="bg-brand-50/40 p-3 text-center">
+                <div className="p-3 text-start font-medium text-ink-800">{row.label}</div>
+                <div className="p-3 text-center bg-brand-50/50">
                   <StatusIcon ok={row.sellora} />
                 </div>
                 <div className="p-3 text-center">
@@ -221,25 +175,21 @@ export default function WhySelloraPage() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------------- features */}
-      <section className="py-12 sm:py-16" aria-labelledby="features-title">
-        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
-          <h2 id="features-title" className="text-[22px] font-extrabold text-ink-950 sm:text-2xl">
+      <section className="py-12 sm:py-16 bg-white" aria-labelledby="features-title">
+        <div className="mx-auto w-full max-w-5xl px-4">
+          <h2 id="features-title" className="text-2xl font-extrabold text-ink-950 mb-6">
             سلورا چه کاری انجام می‌دهد؟
           </h2>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             {FEATURES.map((f) => (
               <article key={f.title} className="card p-5">
                 <div className="flex items-start gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-brand-100 bg-brand-50 text-2xl shadow-inset"
-                  >
+                  <div aria-hidden="true" className="text-2xl shrink-0">
                     {f.icon}
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="text-[14px] font-bold text-ink-900">{f.title}</h3>
-                    <p className="mt-1 text-[12.5px] leading-7 text-ink-600">{f.desc}</p>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-ink-900 mb-1">{f.title}</h3>
+                    <p className="text-sm text-ink-600 leading-7">{f.desc}</p>
                   </div>
                 </div>
               </article>
@@ -248,152 +198,107 @@ export default function WhySelloraPage() {
         </div>
       </section>
 
-      {/* ------------------------------------------------------ before/after */}
-      <section className="py-12 sm:py-16" aria-labelledby="before-after-title">
-        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
-          <h2 id="before-after-title" className="text-[22px] font-extrabold text-ink-950 sm:text-2xl">
+      <section className="py-12 sm:py-16 bg-ink-50" aria-labelledby="before-after-title">
+        <div className="mx-auto w-full max-w-5xl px-4">
+          <h2 id="before-after-title" className="text-2xl font-extrabold text-ink-950 mb-6">
             تفاوت را حس کنید
           </h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <div className="card border-red-200/80 bg-red-50/40 p-5">
-              <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-red-800">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="card p-5 border-red-200 bg-red-50/50">
+              <h3 className="font-bold text-red-800 mb-3 flex items-center gap-2">
                 <span aria-hidden="true">😰</span> بدون سلورا
               </h3>
-              <ul className="mt-3 space-y-2 text-[12.5px] leading-7 text-red-700/90">
-                {[
-                  "صبح بیدار می‌شوی، ده‌ها پیام نخونده داری",
-                  "بعضی‌ها دیر جواب می‌گیری و از دست می‌روند",
-                  "قیمت‌ها را دستی می‌دهی و اشتباه پیش می‌آید",
-                  "وقتت صرف جواب‌های تکراری می‌شود",
-                ].map((t) => (
-                  <li key={t} className="flex items-start gap-2">
-                    <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-400" />
-                    {t}
-                  </li>
-                ))}
+              <ul className="text-sm text-red-700/90 leading-8 space-y-1 list-disc pr-5">
+                <li>صبح بیدار می‌شوی، ده‌ها پیام نخونده داری</li>
+                <li>بعضی‌ها دیر جواب می‌گیری و از دست می‌روند</li>
+                <li>قیمت‌ها را دستی می‌دهی و اشتباه پیش می‌آید</li>
+                <li>وقتت صرف جواب‌های تکراری می‌شود</li>
               </ul>
             </div>
-            <div className="card border-emerald-200/80 bg-emerald-50/40 p-5">
-              <h3 className="flex items-center gap-2 text-[14px] font-extrabold text-emerald-800">
+            <div className="card p-5 border-emerald-200 bg-emerald-50/50">
+              <h3 className="font-bold text-emerald-800 mb-3 flex items-center gap-2">
                 <span aria-hidden="true">🚀</span> با سلورا
               </h3>
-              <ul className="mt-3 space-y-2 text-[12.5px] leading-7 text-emerald-800/90">
-                {[
-                  "صبح بیدار می‌شوی، سلورا همه را جواب داده",
-                  "فقط داغ‌ها را پیگیری می‌کنی و سفارش می‌گیری",
-                  "قیمت‌ها همیشه از دیتابیس خودت درست است",
-                  "وقتت صرف فروش و رشد می‌شود",
-                ].map((t) => (
-                  <li key={t} className="flex items-start gap-2">
-                    <IconCheck size={15} className="mt-1 shrink-0 text-emerald-600" />
-                    {t}
-                  </li>
-                ))}
+              <ul className="text-sm text-emerald-700/90 leading-8 space-y-1 list-disc pr-5">
+                <li>صبح بیدار می‌شوی، سلورا همه را جواب داده</li>
+                <li>فقط داغ‌ها را پیگیری می‌کنی و سفارش می‌گیری</li>
+                <li>قیمت‌ها همیشه از دیتابیس خودت درست است</li>
+                <li>وقتت صرف فروش و رشد می‌شود</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* -------------------------------------------------------- principles */}
-      <section className="py-12 sm:py-16" aria-labelledby="principles-title">
-        <div className="mx-auto w-full max-w-3xl px-4 sm:px-6">
-          <h2 id="principles-title" className="text-[22px] font-extrabold text-ink-950 sm:text-2xl">
+      <section className="py-12 sm:py-16 bg-white" aria-labelledby="principles-title">
+        <div className="mx-auto w-full max-w-3xl px-4">
+          <h2 id="principles-title" className="text-2xl font-extrabold text-ink-950 mb-6">
             اصل‌های ما درباره داده و امنیت
           </h2>
-          <ul className="mt-6 space-y-3">
-            {[
-              {
-                t: "جداسازی کامل tenant:",
-                d: "هر فروشگاه فقط داده‌های خودش را می‌بیند؛ این جداسازی در همه‌ی پرس‌وجوها و APIها اعمال می‌شود.",
-              },
-              {
-                t: "بدون ذخیره رمز اینستاگرام:",
-                d: "اتصال فقط از طریق OAuth رسمی متا است و توکن دسترسی با AES-256-GCM رمزنگاری می‌شود.",
-              },
-              {
-                t: "صداقت در پاسخ:",
-                d: "سلورا قیمت، موجودی یا سیاستی را از خودش نمی‌سازد؛ اگر نداند، می‌گوید نمی‌دانم.",
-              },
-              {
-                t: "کنترل دست شما:",
-                d: "هر گفتگو هر لحظه قابل تحویل گرفتن است و پاسخ خودکار با یک دکمه متوقف می‌شود.",
-              },
-            ].map((p) => (
-              <li key={p.t} className="card flex items-start gap-3 p-4">
-                <span aria-hidden="true" className="icon-tile icon-tile-brand shrink-0">
-                  <IconShield size={18} />
-                </span>
-                <p className="text-[12.5px] leading-8 text-ink-700">
-                  <strong className="font-extrabold text-ink-900">{p.t}</strong> {p.d}
-                </p>
-              </li>
-            ))}
+          <ul className="space-y-3 text-sm leading-8 text-ink-700">
+            <li className="card p-4">
+              <strong>جداسازی کامل tenant:</strong> هر فروشگاه فقط داده‌های خودش را می‌بیند؛ این
+              جداسازی در همه‌ی پرس‌وجوها و APIها اعمال می‌شود.
+            </li>
+            <li className="card p-4">
+              <strong>بدون ذخیره رمز اینستاگرام:</strong> اتصال فقط از طریق OAuth رسمی متا است و
+              توکن دسترسی با AES-256-GCM رمزنگاری می‌شود.
+            </li>
+            <li className="card p-4">
+              <strong>صداقت در پاسخ:</strong> سلورا قیمت، موجودی یا سیاستی را از خودش نمی‌سازد؛
+              اگر نداند، می‌گوید نمی‌دانم.
+            </li>
+            <li className="card p-4">
+              <strong>کنترل دست شما:</strong> هر گفتگو هر لحظه قابل تحویل گرفتن است و پاسخ خودکار
+              با یک دکمه متوقف می‌شود.
+            </li>
           </ul>
         </div>
       </section>
 
-      {/* ----------------------------------------------------------- pricing */}
-      <section className="py-12 sm:py-16" aria-labelledby="pricing-link-title">
-        <div className="mx-auto w-full max-w-3xl px-4 sm:px-6">
-          <h2 id="pricing-link-title" className="text-[22px] font-extrabold text-ink-950 sm:text-2xl">
+      <section className="py-12 sm:py-16 bg-ink-50" aria-labelledby="pricing-link-title">
+        <div className="mx-auto w-full max-w-3xl px-4">
+          <h2 id="pricing-link-title" className="text-2xl font-extrabold text-ink-950 mb-6">
             قیمت‌ها
           </h2>
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-3 mb-6">
             {PLANS.map((p) => (
-              <div
-                key={p.id}
-                className={cx(
-                  "rounded-card border p-4 text-center",
-                  p.badge
-                    ? "border-brand-200 bg-white shadow-glowSoft ring-1 ring-brand-100"
-                    : "border-ink-100/90 bg-white shadow-card"
-                )}
-              >
-                <div className="text-[13px] font-bold text-ink-800">{PLAN_LABELS[p.id]}</div>
-                <div className="tnum mt-2 text-[19px] font-extrabold text-ink-950">
-                  {formatToman(p.price * 10)}{" "}
-                  <span className="text-[11px] font-semibold text-ink-400">تومان</span>
+              <div key={p.id} className="card p-4 text-center">
+                <div className="text-sm font-semibold text-ink-700">{PLAN_LABELS[p.id]}</div>
+                <div className="text-lg font-extrabold text-ink-950 mt-1">
+                  {formatToman(p.price * 10)} <span className="text-xs font-medium text-ink-500">تومان</span>
                 </div>
-                {p.badge ? (
-                  <div className="chip mx-auto mt-2 bg-brand-600 text-white">{p.badge}</div>
-                ) : null}
+                {p.badge && <div className="chip bg-brand-50 text-brand-700 mt-2">{p.badge}</div>}
               </div>
             ))}
           </div>
-          <p className="mt-4 text-[12px] leading-7 text-ink-500">
-            پرداخت در این نسخه کارت‌به‌کارت و با بررسی دستی است؛ پس از ثبت کد رهگیری، درخواست
-            حداکثر تا ۲۴ ساعت بررسی و در صورت تأیید فعال می‌شود.
+          <p className="text-xs text-ink-500 leading-6">
+            پرداخت در این نسخه کارت‌به‌کارت و با بررسی دستی است؛ پس از ثبت کد رهگیری، درخواست حداکثر
+            تا ۲۴ ساعت بررسی و در صورت تأیید فعال می‌شود.
           </p>
         </div>
       </section>
 
-      {/* --------------------------------------------------------- final CTA */}
-      <section className="py-12 sm:py-16">
-        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
-          <div className="relative overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient p-7 text-center text-white shadow-glowSoft sm:p-10">
-            <BrandAura />
-            <span aria-hidden="true" className="relative mx-auto mb-4 block w-fit">
-              <SelloraEmblem size={104} tone="white" />
-            </span>
-            <h2 className="relative text-[22px] font-extrabold leading-relaxed sm:text-3xl">
-              همین امروز شروع کنید
-            </h2>
-            <p className="relative mx-auto mt-3 max-w-xl text-[13px] leading-8 text-white/85 sm:text-[14px]">
-              ثبت‌نام رایگان است و فقط ایمیل لازم دارد. برای روشن شدن پاسخ خودکار، اتصال
-              اینستاگرام کسب‌وکار و افزودن محصولات را کامل کنید.
-            </p>
-            <div className="relative mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link
-                href="/signup"
-                className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-7 text-[14px] font-extrabold text-brand-700 shadow-soft transition hover:bg-brand-50"
-              >
-                شروع رایگان
-              </Link>
-              <Link href="/login" className="btn-glass min-h-[48px] px-7 text-[14px]">
-                ورود
-              </Link>
-            </div>
+      <section className="py-12 sm:py-16 bg-gradient-to-br from-ink-900 to-ink-800 text-white">
+        <div className="mx-auto w-full max-w-3xl px-4 text-center">
+          <h2 className="text-2xl font-extrabold mb-3">همین امروز شروع کنید</h2>
+          <p className="text-sm text-white/75 mb-6 leading-7 max-w-xl mx-auto">
+            ثبت‌نام رایگان است و فقط ایمیل لازم دارد. برای روشن شدن پاسخ خودکار، اتصال اینستاگرام
+            کسب‌وکار و افزودن محصولات را کامل کنید.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/signup"
+              className="inline-flex items-center justify-center rounded-xl bg-white text-ink-900 px-6 min-h-[48px] font-bold hover:bg-white/90"
+            >
+              شروع رایگان
+            </Link>
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center rounded-xl bg-white/10 border border-white/20 text-white px-6 min-h-[48px] font-bold hover:bg-white/20"
+            >
+              ورود
+            </Link>
           </div>
         </div>
       </section>

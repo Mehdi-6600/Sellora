@@ -56,15 +56,8 @@ export function SignupForm({ dict }: { dict: Dict }) {
         <Label htmlFor="signup-password">{dict.auth.password}</Label>
         <Input id="signup-password" name="new-password" autoComplete="new-password" type="password" required minLength={8} value={state.password} onChange={(e) => setState({ ...state, password: e.target.value })} placeholder="حداقل ۸ کاراکتر" />
       </div>
-      {err && (
-        <div
-          role="alert"
-          className="rounded-2xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-[12.5px] font-medium text-red-700"
-        >
-          {err}
-        </div>
-      )}
-      <Button type="submit" loading={loading} className="w-full" size="lg">
+      {err && <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2">{err}</div>}
+      <Button type="submit" disabled={loading} className="w-full" size="lg">
         {loading ? dict.common.loading : dict.auth.signup}
       </Button>
     </form>

@@ -9,7 +9,6 @@ const fa = {
   nav: {
     dashboard: "داشبورد",
     conversations: "گفتگوها",
-    automations: "خودکارسازی",
     leads: "مشتری‌های داغ",
     products: "محصولات",
     settings: "تنظیمات",

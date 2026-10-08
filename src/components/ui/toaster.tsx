@@ -20,12 +20,6 @@ export function useToast() {
   return React.useContext(ToastContext);
 }
 
-const ICONS: Record<Toast["tone"], string> = {
-  info: "ℹ️",
-  success: "✅",
-  error: "⚠️",
-};
-
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = React.useState<Toast[]>([]);
 
@@ -43,22 +37,19 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       <div
         role="status"
         aria-live="polite"
-        className="pointer-events-none fixed inset-x-3 top-3 z-50 flex flex-col items-center gap-2 sm:inset-x-auto sm:top-4 sm:end-4 sm:items-end"
+        className="fixed top-3 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-[min(90vw,420px)] pointer-events-none"
       >
         {toasts.map((t) => (
           <div
             key={t.id}
             className={cx(
-              "animate-fade-up pointer-events-auto flex w-[min(92vw,420px)] items-start gap-2.5 rounded-2xl border px-4 py-3 text-[13px] font-medium shadow-raised backdrop-blur",
-              t.tone === "success" && "border-emerald-200/80 bg-emerald-50/95 text-emerald-900",
-              t.tone === "error" && "border-red-200/80 bg-red-50/95 text-red-900",
-              t.tone === "info" && "border-ink-200/70 bg-white/95 text-ink-800"
+              "rounded-xl px-4 py-3 text-sm shadow-soft border",
+              t.tone === "success" && "bg-emerald-50 border-emerald-200 text-emerald-800",
+              t.tone === "error" && "bg-red-50 border-red-200 text-red-800",
+              t.tone === "info" && "bg-white border-ink-200 text-ink-800"
             )}
           >
-            <span aria-hidden="true" className="text-base leading-5">
-              {ICONS[t.tone]}
-            </span>
-            <span className="flex-1 leading-6">{t.message}</span>
+            {t.message}
           </div>
         ))}
       </div>

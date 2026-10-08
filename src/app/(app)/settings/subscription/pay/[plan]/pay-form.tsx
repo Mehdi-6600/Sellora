@@ -16,7 +16,6 @@ export function PayForm({ planId }: { planId: "WEEKLY" | "MONTHLY" | "QUARTERLY"
     e.preventDefault();
     setError(null);
 
-    // Unchanged behaviour: the raw code the owner typed is what gets submitted.
     const code = trackingCode.trim();
     if (code.length < 6 || code.length > 30) {
       setError("کد رهگیری باید بین ۶ تا ۳۰ کاراکتر باشد.");
@@ -45,7 +44,7 @@ export function PayForm({ planId }: { planId: "WEEKLY" | "MONTHLY" | "QUARTERLY"
 
   return (
     <form onSubmit={onSubmit}>
-      <Card className="space-y-4 p-4 sm:p-5">
+      <Card className="p-4 space-y-4">
         <div>
           <Label htmlFor="trackingCode">کد رهگیری واریز</Label>
           <Input
@@ -54,26 +53,23 @@ export function PayForm({ planId }: { planId: "WEEKLY" | "MONTHLY" | "QUARTERLY"
             placeholder="مثلاً ۱۲۳۴۵۶۷۸"
             value={trackingCode}
             onChange={(e) => setTrackingCode(e.target.value)}
-            inputMode="numeric"
             dir="ltr"
             maxLength={30}
             required
-            className="text-center font-mono text-[15px] tracking-widest"
           />
-          <p className="help">این کد پس از واریز، توسط بانک به شما داده می‌شود.</p>
+          <p className="text-xs text-ink-500 mt-1.5 leading-5">
+            این کد پس از واریز، توسط بانک به شما داده می‌شود.
+          </p>
         </div>
 
         {error && (
-          <div
-            role="alert"
-            className="rounded-2xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-[12.5px] font-medium text-red-700"
-          >
+          <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
             {error}
           </div>
         )}
 
-        <Button type="submit" loading={loading} disabled={loading} className="w-full" size="lg">
-          {loading ? "در حال ثبت…" : "ثبت درخواست پرداخت"}
+        <Button type="submit" disabled={loading} className="w-full" size="lg">
+          {loading ? "در حال ثبت..." : "ثبت درخواست پرداخت"}
         </Button>
       </Card>
     </form>

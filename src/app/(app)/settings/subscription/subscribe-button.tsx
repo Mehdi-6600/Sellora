@@ -4,13 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-export function SubscribeButton({
-  planId,
-  variant = "secondary",
-}: {
-  planId: "WEEKLY" | "MONTHLY" | "QUARTERLY";
-  variant?: "primary" | "secondary";
-}) {
+export function SubscribeButton({ planId }: { planId: "WEEKLY" | "MONTHLY" | "QUARTERLY" }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -22,12 +16,11 @@ export function SubscribeButton({
   return (
     <Button
       onClick={goToPay}
-      loading={loading}
-      className="mt-4 w-full"
-      variant={variant}
-      size="md"
+      disabled={loading}
+      className="w-full mt-3"
+      variant={planId === "QUARTERLY" ? "primary" : "secondary"}
     >
-      {loading ? "در حال انتقال…" : "انتخاب این پلن"}
+      {loading ? "در حال انتقال..." : "انتخاب این پلن"}
     </Button>
   );
 }

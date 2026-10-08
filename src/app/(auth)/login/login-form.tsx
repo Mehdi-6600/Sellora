@@ -56,15 +56,8 @@ export function LoginForm({ dict }: { dict: Dict }) {
         <Label htmlFor="login-password">{dict.auth.password}</Label>
         <Input id="login-password" name="password" autoComplete="current-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
       </div>
-      {err && (
-        <div
-          role="alert"
-          className="rounded-2xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-[12.5px] font-medium text-red-700"
-        >
-          {err}
-        </div>
-      )}
-      <Button type="submit" loading={loading} className="w-full" size="lg">
+      {err && <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2">{err}</div>}
+      <Button type="submit" disabled={loading} className="w-full" size="lg">
         {loading ? dict.common.loading : dict.auth.login}
       </Button>
     </form>

@@ -6,8 +6,8 @@ import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { Empty } from "@/components/ui/empty";
 import { Badge } from "@/components/ui/badge";
-import { formatToman, toPersianDigits } from "@/lib/utils/format";
-import { IconPlus, IconSearch, IconUpload } from "@/components/layout/icons";
+import { formatToman } from "@/lib/utils/format";
+import { Button } from "@/components/ui/button";
 import { ProductActions } from "./product-actions";
 import { ProductForm } from "./product-form";
 
@@ -30,14 +30,8 @@ export default async function ProductsPage({
 
   if (creating) {
     return (
-      <AppShell
-        title={dict.products.addNew}
-        subtitle="قیمت و موجودی همین‌جا تعیین می‌شود؛ سلورا از همین داده‌ها پاسخ می‌دهد."
-        backHref="/products"
-      >
-        <div className="mx-auto w-full max-w-xl">
-          <ProductForm dict={dict} />
-        </div>
+      <AppShell title={dict.products.addNew} backHref="/products">
+        <ProductForm dict={dict} />
       </AppShell>
     );
   }
@@ -53,169 +47,80 @@ export default async function ProductsPage({
     take: 500,
   });
 
-  const available = products.filter((p: any) => p.status === "AVAILABLE").length;
-
   return (
     <AppShell
       title={dict.products.title}
-      subtitle="قیمت و موجودی‌ای که سلورا به مشتری‌ها می‌گوید"
-      wide
       actions={
-        <div className="flex items-center gap-2">
-          <Link
-            href="/products/import"
-            className="btn-secondary hidden min-h-[40px] px-3 py-2 text-[12px] sm:inline-flex"
-          >
-            <IconUpload size={16} />
+        <div className="flex gap-2">
+          <Link href="/products/import" className="btn-secondary text-xs" style={{ padding: "0.5rem 0.75rem" }}>
             {dict.products.import}
           </Link>
-          <Link
-            href="/products?new=1"
-            aria-label={dict.products.addNew}
-            className="btn-primary min-h-[40px] px-3 py-2 text-[12px]"
-          >
-            <IconPlus size={16} />
-            <span className="hidden sm:inline">{dict.products.addNew}</span>
+          <Link href="/products?new=1" className="btn-primary text-xs" style={{ padding: "0.5rem 0.75rem" }}>
+            + {dict.products.addNew}
           </Link>
         </div>
       }
     >
-      <div className="mx-auto w-full max-w-3xl space-y-4">
-        {/* ------------------------------------------------------ search + count */}
-        <div className="flex items-center gap-2">
-          <form className="relative flex-1" action="/products" method="get" role="search">
-            <label htmlFor="product-search" className="sr-only">
-              {dict.common.search}
-            </label>
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 start-3 grid place-items-center text-ink-400"
-            >
-              <IconSearch size={18} />
-            </span>
-            <input
-              id="product-search"
-              name="q"
-              type="search"
-              defaultValue={q}
-              placeholder="جستجو در نام محصول…"
-              className="input ps-10"
-            />
-          </form>
-          {q ? (
-            <Link href="/products" className="btn-secondary min-h-[48px] px-3 text-[12px]">
-              پاک کردن
-            </Link>
-          ) : null}
+      <form className="mb-4" action="/products" method="get" role="search">
+        <label htmlFor="product-search" className="sr-only">
+          {dict.common.search}
+        </label>
+        <input
+          id="product-search"
+          name="q"
+          type="search"
+          defaultValue={q}
+          placeholder={dict.common.search}
+          className="input"
+        />
+      </form>
+
+      {products.length === 0 ? (
+        <Empty
+          title={dict.products.title}
+          subtitle="هنوز محصولی ثبت نشده است. اولین محصول خود را اضافه کنید تا سلورا بتواند پاسخ‌گو باشد."
+          action={
+            <div className="flex gap-2 mt-2">
+              <Link href="/products/import">
+                <Button variant="secondary" size="sm">{dict.products.import}</Button>
+              </Link>
+            </div>
+          }
+        />
+      ) : (
+        <div className="space-y-2">
+          {products.map((p: any) => (
+            <div key={p.id} className="card p-3 flex items-center gap-3">
+              <div className="h-12 w-12 rounded-xl bg-ink-100 flex-shrink-0 overflow-hidden grid place-items-center text-ink-400">
+                {p.imageUrl ? (
+                  // Remote owner-supplied URLs are not in next/image remotePatterns,
+                  // so keep a plain img but make it lazy and CLS-safe.
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={p.imageUrl}
+                    alt={p.name}
+                    width={48}
+                    height={48}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <span aria-hidden="true">🛍</span>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-semibold text-ink-900 truncate">{p.name}</div>
+                <div className="text-sm text-ink-500">{formatToman(p.price)} تومان</div>
+              </div>
+              <Badge tone={p.status === "AVAILABLE" ? "green" : "red"}>
+                {p.status === "AVAILABLE" ? dict.common.available : dict.common.unavailable}
+              </Badge>
+              <ProductActions productId={p.id} currentStatus={p.status} />
+            </div>
+          ))}
         </div>
-
-        {products.length > 0 ? (
-          <div className="flex items-center justify-between px-1">
-            <span className="text-[12px] font-semibold text-ink-500">
-              <span className="tnum">{toPersianDigits(products.length)}</span> محصول
-            </span>
-            <Badge tone="green">
-              <span className="tnum">{toPersianDigits(available)}</span> موجود
-            </Badge>
-          </div>
-        ) : null}
-
-        {/* ---------------------------------------------------------- the list */}
-        {products.length === 0 ? (
-          q ? (
-            <Empty
-              title="محصولی با این نام پیدا نشد"
-              subtitle={`هیچ محصولی با «${q}» مطابقت نداشت. می‌توانید جستجو را پاک کنید یا همین محصول را تازه اضافه کنید.`}
-              nextStep="افزودن محصول تازه، کمتر از یک دقیقه وقت می‌برد."
-              icon={<IconSearch size={22} />}
-              action={
-                <div className="flex w-full flex-col gap-2 sm:flex-row">
-                  <Link href="/products?new=1" className="btn-primary w-full">
-                    <IconPlus size={17} />
-                    {dict.products.addNew}
-                  </Link>
-                  <Link href="/products" className="btn-secondary w-full">
-                    {dict.common.cancel}
-                  </Link>
-                </div>
-              }
-            />
-          ) : (
-            <Empty
-              title="هنوز محصولی ثبت نشده است"
-              subtitle="سلورا قیمت و موجودی را از محصولات ثبت‌شده‌ی شما می‌خواند؛ بدون آن، به سوال «قیمت چند؟» باید خودتان جواب بدهید."
-              nextStep="اولین محصول را اضافه کنید یا فهرست آماده‌تان را یک‌جا وارد کنید."
-              icon={<IconPlus size={22} />}
-              action={
-                <div className="flex w-full flex-col gap-2 sm:flex-row">
-                  <Link href="/products?new=1" className="btn-primary w-full">
-                    <IconPlus size={17} />
-                    {dict.products.addNew}
-                  </Link>
-                  <Link href="/products/import" className="btn-secondary w-full">
-                    <IconUpload size={17} />
-                    {dict.products.import}
-                  </Link>
-                </div>
-              }
-            />
-          )
-        ) : (
-          <ul className="space-y-2">
-            {products.map((p: any) => (
-              <li
-                key={p.id}
-                className="card flex items-center gap-3 p-3 transition hover:border-brand-200/70 hover:shadow-card-hover"
-              >
-                <div className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-2xl border border-ink-100 bg-canvas-soft text-lg text-ink-400">
-                  {p.imageUrl ? (
-                    // Remote owner-supplied URLs are not in next/image remotePatterns,
-                    // so keep a plain img but make it lazy and CLS-safe.
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={p.imageUrl}
-                      alt={p.name}
-                      width={56}
-                      height={56}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <span aria-hidden="true">🛍</span>
-                  )}
-                </div>
-
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-[13.5px] font-bold text-ink-900">{p.name}</div>
-                  <div className="tnum mt-0.5 text-[12.5px] font-semibold text-ink-600">
-                    {formatToman(p.price)} تومان
-                  </div>
-                  <div className="mt-1.5 flex items-center gap-1.5">
-                    {/* The availability switch next to this row owns the state
-                        label (and the interaction) — no duplicate badge here. */}
-                    {p.variants?.length ? (
-                      <span className="text-[10.5px] text-ink-400">
-                        <span className="tnum">{toPersianDigits(p.variants.length)}</span> تنوع
-                      </span>
-                    ) : null}
-                  </div>
-                </div>
-
-                <ProductActions productId={p.id} currentStatus={p.status} />
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {/* Mobile-only bulk import entry point (header keeps it compact). */}
-        <div className="sm:hidden">
-          <Link href="/products/import" className="btn-secondary w-full min-h-[48px]">
-            <IconUpload size={17} />
-            {dict.products.import}
-          </Link>
-        </div>
-      </div>
+      )}
     </AppShell>
   );
 }

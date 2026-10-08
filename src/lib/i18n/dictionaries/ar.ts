@@ -3,7 +3,7 @@ import type { Dict } from "./fa";
 const ar: Dict = {
   app: { name: "سيلّورا", tagline: "موظف المبيعات وخدمة العملاء على إنستغرام" },
   nav: {
-    dashboard: "لوحة التحكم", conversations: "المحادثات", automations: "الأتمتة", leads: "العملاء المهتمون",
+    dashboard: "لوحة التحكم", conversations: "المحادثات", leads: "العملاء المهتمون",
     products: "المنتجات", settings: "الإعدادات", business: "معلومات المتجر",
     instagram: "ربط إنستغرام", subscription: "الاشتراك",
   },

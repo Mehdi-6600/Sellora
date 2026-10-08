@@ -60,26 +60,17 @@ export function AdminSubscriptionActions({ subscriptionId }: { subscriptionId: s
   }
 
   return (
-    <div className="space-y-2 border-t border-ink-100/80 pt-3">
+    <div className="space-y-2 pt-2 border-t border-ink-100">
       {error && (
-        <div
-          role="alert"
-          className="rounded-2xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-[12px] font-medium text-red-700"
-        >
+        <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
           {error}
         </div>
       )}
 
       {!showReject ? (
         <div className="flex gap-2">
-          <Button
-            onClick={approve}
-            disabled={loading !== null}
-            loading={loading === "approve"}
-            className="flex-1"
-            size="sm"
-          >
-            تأیید
+          <Button onClick={approve} disabled={loading !== null} className="flex-1" size="sm">
+            {loading === "approve" ? "..." : "تأیید"}
           </Button>
           <Button
             onClick={() => setShowReject(true)}
@@ -105,12 +96,11 @@ export function AdminSubscriptionActions({ subscriptionId }: { subscriptionId: s
             <Button
               onClick={reject}
               disabled={loading !== null}
-              loading={loading === "reject"}
               variant="danger"
               className="flex-1"
               size="sm"
             >
-              تأیید رد
+              {loading === "reject" ? "..." : "تأیید رد"}
             </Button>
             <Button
               onClick={() => {

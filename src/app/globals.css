@@ -16,55 +16,21 @@
 :root {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-persian: "Vazirmatn", "IRANSans", "Tahoma", ui-sans-serif, system-ui, sans-serif;
-
-  /* Sellora brand tokens — sampled from the official artwork (public/og.jpg). */
-  --sellora-canvas: #fbf4f6;
-  --sellora-canvas-deep: #f7ebef;
-  --sellora-rose: #f0567f;
-  --sellora-brand: #d6255c;
-  --sellora-brand-strong: #b01447;
-  --sellora-wine: #8e0f39;
-  --sellora-ink: #1d2033;
-  --sellora-hairline: rgba(38, 12, 24, 0.08);
 }
 
 html,
 body {
   padding: 0;
   margin: 0;
-  background-color: var(--sellora-canvas);
-  color: var(--sellora-ink);
+  background: #fafafc;
+  color: #1f2230;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  min-height: 100vh;
-  /* Guards every screen at 320px and above: a single overflowing child can
-     never give the whole page a horizontal scrollbar. */
-  overflow-x: hidden;
 }
 
 html[dir="rtl"] body {
   font-family: var(--font-persian), var(--font-sans);
-}
-
-/* The ambient brand aura behind every screen: two soft rose light sources and
-   one deep-wine vignette, matching the lighting of the reference artwork.
-   Fixed so it never scrolls, pointer-events:none so it never intercepts. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: theme("backgroundImage.canvas-aura");
 }
 
 a {
@@ -72,174 +38,64 @@ a {
   text-decoration: none;
 }
 
-/* Persian numerals line up with Latin metrics inside tables and metric cards. */
-.tnum {
-  font-variant-numeric: tabular-nums;
-}
-
-::selection {
-  background: rgba(214, 37, 92, 0.16);
-  color: var(--sellora-ink);
-}
-
 /* Visible keyboard focus everywhere (WCAG 2.4.7). */
 @layer base {
   :focus-visible {
-    outline: 2px solid #d6255c;
+    outline: 2px solid #f43f74;
     outline-offset: 2px;
-    border-radius: 8px;
-  }
-
-  h1,
-  h2,
-  h3 {
-    text-wrap: balance;
-  }
-
-  p {
-    text-wrap: pretty;
+    border-radius: 4px;
   }
 }
 
 @layer components {
-  /* ---------------------------------------------------------------- buttons */
   .btn {
-    @apply inline-flex select-none items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ease-smooth focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 disabled:pointer-events-none disabled:opacity-55;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 font-medium text-sm transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none;
   }
   .btn-primary {
-    @apply btn border border-brand-700/30 bg-brand-gradient-sheen text-white shadow-brand-btn hover:-translate-y-[1px] hover:brightness-[1.04] hover:shadow-glow active:translate-y-0 active:brightness-[0.98];
+    @apply btn bg-brand-600 text-white hover:bg-brand-700 shadow-soft;
   }
   .btn-secondary {
-    @apply btn border border-ink-200/80 bg-white text-ink-800 shadow-soft hover:-translate-y-[1px] hover:border-brand-200 hover:bg-canvas-soft hover:text-brand-700 active:translate-y-0;
+    @apply btn bg-white text-ink-900 border border-ink-200 hover:bg-ink-50;
   }
   .btn-danger {
-    @apply btn border border-red-700/30 bg-gradient-to-b from-red-500 to-red-600 text-white shadow-soft hover:-translate-y-[1px] hover:from-red-600 hover:to-red-700 active:translate-y-0;
-  }
-  .btn-danger-soft {
-    @apply btn border border-red-200 bg-red-50/80 text-red-700 hover:border-red-300 hover:bg-red-50 active:translate-y-0;
+    @apply btn bg-red-600 text-white hover:bg-red-700;
   }
   .btn-ghost {
-    @apply btn text-ink-600 hover:bg-ink-100/70 hover:text-ink-900;
+    @apply btn text-ink-700 hover:bg-ink-100;
   }
-  .btn-glass {
-    @apply btn border border-white/25 bg-white/15 text-white backdrop-blur hover:bg-white/25;
-  }
-
-  /* ------------------------------------------------------------------ cards */
   .card {
-    @apply rounded-card border border-ink-100/90 bg-white shadow-card;
+    @apply bg-white rounded-2xl shadow-card border border-ink-100;
   }
-  /* Interactive cards: rows, tiles and links that behave like buttons. */
-  .card-link {
-    @apply card transition-all duration-200 ease-smooth hover:-translate-y-[2px] hover:border-brand-200/80 hover:shadow-card-hover active:translate-y-0;
-  }
-  .panel {
-    @apply rounded-card border border-ink-100/70 bg-canvas-soft/80;
-  }
-  .icon-tile {
-    @apply grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-ink-100 bg-ink-50 text-ink-600;
-  }
-  .icon-tile-brand {
-    @apply border-brand-100 bg-brand-50 text-brand-700;
-  }
-  .icon-tile-white {
-    @apply border-white/25 bg-white/15 text-white;
-  }
-
-  /* ----------------------------------------------------------------- fields */
   .input {
-    @apply w-full rounded-2xl border border-ink-200/80 bg-white px-4 py-3 text-sm text-ink-900 shadow-inset transition placeholder:text-ink-400 hover:border-ink-300 focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 disabled:cursor-not-allowed disabled:bg-ink-50;
-    min-height: 48px;
+    @apply w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm text-ink-900 placeholder:text-ink-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100;
   }
   .label {
-    @apply mb-2 block text-[13px] font-semibold text-ink-700;
+    @apply block text-sm font-medium text-ink-700 mb-1.5;
   }
-  .help {
-    @apply mt-1.5 text-xs leading-5 text-ink-500;
-  }
-
-  /* ------------------------------------------------------------------ chips */
   .chip {
-    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold leading-none;
-  }
-
-  /* --------------------------------------------------------- page furniture */
-  .app-container {
-    @apply mx-auto w-full max-w-[30rem] px-4 sm:px-6 lg:max-w-5xl lg:px-8;
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
   }
   .page-shell {
-    @apply mx-auto w-full max-w-[30rem] px-4 pb-28 pt-5 sm:px-6 lg:max-w-5xl lg:px-8 lg:pb-10;
+    @apply mx-auto w-full max-w-md min-h-screen px-4 pb-24 pt-4;
   }
   .page-title {
-    @apply text-[22px] font-extrabold leading-tight tracking-tight text-ink-950 sm:text-2xl;
+    @apply text-xl font-bold text-ink-900;
   }
   .page-subtitle {
-    @apply mt-1 text-sm leading-6 text-ink-500;
+    @apply text-sm text-ink-500 mt-1;
   }
   .section-title {
-    @apply mb-3 mt-7 flex items-center gap-2 text-[13px] font-bold text-ink-600;
+    @apply text-sm font-semibold text-ink-700 mt-6 mb-2;
   }
-  /* Symmetric fade so the rule reads identically in RTL and LTR. */
-  .section-title::after {
-    content: "";
-    @apply h-px flex-1;
-    background-image: linear-gradient(
-      to right,
-      transparent,
-      rgba(38, 12, 24, 0.12) 45%,
-      transparent
-    );
-  }
-  .divider {
-    @apply my-4 h-px w-full bg-ink-100;
-  }
-
-  /* ------------------------------------------------------------ empty states */
   .empty {
-    @apply card flex flex-col items-center justify-center gap-3 p-8 text-center;
+    @apply card flex flex-col items-center justify-center gap-2 p-10 text-center text-ink-500;
   }
-
-  /* --------------------------------------------------------------- skeletons */
   .skeleton {
-    @apply relative overflow-hidden rounded-xl bg-ink-100/80;
-  }
-  .skeleton::after {
-    content: "";
-    @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent;
-    animation: shimmer 1.6s infinite;
-  }
-  .shimmer-overlay {
-    @apply pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent;
+    @apply bg-ink-100 animate-pulse rounded-lg;
   }
 }
 
-@layer utilities {
-  .glass-bar {
-    background-color: theme("colors.canvas.glass");
-    @apply backdrop-blur-xl;
-  }
-  .glass-dark {
-    background-color: rgba(14, 16, 32, 0.55);
-    @apply backdrop-blur-xl;
-  }
-  .no-scrollbar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  .tnum {
-    font-variant-numeric: tabular-nums;
-  }
-}
-
-/* RTL tweaks (the `rtl:` variant also exists via the Tailwind plugin; this
-   escaped class is kept because it is used as a literal className in a few
-   components). */
+/* RTL tweaks */
 html[dir="rtl"] .rtl\:rotate-180 {
   transform: rotate(180deg);
 }
@@ -247,40 +103,4 @@ html[dir="rtl"] .rtl\:rotate-180 {
 /* Bottom nav safe area for mobile */
 .bottom-nav {
   padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-/* Slim, brand-tinted scrollbars on desktop only — phones keep native ones. */
-@media (min-width: 1024px) {
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(214, 37, 92, 0.28) transparent;
-  }
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: rgba(214, 37, 92, 0.24);
-    border: 3px solid transparent;
-    border-radius: 999px;
-    background-clip: content-box;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(214, 37, 92, 0.4);
-  }
-}
-
-/* Respect the user's motion preference: keep the layout, drop the movement. */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
 }

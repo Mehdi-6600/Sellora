@@ -8,8 +8,7 @@ import { useToast } from "@/components/ui/toaster";
 import { Badge } from "@/components/ui/badge";
 import type { Dict } from "@/lib/i18n/dictionaries/fa";
 import { parseImportInput, type ImportRow } from "@/lib/products/importer";
-import { formatToman, toPersianDigits } from "@/lib/utils/format";
-import { IconCheck, IconClose, IconUpload } from "@/components/layout/icons";
+import { formatToman } from "@/lib/utils/format";
 
 export function ImportForm({ dict }: { dict: Dict }) {
   const [text, setText] = useState("");
@@ -23,10 +22,7 @@ export function ImportForm({ dict }: { dict: Dict }) {
     setPreview(rows);
     const valid = rows.filter((r) => r.valid).length;
     const invalid = rows.length - valid;
-    toast.push(
-      `${valid} ${dict.products.validRows} — ${invalid} ${dict.products.invalidRows}`,
-      invalid ? "error" : "success"
-    );
+    toast.push(`${valid} ${dict.products.validRows} — ${invalid} ${dict.products.invalidRows}`, invalid ? "error" : "success");
   }
 
   async function doImport() {
@@ -48,96 +44,42 @@ export function ImportForm({ dict }: { dict: Dict }) {
     router.refresh();
   }
 
-  const validCount = preview?.filter((r) => r.valid).length ?? 0;
-  const total = preview?.length ?? 0;
-
   return (
-    <div className="space-y-4 pb-4">
-      <div>
-        <Label htmlFor="import-text">{dict.products.importHelp}</Label>
-        <Textarea
-          id="import-text"
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-            setPreview(null);
-          }}
-          rows={9}
-          className="font-mono text-[12.5px] leading-7"
-          placeholder={"مانتو آوا | ۲۴۰۰۰۰ | موجود\nکفش نایک | ۳۹۰۰۰۰ | ناموجود"}
-        />
-      </div>
-
-      <div className="flex flex-col gap-2 sm:flex-row">
-        <Button variant="secondary" onClick={doPreview} disabled={!text.trim()} className="sm:flex-1">
-          {dict.products.parsePreview}
-        </Button>
-        <Button
-          onClick={doImport}
-          disabled={!preview || loading || validCount === 0}
-          loading={loading}
-          className="sm:flex-1"
-        >
-          <IconUpload size={17} />
+    <div className="space-y-4">
+      <Label htmlFor="import-text">{dict.products.importHelp}</Label>
+      <Textarea
+        id="import-text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        rows={10}
+        placeholder={"مانتو آوا | ۲۴۰۰۰۰ | موجود\nکفش نایک | ۳۹۰۰۰۰ | ناموجود"}
+      />
+      <div className="flex gap-2">
+        <Button variant="secondary" onClick={doPreview}>{dict.products.parsePreview}</Button>
+        <Button onClick={doImport} disabled={!preview || loading || preview.every((r) => !r.valid)}>
           {dict.products.saveValid}
         </Button>
       </div>
-
-      {preview && preview.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between px-1">
-            <span className="text-[12px] font-semibold text-ink-500">
-              پیش‌نمایش <span className="tnum">{toPersianDigits(total)}</span> ردیف
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Badge tone="green">
-                <IconCheck size={12} />
-                <span className="tnum">{toPersianDigits(validCount)}</span>
-              </Badge>
-              {total - validCount > 0 ? (
-                <Badge tone="red">
-                  <IconClose size={12} />
-                  <span className="tnum">{toPersianDigits(total - validCount)}</span>
-                </Badge>
-              ) : null}
-            </span>
-          </div>
-
-          <ul className="space-y-2">
-            {preview.map((r) => (
-              <li
-                key={r.line}
-                className="card flex items-center gap-3 p-3 text-[12.5px]"
-              >
-                <span className="tnum grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-canvas-soft font-bold text-ink-500">
-                  {toPersianDigits(r.line)}
-                </span>
-                <span className="min-w-0 flex-1">
-                  {r.valid ? (
-                    <>
-                      <span className="block truncate font-bold text-ink-900">{r.name}</span>
-                      <span className="tnum mt-0.5 block text-[11px] text-ink-500">
-                        {formatToman((r.priceToman || 0) * 10)} تومان —{" "}
-                        {r.status === "AVAILABLE" ? dict.common.available : dict.common.unavailable}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="block truncate text-red-600">{r.error}</span>
-                  )}
-                </span>
-                <span
-                  aria-hidden="true"
-                  className={
-                    r.valid
-                      ? "grid h-7 w-7 place-items-center rounded-lg bg-emerald-50 text-emerald-600"
-                      : "grid h-7 w-7 place-items-center rounded-lg bg-red-50 text-red-600"
-                  }
-                >
-                  {r.valid ? <IconCheck size={15} /> : <IconClose size={15} />}
-                </span>
-              </li>
-            ))}
-          </ul>
+      {preview && (
+        <div className="space-y-2">
+          {preview.map((r) => (
+            <div key={r.line} className="card p-3 flex items-center gap-2 text-sm">
+              <div className="text-ink-400 w-6">{r.line}</div>
+              <div className="flex-1 min-w-0">
+                {r.valid ? (
+                  <>
+                    <div className="font-medium truncate">{r.name}</div>
+                    <div className="text-xs text-ink-500">
+                      {formatToman((r.priceToman || 0) * 10)} تومان — {r.status === "AVAILABLE" ? dict.common.available : dict.common.unavailable}
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-red-600 truncate">{r.error}</div>
+                )}
+              </div>
+              <Badge tone={r.valid ? "green" : "red"}>{r.valid ? "✓" : "✕"}</Badge>
+            </div>
+          ))}
         </div>
       )}
     </div>

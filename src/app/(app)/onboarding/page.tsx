@@ -4,11 +4,9 @@ import { getServerDict } from "@/lib/i18n";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
-import { SelloraEmblem } from "@/components/brand/sellora";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { META_APP_ID } from "@/lib/meta/config";
-import { cx, toPersianDigits } from "@/lib/utils/format";
-import { IconArrowRight, IconCheck } from "@/components/layout/icons";
+import { toPersianDigits } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -53,7 +51,6 @@ export default async function OnboardingPage() {
       done: productCount > 0,
       href: "/products",
       optional: false,
-      cta: "افزودن محصول",
     },
     {
       n: 2,
@@ -62,7 +59,6 @@ export default async function OnboardingPage() {
       done: businessInfoDone,
       href: "/settings/business",
       optional: false,
-      cta: "تکمیل اطلاعات",
     },
     {
       n: 3,
@@ -73,7 +69,6 @@ export default async function OnboardingPage() {
       done: instagramDone,
       href: "/settings/instagram",
       optional: !metaConfigured,
-      cta: dict.dashboard.connectInstagram,
     },
     {
       n: 4,
@@ -82,122 +77,71 @@ export default async function OnboardingPage() {
       done: Boolean(auto?.enabled),
       href: "/settings",
       optional: false,
-      cta: "تنظیم پاسخ خودکار",
     },
   ];
 
   const applicable = steps.filter((s) => !s.optional);
   const doneCount = applicable.filter((s) => s.done).length;
   const finished = doneCount === applicable.length;
-  const progress = applicable.length > 0 ? Math.round((doneCount / applicable.length) * 100) : 100;
 
   return (
     <AppShell title={dict.onboarding.welcome} subtitle={dict.onboarding.welcomeDesc}>
-      <div className="mx-auto w-full max-w-2xl space-y-4">
-        {/* ------------------------------------------------------- progress card */}
-        <section className="relative overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient p-5 text-white shadow-glowSoft">
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute -bottom-12 end-0 opacity-25"
-          >
-            <SelloraEmblem size={200} tone="white" />
-          </span>
-          <div className="relative flex items-center gap-4">
-            <SelloraEmblem size={86} />
-            <div className="min-w-0 flex-1">
-              <h2 className="text-[17px] font-extrabold leading-7">
-                {finished ? "همه‌چیز آماده است 🎉" : `${toPersianDigits(doneCount)} از ${toPersianDigits(applicable.length)} قدم انجام شده`}
-              </h2>
-              <p className="mt-1 text-[12.5px] leading-6 text-white/85">
-                {finished
-                  ? "سلورا آماده است تا دایرکت‌های مشتری‌ها را جواب بدهد."
-                  : "هر قدم را می‌توانید همین حالا انجام دهید؛ بقیه‌اش با سلورا."}
-              </p>
-            </div>
+      <Card className="p-4 mb-4">
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-ink-500">پیشرفت راه‌اندازی</div>
+          <div className="text-sm font-semibold" aria-live="polite">
+            {toPersianDigits(doneCount)}/{toPersianDigits(applicable.length)}
           </div>
-
-          <div className="relative mt-4">
-            <div
-              className="h-2.5 w-full overflow-hidden rounded-full bg-white/25"
-              role="progressbar"
-              aria-valuenow={progress}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label="پیشرفت راه‌اندازی"
-            >
-              <div
-                className="h-full rounded-full bg-white transition-all duration-500 ease-smooth"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <span className="tnum mt-2 block text-[11px] font-bold text-white/85">
-              {toPersianDigits(progress)}٪
-            </span>
-          </div>
-        </section>
-
-        {/* ---------------------------------------------------------- step list */}
-        <ul className="space-y-2.5">
-          {steps.map((s) => (
-            <li key={s.n}>
-              <Link
-                href={s.href}
-                className={cx(
-                  "flex items-start gap-3.5 rounded-card border p-4 transition-all duration-200 ease-smooth hover:-translate-y-[2px] hover:shadow-card-hover",
-                  s.done
-                    ? "border-emerald-200/70 bg-emerald-50/40"
-                    : "border-ink-100/90 bg-white shadow-card"
-                )}
-              >
-                <span
-                  aria-hidden="true"
-                  className={cx(
-                    "grid h-11 w-11 shrink-0 place-items-center rounded-2xl border text-[15px] font-extrabold",
-                    s.done
-                      ? "border-emerald-200 bg-white text-emerald-600"
-                      : "border-brand-100 bg-brand-50 text-brand-700"
-                  )}
-                >
-                  {s.done ? <IconCheck size={19} /> : toPersianDigits(s.n)}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="flex flex-wrap items-center gap-2">
-                    <span
-                      className={cx(
-                        "text-[13.5px] font-bold",
-                        s.done ? "text-ink-700" : "text-ink-900"
-                      )}
-                    >
-                      {s.title}
-                    </span>
-                    {s.done ? <Badge tone="green">انجام شد</Badge> : null}
-                    {s.optional ? <Badge tone="gray">اختیاری</Badge> : null}
-                  </span>
-                  <span className="mt-1 block text-[12px] leading-6 text-ink-500">{s.desc}</span>
-                  {!s.done ? (
-                    <span className="mt-2 inline-flex items-center gap-1 text-[12px] font-bold text-brand-700">
-                      {s.cta}
-                      <IconArrowRight size={15} className="rtl:rotate-180" />
-                    </span>
-                  ) : null}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <Link href="/dashboard" className="btn-primary min-h-[48px] sm:flex-1">
-            رفتن به داشبورد
-          </Link>
-          <Link href="/automations" className="btn-secondary min-h-[48px] sm:flex-1">
-            {dict.nav.automations}
-          </Link>
         </div>
+        <div
+          className="h-2 bg-ink-100 rounded-full mt-2 overflow-hidden"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={applicable.length}
+          aria-valuenow={doneCount}
+          aria-label="پیشرفت راه‌اندازی"
+        >
+          <div
+            className="h-full bg-brand-600 rounded-full transition-all"
+            style={{ width: `${applicable.length ? (doneCount / applicable.length) * 100 : 0}%` }}
+          />
+        </div>
+        {finished && (
+          <div className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 mt-3">
+            راه‌اندازی کامل شد. سلورا آماده پاسخ‌گویی است. 🎉
+          </div>
+        )}
+      </Card>
 
-        <p className="text-center text-[11.5px] leading-6 text-ink-500">
-          بعداً — هر وقت خواستید از بخش تنظیمات همین مراحل را ادامه دهید.
-        </p>
+      <div className="space-y-2">
+        {steps.map((s) => (
+          <Link key={s.n} href={s.href} className="card p-4 flex items-start gap-3 min-h-[56px]">
+            <div
+              aria-hidden="true"
+              className={`h-9 w-9 rounded-xl grid place-items-center font-bold text-sm flex-shrink-0 ${
+                s.done ? "bg-emerald-100 text-emerald-700" : "bg-ink-100 text-ink-500"
+              }`}
+            >
+              {s.done ? "✓" : toPersianDigits(s.n)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="font-medium">
+                {s.title}
+                {s.optional && <span className="chip bg-ink-100 text-ink-600 ms-2">اختیاری</span>}
+              </div>
+              <div className="text-xs text-ink-500 mt-0.5 leading-6">{s.desc}</div>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-ink-400 rtl:rotate-180 mt-1" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </Link>
+        ))}
+      </div>
+
+      <div className="mt-6">
+        <Link href="/dashboard" className="btn-secondary w-full inline-flex">
+          بعداً — رفتن به داشبورد
+        </Link>
       </div>
     </AppShell>
   );

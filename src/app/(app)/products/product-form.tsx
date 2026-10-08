@@ -5,10 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input, Label, Select, Textarea } from "@/components/ui/input";
+import { Input, Label, Textarea } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toaster";
 import { toEnglishDigits } from "@/lib/utils/format";
-import { IconSparkle } from "@/components/layout/icons";
 import type { Dict } from "@/lib/i18n/dictionaries/fa";
 
 /**
@@ -74,18 +73,8 @@ export function ProductForm({ dict }: { dict: Dict }) {
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4 pb-24 lg:pb-0">
-      <div className="rounded-card border border-brand-100 bg-brand-50/70 p-3.5">
-        <p className="flex items-start gap-2 text-[12px] leading-6 text-brand-800">
-          <IconSparkle size={16} className="mt-1 shrink-0" />
-          <span>
-            این اطلاعات مستقیم به مشتری‌ها گفته می‌شود؛ سلورا قیمت را همیشه از همین‌جا می‌خواند و
-            هیچ‌وقت حدس نمی‌زند.
-          </span>
-        </p>
-      </div>
-
-      <Card className="space-y-4 p-4 sm:p-5">
+    <form onSubmit={submit} className="space-y-4">
+      <Card className="p-4 space-y-4">
         <div>
           <Label htmlFor="product-name">{dict.products.name}</Label>
           <Input
@@ -98,7 +87,6 @@ export function ProductForm({ dict }: { dict: Dict }) {
             placeholder="مثلاً مانتو آوا"
           />
         </div>
-
         <div>
           <Label htmlFor="product-price">قیمت (تومان)</Label>
           <Input
@@ -110,24 +98,7 @@ export function ProductForm({ dict }: { dict: Dict }) {
             onChange={(e) => setForm({ ...form, priceToman: e.target.value })}
             placeholder="مثلاً ۲۴۰۰۰"
           />
-          <p className="help">بدون کاما و به تومان وارد کنید؛ نمایش برای مشتری هم به تومان است.</p>
         </div>
-
-        <div>
-          <Label htmlFor="product-status">{dict.products.status}</Label>
-          <Select
-            id="product-status"
-            name="status"
-            value={form.status}
-            onChange={(e) =>
-              setForm({ ...form, status: e.target.value as "AVAILABLE" | "UNAVAILABLE" })
-            }
-          >
-            <option value="AVAILABLE">{dict.common.available}</option>
-            <option value="UNAVAILABLE">{dict.common.unavailable}</option>
-          </Select>
-        </div>
-
         <div>
           <Label htmlFor="product-sku">{dict.products.sku}</Label>
           <Input
@@ -140,7 +111,19 @@ export function ProductForm({ dict }: { dict: Dict }) {
             dir="ltr"
           />
         </div>
-
+        <div>
+          <Label htmlFor="product-status">{dict.products.status}</Label>
+          <select
+            id="product-status"
+            name="status"
+            className="input"
+            value={form.status}
+            onChange={(e) => setForm({ ...form, status: e.target.value as "AVAILABLE" | "UNAVAILABLE" })}
+          >
+            <option value="AVAILABLE">{dict.common.available}</option>
+            <option value="UNAVAILABLE">{dict.common.unavailable}</option>
+          </select>
+        </div>
         <div>
           <Label htmlFor="product-description">{dict.products.description}</Label>
           <Textarea
@@ -149,31 +132,25 @@ export function ProductForm({ dict }: { dict: Dict }) {
             maxLength={2000}
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
-            placeholder="اختیاری — مثلاً جنس، سایزها و نکات مهم"
+            placeholder="اختیاری"
           />
         </div>
 
         {error && (
-          <div
-            role="alert"
-            className="rounded-2xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-[12.5px] font-medium text-red-700"
-          >
+          <div role="alert" className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
             {error}
           </div>
         )}
-      </Card>
 
-      {/* Sticky action bar: reachable with a thumb, always visible. */}
-      <div className="fixed inset-x-0 bottom-[calc(3.6rem+env(safe-area-inset-bottom,0px))] z-20 border-t border-ink-100/80 glass-bar px-4 py-3 lg:static lg:z-auto lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
-        <div className="mx-auto flex w-full max-w-xl gap-2">
-          <Button type="submit" loading={saving} disabled={saving} size="lg" className="flex-1">
+        <div className="flex gap-2">
+          <Button type="submit" disabled={saving} className="flex-1">
             {saving ? dict.common.loading : dict.common.save}
           </Button>
-          <Link href="/products" className="btn-secondary min-h-[52px] flex-1">
+          <Link href="/products" className="btn-secondary flex-1 inline-flex">
             {dict.common.cancel}
           </Link>
         </div>
-      </div>
+      </Card>
     </form>
   );
 }
