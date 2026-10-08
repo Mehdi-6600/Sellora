@@ -62,9 +62,15 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
               >
                 <div className="whitespace-pre-wrap">{m.text}</div>
                 <div className={`text-[10px] mt-1 opacity-70 ${m.direction === "INBOUND" ? "text-ink-500" : "text-white/70"} text-start`}>
-                  {formatTime(m.createdAt, locale as any)}
-                  {m.deliveryState !== "SENT" && m.direction === "OUTBOUND" && (
-                    <span className="ms-1">• {m.deliveryState}</span>
+                  <time dateTime={new Date(m.createdAt).toISOString()}>
+                    {formatTime(m.createdAt, locale as any)}
+                  </time>
+                  {m.direction === "OUTBOUND" && m.deliveryState !== "SENT" && (
+                    <span className="ms-1">
+                      •{" "}
+                      {dict.states.delivery[m.deliveryState as keyof typeof dict.states.delivery] ??
+                        m.deliveryState}
+                    </span>
                   )}
                 </div>
               </div>

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Input, Label } from "@/components/ui/input";
 
 export function AdminSubscriptionActions({ subscriptionId }: { subscriptionId: string }) {
   const router = useRouter();
@@ -84,7 +84,9 @@ export function AdminSubscriptionActions({ subscriptionId }: { subscriptionId: s
         </div>
       ) : (
         <div className="space-y-2">
+          <Label htmlFor="reject-reason">دلیل رد</Label>
           <Input
+            id="reject-reason"
             placeholder="دلیل رد..."
             value={reason}
             onChange={(e) => setReason(e.target.value)}

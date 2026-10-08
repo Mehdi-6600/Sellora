@@ -27,7 +27,7 @@ export default async function LeadsPage() {
   return (
     <AppShell title={dict.leads.title} subtitle={dict.leads.subtitle}>
       {leads.length === 0 ? (
-        <Empty title={dict.leads.title} subtitle="وقتی مشتری‌ای با قصد خرید بالا پیام بدهد، اینجا نمایش داده می‌شود." />
+        <Empty title="هنوز مشتری داغی شناسایی نشده" subtitle={dict.leads.subtitle} />
       ) : (
         <div className="space-y-2">
           {leads.map((l: any) => {

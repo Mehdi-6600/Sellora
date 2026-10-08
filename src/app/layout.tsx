@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { getServerDict } from "@/lib/i18n";
-import { Toaster } from "@/components/ui/toaster";
+import { ToastProvider } from "@/components/ui/toaster";
 import {
   SITE_DESCRIPTION,
   SITE_KEYWORDS,
@@ -82,8 +82,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body className="min-h-screen bg-ink-50 text-ink-900 antialiased">
-        {children}
-        <Toaster />
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );

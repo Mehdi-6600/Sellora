@@ -1,6 +1,13 @@
 "use client";
 
-// Extremely simple toast system using React state + tailwind. Avoids extra deps.
+// Tiny toast system (no extra dependency).
+//
+// FIX: the previous implementation rendered <ToastContext.Provider> around its
+// own markup only, so every useToast() consumer elsewhere in the tree received
+// the default no-op context and user feedback silently vanished in six flows
+// (login, signup, product actions, ruleset save, import, chat). The provider
+// now wraps the whole app from the root layout.
+
 import * as React from "react";
 import { cx } from "@/lib/utils/format";
 
@@ -13,17 +20,25 @@ export function useToast() {
   return React.useContext(ToastContext);
 }
 
-export function Toaster() {
+export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = React.useState<Toast[]>([]);
+
   const push = React.useCallback((message: string, tone: Toast["tone"] = "info") => {
     const id = Math.random().toString(36).slice(2);
     setToasts((t) => [...t, { id, message, tone }]);
     setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3500);
   }, []);
 
+  const value = React.useMemo(() => ({ push }), [push]);
+
   return (
-    <ToastContext.Provider value={{ push }}>
-      <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-[min(90vw,420px)]">
+    <ToastContext.Provider value={value}>
+      {children}
+      <div
+        role="status"
+        aria-live="polite"
+        className="fixed top-3 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-[min(90vw,420px)] pointer-events-none"
+      >
         {toasts.map((t) => (
           <div
             key={t.id}

@@ -192,6 +192,15 @@ const fa = {
     qualified: "علاقه‌مند",
     completed: "پایان‌یافته",
     expired: "منقضی",
+    delivery: {
+      PENDING: "در صف ارسال",
+      SENDING: "در حال ارسال",
+      SENT: "ارسال شد",
+      FAILED: "ارسال ناموفق",
+      RETRYING: "تلاش دوباره",
+      EXPIRED: "منقضی",
+      BLOCKED: "مسدود",
+    },
   },
   errors: {
     generic: "خطایی رخ داد. لطفا دوباره تلاش کنید.",

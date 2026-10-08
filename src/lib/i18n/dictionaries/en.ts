@@ -114,6 +114,15 @@ const en: Dict = {
     new: "New", active: "Active", waitingCustomer: "Waiting for customer",
     waitingOwner: "Waiting for you", ownerActive: "You are replying",
     qualified: "Interested", completed: "Completed", expired: "Expired",
+    delivery: {
+      PENDING: "Queued",
+      SENDING: "Sending",
+      SENT: "Sent",
+      FAILED: "Failed",
+      RETRYING: "Retrying",
+      EXPIRED: "Expired",
+      BLOCKED: "Blocked",
+    },
   },
   errors: {
     generic: "Something went wrong. Please try again.",

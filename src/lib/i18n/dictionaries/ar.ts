@@ -96,6 +96,15 @@ const ar: Dict = {
     new: "جديد", active: "نشط", waitingCustomer: "بانتظار العميل",
     waitingOwner: "بانتظارك", ownerActive: "أنت ترد الآن",
     qualified: "مهتم", completed: "مكتمل", expired: "منتهي",
+    delivery: {
+      PENDING: "في قائمة الإرسال",
+      SENDING: "جارٍ الإرسال",
+      SENT: "أُرسلت",
+      FAILED: "فشل الإرسال",
+      RETRYING: "إعادة المحاولة",
+      EXPIRED: "منتهية",
+      BLOCKED: "محظورة",
+    },
   },
   errors: {
     generic: "حدث خطأ. حاول مرة أخرى.",

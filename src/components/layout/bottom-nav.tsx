@@ -27,8 +27,9 @@ export function BottomNav() {
             <li key={it.href}>
               <Link
                 href={it.href}
+                aria-current={active ? "page" : undefined}
                 className={cx(
-                  "flex flex-col items-center justify-center gap-1 py-2.5 text-[11px] font-medium",
+                  "flex flex-col items-center justify-center gap-1 py-2.5 min-h-[48px] text-[11px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 rounded-lg",
                   active ? "text-brand-600" : "text-ink-500 hover:text-ink-800"
                 )}
               >

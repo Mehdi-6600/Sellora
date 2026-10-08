@@ -6,11 +6,12 @@ import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { Empty } from "@/components/ui/empty";
 import { Badge, Dot } from "@/components/ui/badge";
+import { formatRelativeTime } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 
 export default async function ConversationsPage() {
-  const { dict } = await getServerDict();
+  const { dict, locale } = await getServerDict();
   let auth;
   try {
     auth = await requireAuth();
@@ -58,6 +59,11 @@ export default async function ConversationsPage() {
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-1">
+                  {last && (
+                    <time className="text-[10px] text-ink-400" dateTime={new Date(last.createdAt).toISOString()}>
+                      {formatRelativeTime(last.createdAt, locale)}
+                    </time>
+                  )}
                   {isWaiting ? <Dot tone="amber" /> : isHuman ? <Dot tone="blue" /> : <Dot tone="green" />}
                 </div>
               </Link>
