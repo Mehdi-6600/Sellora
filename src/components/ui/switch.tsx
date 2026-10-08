@@ -30,7 +30,7 @@ export function SwitchVisual({
         "relative inline-flex shrink-0 items-center rounded-full border transition-all duration-300 ease-smooth",
         track,
         checked
-          ? "border-brand-700/25 bg-gradient-to-b from-brand-500 to-brand-700 shadow-[inset_0_1px_2px_rgba(0,0,0,0.12)]"
+          ? "border-emerald-600 bg-emerald-600 shadow-[inset_0_1px_2px_rgba(0,0,0,0.12)]"
           : "border-ink-200 bg-ink-200/80 shadow-inset",
         className
       )}
@@ -75,7 +75,7 @@ export function Switch({
       disabled={disabled}
       onClick={() => onCheckedChange?.(!checked)}
       className={cx(
-        "rounded-full p-0.5 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 disabled:opacity-50",
+        "min-h-[44px] min-w-[44px] rounded-full p-0.5 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 disabled:opacity-50",
         className
       )}
     >

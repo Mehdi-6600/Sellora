@@ -81,7 +81,7 @@ export async function AppShell({
   children: React.ReactNode;
 }) {
   const [{ dict }, chrome] = await Promise.all([getServerDict(), loadChrome()]);
-  const plainTitle = typeof title === "string" ? title : "سلورا";
+
 
   return (
     <div className="min-h-screen">
@@ -102,9 +102,9 @@ export async function AppShell({
               <Link
                 href={backHref}
                 aria-label="بازگشت"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-100 bg-white/[0.06] text-ink-700 transition hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+                className="flex min-h-[44px] shrink-0 items-center gap-1 px-2 rounded-xl border border-ink-100 bg-white/[0.06] text-ink-700 transition hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
               >
-                <IconChevronLeft size={20} className="rtl:rotate-180" />
+                <IconChevronLeft size={18} className="rtl:rotate-180" /><span className="text-xs">بازگشت</span>
               </Link>
             ) : (
               <Link
@@ -117,10 +117,9 @@ export async function AppShell({
             )}
 
             <div className="min-w-0 flex-1">
-              {/* Not a heading: the desktop bar owns the page <h1>. */}
-              <div className="truncate text-[15px] font-extrabold tracking-tight text-ink-950">
+              <h1 className="truncate text-[15px] font-extrabold tracking-tight text-ink-950">
                 {title ?? dict.app.name}
-              </div>
+              </h1>
               {subtitle ? (
                 <div className="truncate text-[11px] font-medium text-ink-500">{subtitle}</div>
               ) : null}
@@ -138,9 +137,9 @@ export async function AppShell({
               <Link
                 href={backHref}
                 aria-label="بازگشت"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-ink-100 bg-white/[0.06] text-ink-700 transition hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+                className="flex min-h-[44px] shrink-0 items-center gap-1 px-2 rounded-xl border border-ink-100 bg-white/[0.06] text-ink-700 transition hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
               >
-                <IconChevronLeft size={20} className="rtl:rotate-180" />
+                <IconChevronLeft size={18} className="rtl:rotate-180" /><span className="text-xs">بازگشت</span>
               </Link>
             ) : null}
             <div className="min-w-0 flex-1">

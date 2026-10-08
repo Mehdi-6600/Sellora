@@ -100,7 +100,7 @@ export function MessageThread({
                     <span
                       className={cx(
                         "font-semibold",
-                        failed ? "text-amber-300" : "text-emerald-300"
+                        failed ? "text-amber-700" : "text-emerald-700"
                       )}
                     >
                       • {failed ? "⚠ " : "✓ "}

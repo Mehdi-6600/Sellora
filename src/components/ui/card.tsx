@@ -5,7 +5,7 @@ import { cx } from "@/lib/utils/format";
 export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cx("rounded-card border border-white/[0.09] bg-white/[0.05] shadow-card", className)}
+      className={cx("card", className)}
       {...props}
     />
   );
@@ -61,10 +61,10 @@ export function SectionHeading({
 const TONES = {
   brand: "border-brand-200/70 bg-brand-50 text-brand-400",
   neutral: "border-white/[0.1] bg-white/[0.05] text-ink-400",
-  success: "border-emerald-400/30 bg-emerald-400/15 text-emerald-300",
-  warning: "border-amber-400/30 bg-amber-400/15 text-amber-300",
-  danger: "border-red-400/30 bg-red-400/15 text-red-300",
-  info: "border-sky-400/30 bg-sky-400/15 text-sky-300",
+  success: "border-emerald-400/30 bg-emerald-400/15 text-emerald-700",
+  warning: "border-amber-400/30 bg-amber-400/15 text-amber-700",
+  danger: "border-red-400/30 bg-red-400/15 text-red-700",
+  info: "border-sky-400/30 bg-sky-400/15 text-sky-700",
   white: "border-white/25 bg-white/15 text-white backdrop-blur",
 } as const;
 

@@ -114,7 +114,7 @@ export async function ConversationList({
                   </span>
                   <span className="mt-0.5 flex items-center gap-1.5">
                     {unanswered ? (
-                      <span className="shrink-0 rounded-md bg-amber-400/15 px-1.5 py-0.5 text-[10px] font-bold text-amber-300 ring-1 ring-amber-400/25">
+                      <span className="shrink-0 rounded-md bg-amber-400/15 px-1.5 py-0.5 text-[10px] font-bold text-amber-700 ring-1 ring-amber-400/25">
                         پاسخ نداده
                       </span>
                     ) : null}

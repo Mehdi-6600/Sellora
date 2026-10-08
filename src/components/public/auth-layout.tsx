@@ -35,12 +35,7 @@ export function AuthLayout({
       {/* ------------------------------------------------------- brand panel */}
       <aside className="relative hidden overflow-hidden bg-premium-gradient p-10 text-white lg:flex lg:w-[46%] lg:flex-col xl:w-[42%]">
         <BrandAura />
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-16 -start-10 opacity-15"
-        >
-          <SelloraEmblem size={340} tone="white" />
-        </span>
+
 
         <Link href="/" className="relative inline-flex rounded-2xl focus-visible:outline-none">
           <SelloraLockup size={46} tone="white" />

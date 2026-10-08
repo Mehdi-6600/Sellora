@@ -209,12 +209,12 @@ export default async function ProductsPage({
         )}
 
         {/* Mobile-only bulk import entry point (header keeps it compact). */}
-        <div className="sm:hidden">
+        {(products.length > 0 || q) && <div className="sm:hidden">
           <Link href="/products/import" className="btn-secondary w-full min-h-[48px]">
             <IconUpload size={17} />
             {dict.products.import}
           </Link>
-        </div>
+        </div>}
       </div>
     </AppShell>
   );

@@ -3,11 +3,12 @@
 import * as React from "react";
 import { cx } from "@/lib/utils/format";
 
-type Variant = "primary" | "secondary" | "ghost" | "danger" | "danger-soft" | "glass";
+type Variant = "primary" | "success" | "secondary" | "ghost" | "danger" | "danger-soft" | "glass";
 type Size = "sm" | "md" | "lg";
 
 const VARIANTS: Record<Variant, string> = {
   primary: "btn-primary",
+  success: "btn-success",
   secondary: "btn-secondary",
   ghost: "btn-ghost",
   danger: "btn-danger",
@@ -20,7 +21,7 @@ const VARIANTS: Record<Variant, string> = {
  * size) and the large one 52px, so a phone never shows a microscopic control.
  */
 const SIZES: Record<Size, string> = {
-  sm: "min-h-[38px] px-3.5 py-2 text-[13px] rounded-xl",
+  sm: "min-h-[44px] px-3.5 py-2 text-[13px] rounded-xl",
   md: "min-h-[44px] px-4 py-2.5 text-sm",
   lg: "min-h-[52px] px-5 py-3 text-[15px]",
 };

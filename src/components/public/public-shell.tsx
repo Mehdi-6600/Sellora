@@ -13,9 +13,10 @@ import { IconGrid, IconClose } from "@/components/layout/icons";
  * it works with a keyboard exactly like any other disclosure.
  */
 const NAV = [
-  { href: "#features", label: "قابلیت‌ها" },
-  { href: "#pricing", label: "قیمت‌ها" },
-  { href: "/why-sellora", label: "چرا سلورا؟" },
+  { href: "/#why-sellora", label: "چرا سلورا؟" },
+  { href: "/#features", label: "قابلیت‌ها" },
+  { href: "/#pricing", label: "اشتراک‌ها" },
+
 ];
 
 export function PublicShell({ children }: { children: React.ReactNode }) {
@@ -52,7 +53,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
             ورود
           </Link>
           <Link href="/signup" className="btn-primary min-h-[44px] px-4 py-2 text-[13px]">
-            شروع رایگان
+            شروع کنید
           </Link>
 
           {/* Mobile menu (native disclosure) */}

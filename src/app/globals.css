@@ -17,20 +17,11 @@
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-persian: "Vazirmatn", "IRANSans", "Tahoma", ui-sans-serif, system-ui, sans-serif;
 
-  /* Sellora brand tokens — Purple Premium canvas.
-     The canvas takes its depth from the violet-wine shadows of the official
-     artwork (public/og.jpg); the rose tokens keep the original character's
-     exact hues and are used for brand accents on top of the purple. */
-  --sellora-canvas: #150e2e;
-  --sellora-canvas-deep: #0e0920;
-  --sellora-violet: #8b5cf6;
-  --sellora-violet-soft: #a78bfa;
-  --sellora-rose: #f0567f;
-  --sellora-brand: #d6255c;
-  --sellora-brand-strong: #b01447;
-  --sellora-wine: #8e0f39;
-  --sellora-ink: #f1eefb;
-  --sellora-hairline: rgba(255, 255, 255, 0.08);
+  --sellora-canvas: #f7f9fc;
+  --sellora-canvas-deep: #e2e8f0;
+  --sellora-brand: #0066d6;
+  --sellora-ink: #182335;
+  --sellora-hairline: #e8edf2;
 }
 
 html,
@@ -60,17 +51,6 @@ html[dir="rtl"] body {
   font-family: var(--font-persian), var(--font-sans);
 }
 
-/* The ambient Purple Premium aura behind every screen: soft violet light
-   sources and a deep-purple vignette, fixed so it never scrolls and
-   pointer-events:none so it never intercepts. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: theme("backgroundImage.canvas-aura");
-}
 
 a {
   color: inherit;
@@ -83,14 +63,14 @@ a {
 }
 
 ::selection {
-  background: rgba(139, 92, 246, 0.4);
-  color: #ffffff;
+  background: rgba(0, 122, 255, 0.18);
+  color: #182335;
 }
 
-/* Visible keyboard focus everywhere (WCAG 2.4.7) — violet on the purple canvas. */
+/* Visible keyboard focus everywhere (WCAG 2.4.7) — blue on light surfaces. */
 @layer base {
   :focus-visible {
-    outline: 2px solid #a78bfa;
+    outline: 2px solid #007aff;
     outline-offset: 2px;
     border-radius: 8px;
   }
@@ -109,40 +89,40 @@ a {
 @layer components {
   /* ---------------------------------------------------------------- buttons */
   .btn {
-    @apply inline-flex select-none items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ease-smooth focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 disabled:pointer-events-none disabled:opacity-55;
+    @apply inline-flex select-none items-center justify-center gap-2 min-h-[44px] rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ease-smooth focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200 disabled:pointer-events-none disabled:opacity-55;
   }
   .btn-primary {
     @apply btn border border-brand-700/30 bg-brand-gradient-sheen text-white shadow-brand-btn hover:-translate-y-[1px] hover:brightness-[1.04] hover:shadow-glow active:translate-y-0 active:brightness-[0.98];
   }
   .btn-secondary {
-    @apply btn border border-white/[0.12] bg-white/[0.06] text-ink-800 shadow-soft hover:-translate-y-[1px] hover:border-brand-300/60 hover:bg-white/[0.1] hover:text-white active:translate-y-0;
+    @apply btn border border-ink-200 bg-white text-ink-800 shadow-soft hover:-translate-y-[1px] hover:border-brand-300/60 hover:bg-ink-50 hover:text-ink-900 active:translate-y-0;
   }
   .btn-danger {
-    @apply btn border border-red-700/30 bg-gradient-to-b from-red-500 to-red-600 text-white shadow-soft hover:-translate-y-[1px] hover:from-red-600 hover:to-red-700 active:translate-y-0;
+    @apply btn border border-red-700/30 bg-red-600 text-white shadow-soft hover:-translate-y-[1px] hover:bg-red-700 active:translate-y-0;
   }
   .btn-danger-soft {
-    @apply btn border border-red-400/30 bg-red-400/15 text-red-300 hover:border-red-400/50 hover:bg-red-400/20 active:translate-y-0;
+    @apply btn border border-red-400/30 bg-red-400/15 text-red-700 hover:border-red-400/50 hover:bg-red-400/20 active:translate-y-0;
   }
   .btn-ghost {
-    @apply btn text-ink-300 hover:bg-white/[0.07] hover:text-white;
+    @apply btn text-ink-600 hover:bg-ink-100 hover:text-ink-900;
   }
   .btn-glass {
-    @apply btn border border-white/25 bg-white/15 text-white backdrop-blur hover:bg-white/25;
+    @apply btn border border-ink-200 bg-white/80 text-ink-800 backdrop-blur hover:bg-white;
   }
 
   /* ------------------------------------------------------------------ cards */
   .card {
-    @apply rounded-card border border-white/[0.09] bg-white/[0.05] shadow-card;
+    @apply rounded-card border border-ink-100 bg-white/90 shadow-card;
   }
   /* Interactive cards: rows, tiles and links that behave like buttons. */
   .card-link {
     @apply card transition-all duration-200 ease-smooth hover:-translate-y-[2px] hover:border-brand-300/50 hover:shadow-card-hover active:translate-y-0;
   }
   .panel {
-    @apply rounded-card border border-white/[0.08] bg-white/[0.04];
+    @apply rounded-card border border-ink-100 bg-white;
   }
   .icon-tile {
-    @apply grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-white/[0.1] bg-white/[0.05] text-ink-300;
+    @apply grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-ink-100 bg-ink-50 text-ink-600;
   }
   .icon-tile-brand {
     @apply border-brand-200/70 bg-brand-50 text-brand-400;
@@ -153,7 +133,7 @@ a {
 
   /* ----------------------------------------------------------------- fields */
   .input {
-    @apply w-full rounded-2xl border border-white/[0.12] bg-white/[0.05] px-4 py-3 text-sm text-ink-900 shadow-inset transition placeholder:text-ink-400 hover:border-white/20 focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-500/25 disabled:cursor-not-allowed disabled:bg-white/[0.03];
+    @apply w-full rounded-2xl border border-ink-200 bg-white px-4 py-3 text-sm text-ink-900 shadow-inset transition placeholder:text-ink-400 hover:border-ink-300 focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-500/25 disabled:cursor-not-allowed disabled:bg-white/[0.03];
     min-height: 48px;
   }
   .label {
@@ -191,12 +171,12 @@ a {
     background-image: linear-gradient(
       to right,
       transparent,
-      rgba(255, 255, 255, 0.14) 45%,
+      rgba(24, 39, 65, 0.12) 45%,
       transparent
     );
   }
   .divider {
-    @apply my-4 h-px w-full bg-white/10;
+    @apply my-4 h-px w-full bg-ink-100;
   }
 
   /* ------------------------------------------------------------ empty states */
@@ -224,7 +204,7 @@ a {
     @apply backdrop-blur-xl;
   }
   .glass-dark {
-    background-color: rgba(14, 16, 32, 0.55);
+    background-color: rgba(255, 255, 255, 0.94);
     @apply backdrop-blur-xl;
   }
   .no-scrollbar {
@@ -254,11 +234,11 @@ html[dir="rtl"] .rtl\:rotate-180 {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Slim, violet-tinted scrollbars on desktop only — phones keep native ones. */
+/* Slim, neutral scrollbars on desktop only — phones keep native ones. */
 @media (min-width: 1024px) {
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(167, 139, 250, 0.28) transparent;
+    scrollbar-color: rgba(100, 116, 139, 0.28) transparent;
   }
   ::-webkit-scrollbar {
     width: 10px;
@@ -268,13 +248,13 @@ html[dir="rtl"] .rtl\:rotate-180 {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(167, 139, 250, 0.24);
+    background-color: rgba(100, 116, 139, 0.24);
     border: 3px solid transparent;
     border-radius: 999px;
     background-clip: content-box;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(167, 139, 250, 0.4);
+    background-color: rgba(100, 116, 139, 0.4);
   }
 }
 
@@ -289,3 +269,13 @@ html[dir="rtl"] .rtl\:rotate-180 {
     scroll-behavior: auto !important;
   }
 }
+
+/* Quiet highlight panels replace the former dark promotional surfaces. */
+.bg-premium-gradient { color: #182335; }
+.bg-premium-gradient [class*="text-white"] { color: #465469; }
+.bg-premium-gradient .btn-primary { color: white; }
+.bg-premium-gradient .btn-glass { color: #243247; }
+.bg-premium-gradient [class*="border-white"] { border-color: #d3dce6; }
+section[id], div[id] { scroll-margin-top: 90px; }
+summary { min-height: 44px; }
+.btn-success { @apply btn border border-emerald-700 bg-emerald-600 text-white shadow-soft hover:bg-emerald-700; }

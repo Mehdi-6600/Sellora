@@ -54,10 +54,10 @@ export default async function SubscriptionStatusPage() {
                 ⏳
               </span>
               <div className="flex-1">
-                <div className="text-[13.5px] font-bold text-amber-200">
+                <div className="text-[13.5px] font-bold text-amber-700">
                   درخواست شما در انتظار بررسی است
                 </div>
-                <p className="mt-1 text-[12px] leading-6 text-amber-300">
+                <p className="mt-1 text-[12px] leading-6 text-amber-700">
                   درخواست خرید پلن {planLabel(sub.plan)} با کد رهگیری{" "}
                   <span dir="ltr" className="font-mono font-bold">
                     {sub.trackingCode}
@@ -76,8 +76,8 @@ export default async function SubscriptionStatusPage() {
                 ✅
               </span>
               <div className="flex-1">
-                <div className="text-[13.5px] font-bold text-emerald-200">اشتراک شما فعال است</div>
-                <p className="mt-1 text-[12px] leading-6 text-emerald-200">
+                <div className="text-[13.5px] font-bold text-emerald-700">اشتراک شما فعال است</div>
+                <p className="mt-1 text-[12px] leading-6 text-emerald-700">
                   پلن {planLabel(sub.plan)} فعال است.
                   {sub.endsAt
                     ? ` اعتبار تا ${new Date(sub.endsAt).toLocaleDateString("fa-IR")}.`
@@ -95,8 +95,8 @@ export default async function SubscriptionStatusPage() {
                 ❌
               </span>
               <div className="flex-1">
-                <div className="text-[13.5px] font-bold text-red-200">درخواست شما رد شد</div>
-                <p className="mt-1 text-[12px] leading-6 text-red-300">
+                <div className="text-[13.5px] font-bold text-red-700">درخواست شما رد شد</div>
+                <p className="mt-1 text-[12px] leading-6 text-red-700">
                   {sub.rejectionReason || "دلیل رد ثبت نشده است."}
                 </p>
               </div>

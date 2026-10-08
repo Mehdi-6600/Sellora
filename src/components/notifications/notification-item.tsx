@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useToast } from "@/components/ui/toaster";
+import { NOTIFICATIONS_CHANGED } from "./use-unread-count";
 import { cx } from "@/lib/utils/format";
 import { IconChevronLeft } from "@/components/layout/icons";
 
@@ -24,10 +26,10 @@ export type NotificationRow = {
  * Non-fatal: if the request fails we still navigate, and the server state
  * stays the single source of truth for the unread badge.
  */
-function postMarkRead(id: string): Promise<void> {
-  return fetch(`/api/notifications/${id}/read`, { method: "POST" })
-    .then(() => undefined)
-    .catch(() => undefined);
+async function postMarkRead(id: string): Promise<void> {
+  const response = await fetch(`/api/notifications/${id}/read`, { method: "POST", keepalive: true });
+  if (!response.ok) throw new Error("read failed");
+  window.dispatchEvent(new Event(NOTIFICATIONS_CHANGED));
 }
 
 /**
@@ -43,6 +45,7 @@ function postMarkRead(id: string): Promise<void> {
  * Modified / middle clicks keep the browser's native behaviour.
  */
 export function NotificationItem({ n }: { n: NotificationRow }) {
+  const toast = useToast();
   const [opening, setOpening] = React.useState(false);
   const unread = !n.readAt;
 
@@ -51,31 +54,36 @@ export function NotificationItem({ n }: { n: NotificationRow }) {
     const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
     if (modified) {
       // New tab / window: let the browser open it; still record the read.
-      void postMarkRead(n.id);
+      void postMarkRead(n.id).catch(() => toast.push("ثبت خواندن اعلان ناموفق بود.", "error"));
       return;
     }
     e.preventDefault();
     if (opening) return;
     setOpening(true);
     void (async () => {
+      try {
       await postMarkRead(n.id);
       // Full document navigation: the deep-link page is rendered fresh from the
       // DB, which already holds the read state committed by the POST above.
       // A client-side push can replay a cached page with the old unread count
       // (router.refresh() + push race), so the badge would look stuck.
       window.location.assign(n.href);
+      } catch {
+        setOpening(false);
+        toast.push("اعلان خوانده نشد. دوباره تلاش کنید.", "error");
+      }
     })();
   }
 
   const tile =
     n.tone === "red"
-      ? "border-red-400/25 bg-red-400/15 text-red-300"
+      ? "border-red-400/25 bg-red-400/15 text-red-700"
       : n.tone === "amber"
-      ? "border-amber-400/25 bg-amber-400/15 text-amber-300"
+      ? "border-amber-400/25 bg-amber-400/15 text-amber-700"
       : n.tone === "green"
-      ? "border-emerald-400/25 bg-emerald-400/15 text-emerald-300"
+      ? "border-emerald-400/25 bg-emerald-400/15 text-emerald-700"
       : n.tone === "blue"
-      ? "border-sky-400/25 bg-sky-400/15 text-sky-300"
+      ? "border-sky-400/25 bg-sky-400/15 text-sky-700"
       : "border-ink-100 bg-ink-50 text-ink-600";
 
   return (

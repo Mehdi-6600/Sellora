@@ -5,20 +5,13 @@ import { formatToman, toPersianDigits } from "@/lib/utils/format";
 import { PublicShell } from "@/components/public/public-shell";
 import { SITE_DESCRIPTION, absolute, siteUrl } from "@/lib/config/site";
 import { SelloraEmblem, SelloraMark, BrandAura } from "@/components/brand/sellora";
-import { IconArrowRight, IconCheck, IconSparkle } from "@/components/layout/icons";
+import { IconArrowRight, IconCheck, IconSparkle, IconInbox, IconBag, IconFlame, IconPlus } from "@/components/layout/icons";
 
 const PLAN_LABELS: Record<string, string> = {
   WEEKLY: "هفتگی",
   MONTHLY: "ماهانه",
   QUARTERLY: "سه‌ماهه",
 };
-
-const PROBLEMS = [
-  "صبح که بیدار می‌شوی، ده‌ها دایرکت بی‌جواب مانده از شب قبل.",
-  "قیمت و موجودی را دستی و دیر جواب می‌دهی؛ مشتری همان لحظه از دست می‌رود.",
-  "مشتری جدی از مشتری کنجکاو قابل تشخیص نیست؛ وقتت صرف همه می‌شود.",
-  "نیمه‌شب یا وسط شلوغی، سوال تکراری «قیمت چند؟» دوباره و دوباره.",
-];
 
 const FEATURES = [
   {
@@ -56,7 +49,7 @@ const FEATURES = [
 const STEPS = [
   { n: "۱", title: "حساب بساز و محصولاتت را اضافه کن", desc: "ثبت‌نام با ایمیل؛ محصولات را تکی یا دسته‌جمعی وارد کن." },
   { n: "۲", title: "اینستاگرام کسب‌وکار را متصل کن", desc: "از طریق ورود رسمی متا؛ رمز اینستاگرام تو هرگز ذخیره نمی‌شود." },
-  { n: "۳", title: "سلورا پاسخ می‌دهد و داغ‌ها را خبرت می‌کند", desc: "پاسخ خودکار روشن می‌شود؛ مشتری‌های داغ با اعلان به تو می‌رسند." },
+  { n: "۳", title: "سلورا پاسخ می‌دهد و داغ‌ها را خبرت می‌کند", desc: "تنظیمات را بررسی و پاسخ خودکار را فعال کن؛ مشتری‌های داغ با اعلان به تو می‌رسند." },
 ];
 
 const FAQ = [
@@ -69,7 +62,7 @@ const FAQ = [
     a: "فقط از طریق OAuth رسمی متا (Meta Graph API). رمز عبور اینستاگرام شما هیچ‌وقت در سلورا ذخیره نمی‌شود و توکن دسترسی با رمزنگاری AES-256 نگهداری می‌شود. برای استفاده‌ی واقعی در اینستاگرام، اپلیکیشن متا باید App Review را گذرانده باشد.",
   },
   {
-    q: "پرداشت اشتراک چگونه است؟",
+    q: "پرداخت اشتراک چگونه است؟",
     a: "در این نسخه پرداخت کارت‌به‌کارت با بررسی دستی است: مبلغ پلن را واریز می‌کنید، کد رهگیری را ثبت می‌کنید و درخواست حداکثر تا ۲۴ ساعت بررسی و فعال می‌شود. درگاه پرداخت آنلاین هنوز فعال نیست.",
   },
   {
@@ -85,16 +78,16 @@ const FAQ = [
 function ChatDemo() {
   return (
     <div
-      className="card relative w-full max-w-sm p-4 text-start shadow-raised"
+      className="card relative w-full max-w-sm p-5 text-start shadow-raised backdrop-blur-xl"
       role="img"
       aria-label="نمایش نمونه‌ای از یک گفتگوی مشتری با سلورا"
     >
       <div className="mb-3 flex items-center justify-between">
         <span className="flex items-center gap-2">
           <SelloraMark size={26} />
-          <span className="text-[11.5px] font-bold text-ink-700">سلورا در دایرکت</span>
+          <span className="text-[11.5px] font-bold text-ink-700">نمونه گفتگو با سلورا</span>
         </span>
-        <span className="chip bg-emerald-400/15 text-emerald-300 ring-1 ring-emerald-400/25">آنلاین</span>
+        <span className="chip bg-ink-50 text-ink-500 ring-1 ring-ink-100">نمایشی</span>
       </div>
 
       <div className="space-y-2 text-[13px]">
@@ -114,7 +107,7 @@ function ChatDemo() {
           </div>
         </div>
         <div className="flex justify-end">
-          <div className="max-w-[85%] rounded-2xl rounded-se-md bg-violet-400/15 px-3 py-2 leading-6 text-violet-200 ring-1 ring-violet-400/25">
+          <div className="max-w-[85%] rounded-2xl rounded-se-md bg-blue-400/15 px-3 py-2 leading-6 text-blue-700 ring-1 ring-blue-400/25">
             مشتری داغ شناسایی شد 🔥 — گفتگو به صاحب فروشگاه تحویل داده شد.
           </div>
         </div>
@@ -197,14 +190,14 @@ export function LandingPage() {
               برای فروشگاه‌های اینستاگرامی فارسی‌زبان
             </p>
             <h1 className="mt-4 text-[28px] font-extrabold leading-[1.35] text-ink-950 sm:text-[38px]">
-              فروشنده‌ای که هیچ‌وقت نمی‌خوابد؛
+              سلورا؛ پاسخ‌گوی هوشمند
               <span className="bg-gradient-to-l from-brand-600 to-brand-800 bg-clip-text text-transparent">
                 {" "}
-                قیمت‌ها را هم از خودت می‌پرسد
+                دایرکت اینستاگرام
               </span>
             </h1>
             <p className="mt-4 max-w-xl text-[14px] leading-8 text-ink-600 sm:text-[15px]">
-              سلورا به دایرکت مشتری‌هایت جواب می‌دهد، قیمت و موجودی را از محصولات خودت می‌گوید،
+              وقتت را از سؤال‌های تکراری پس بگیر. سلورا به دایرکت مشتری‌هایت جواب می‌دهد، قیمت و موجودی را از محصولات خودت می‌گوید،
               مشتری‌های داغ را جدا می‌کند و گفتگوهای حساس را به خودت تحویل می‌دهد.
             </p>
 
@@ -213,8 +206,8 @@ export function LandingPage() {
                 شروع رایگان
                 <IconArrowRight size={18} className="rtl:rotate-180" />
               </Link>
-              <Link href="/login" className="btn-secondary min-h-[52px] text-[15px]">
-                ورود به حساب
+              <Link href="#pricing" className="btn-secondary min-h-[52px] text-[15px]">
+                مشاهده اشتراک‌ها
               </Link>
             </div>
 
@@ -222,7 +215,7 @@ export function LandingPage() {
               {["بدون نیاز به دانش فنی", "رمز اینستاگرام ذخیره نمی‌شود", "لغو در هر زمان"].map(
                 (t) => (
                   <li key={t} className="flex items-center gap-2">
-                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-400/15 text-emerald-300">
+                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-400/15 text-emerald-700">
                       <IconCheck size={12} />
                     </span>
                     {t}
@@ -244,50 +237,38 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ---------------- Problem ---------------- */}
-      <section className="py-12 sm:py-16" aria-labelledby="problem-title">
-        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-          <h2 id="problem-title" className="mb-6 text-[22px] font-extrabold text-ink-950 sm:text-2xl">
-            فروش در اینستاگرام یعنی جواب دادن، دوباره و دوباره
-          </h2>
-          <ul className="grid gap-3 sm:grid-cols-2">
-            {PROBLEMS.map((p) => (
-              <li key={p} className="card flex gap-3 p-4 text-[13px] leading-7 text-ink-700">
-                <span
-                  aria-hidden="true"
-                  className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-red-400/15 font-bold text-red-400"
-                >
-                  ✕
-                </span>
-                {p}
-              </li>
-            ))}
-          </ul>
+      <section id="why-sellora" className="border-y border-ink-100 bg-white py-10 sm:py-14" aria-labelledby="why-title">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <p className="text-xs font-bold text-brand-700">چرا سلورا؟</p>
+          <h2 id="why-title" className="mt-2 text-2xl font-extrabold text-ink-950">فراتر از یک جواب آماده، برای فروشگاه شما.</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-ink-500">پاسخ دستی وقت می‌گیرد و یک متن ثابت برای همه کافی نیست. سلورا پاسخ‌های تکراری را مدیریت می‌کند تا شما روی مشتری آمادهٔ خرید تمرکز کنید.</p>
+          <div className="mt-7 grid gap-7 sm:grid-cols-3">
+            {[
+              ["از اطلاعات خودتان", "قیمت و موجودی از محصولات ثبت‌شده خوانده می‌شود، نه از حدس یا یک متن ثابت."],
+              ["تمرکز روی مشتری جدی", "نشانه‌های قصد خرید شناسایی می‌شوند تا پیگیری مشتری‌های داغ آسان‌تر شود."],
+              ["کنترل همیشه با شما", "گفتگوهای حساس به شما سپرده می‌شوند؛ هر زمان بخواهید کنترل را به دست می‌گیرید."],
+            ].map(([title, desc]) => <article key={title}>
+              <span className="inline-flex rounded-xl bg-emerald-50 p-2 text-emerald-700"><IconCheck size={20}/></span>
+              <h3 className="mt-3 text-base font-bold">{title}</h3>
+              <p className="mt-2 text-sm leading-7 text-ink-500">{desc}</p>
+            </article>)}
+          </div>
+          <Link href="/why-sellora" className="mt-6 inline-flex min-h-[44px] items-center gap-2 text-sm font-bold text-brand-700">مقایسه و جزئیات بیشتر <IconArrowRight size={16} className="rtl:rotate-180"/></Link>
         </div>
       </section>
 
       {/* ---------------- Solution ---------------- */}
       <section className="py-12 sm:py-16" aria-labelledby="solution-title">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-          <div className="rounded-card border border-brand-100 bg-brand-gradient-soft p-5 sm:p-7">
-            <h2 id="solution-title" className="text-[22px] font-extrabold text-ink-950 sm:text-2xl">
-              سلورا همان کارمند فروش است، بدون شیفت شب
-            </h2>
-            <p className="mt-3 max-w-3xl text-[13.5px] leading-8 text-ink-600">
-              سلورا یک ربات پاسخ‌ ثابت نیست: پیام مشتری را می‌فهمد، محصول موردنظرش را پیدا می‌کند،
-              قیمت و موجودی را لحظه‌ای از دیتابیس شما می‌خواند و اگر مطمئن نباشد، به‌جای حدس زدن،
-              گفتگو را به شما می‌سپارد.
-            </p>
-          </div>
-
+          <h2 id="solution-title" className="text-2xl font-extrabold text-ink-950">کمتر پاسخ تکراری، بیشتر فرصت فروش</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" id="features">
-            {FEATURES.map((f) => (
+            {FEATURES.slice(0, 3).map((f, index) => (
               <article key={f.title} className="card p-5">
                 <div
                   aria-hidden="true"
                   className="grid h-12 w-12 place-items-center rounded-2xl border border-brand-100 bg-brand-50 text-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
                 >
-                  {f.icon}
+                  {React.createElement([IconInbox, IconBag, IconFlame][index], {size: 22, className: "text-brand-700"})}
                 </div>
                 <h3 className="mt-3 text-[14px] font-bold text-ink-900">{f.title}</h3>
                 <p className="mt-1 text-[12.5px] leading-7 text-ink-600">{f.desc}</p>
@@ -380,7 +361,7 @@ export function LandingPage() {
                     aria-hidden="true"
                     className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-canvas-soft text-ink-500 transition group-open:rotate-45"
                   >
-                    ＋
+                    <IconPlus size={16} />
                   </span>
                 </summary>
                 <p className="mt-2 text-[12.5px] leading-8 text-ink-600">{f.a}</p>
@@ -407,7 +388,7 @@ export function LandingPage() {
             <div className="relative mt-6 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/signup"
-                className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-white px-7 text-[14px] font-extrabold text-brand-600 shadow-soft transition hover:bg-brand-950"
+                className="btn-primary min-h-[48px] px-7 text-sm"
               >
                 شروع رایگان
               </Link>

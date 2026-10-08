@@ -69,10 +69,10 @@ export default async function OnboardingPage() {
       title: "اینستاگرام کسب‌وکار را متصل کن",
       desc: metaConfigured
         ? "از طریق ورود رسمی متا؛ رمز اینستاگرام تو ذخیره نمی‌شود."
-        : "در این استقرار Meta پیکربندی نشده، بنابراین این قدم فعلاً اختیاری است.",
+        : "اتصال متا در این محیط هنوز آماده نیست؛ برای پاسخ‌گویی واقعی، اتصال اینستاگرام لازم است.",
       done: instagramDone,
       href: "/settings/instagram",
-      optional: !metaConfigured,
+      optional: false,
       cta: dict.dashboard.connectInstagram,
     },
     {
@@ -80,7 +80,7 @@ export default async function OnboardingPage() {
       title: "پاسخ‌گویی خودکار را روشن کن",
       desc: "تا سلورا به‌جای تو به دایرکت‌ها جواب بدهد و داغ‌ها را خبرت کند.",
       done: Boolean(auto?.enabled),
-      href: "/settings",
+      href: "/automations",
       optional: false,
       cta: "تنظیم پاسخ خودکار",
     },
@@ -96,12 +96,7 @@ export default async function OnboardingPage() {
       <div className="mx-auto w-full max-w-2xl space-y-4">
         {/* ------------------------------------------------------- progress card */}
         <section className="relative overflow-hidden rounded-card border border-white/10 bg-premium-gradient p-5 text-white shadow-premium">
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute -bottom-12 end-0 opacity-25"
-          >
-            <SelloraEmblem size={200} tone="white" />
-          </span>
+
           <div className="relative flex items-center gap-4">
             <SelloraEmblem size={86} />
             <div className="min-w-0 flex-1">
@@ -118,7 +113,7 @@ export default async function OnboardingPage() {
 
           <div className="relative mt-4">
             <div
-              className="h-2.5 w-full overflow-hidden rounded-full bg-white/25"
+              className="h-2.5 w-full overflow-hidden rounded-full bg-ink-200"
               role="progressbar"
               aria-valuenow={progress}
               aria-valuemin={0}
@@ -126,7 +121,7 @@ export default async function OnboardingPage() {
               aria-label="پیشرفت راه‌اندازی"
             >
               <div
-                className="h-full rounded-full bg-white transition-all duration-500 ease-smooth"
+                className="h-full rounded-full bg-brand-600 transition-all duration-500 ease-smooth"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -146,7 +141,7 @@ export default async function OnboardingPage() {
                   "flex items-start gap-3.5 rounded-card border p-4 transition-all duration-200 ease-smooth hover:-translate-y-[2px] hover:shadow-card-hover",
                   s.done
                     ? "border-emerald-400/30 bg-emerald-400/15"
-                    : "border-ink-100/90 bg-white/[0.06] shadow-card"
+                    : "border-ink-100/90 bg-white shadow-card"
                 )}
               >
                 <span
@@ -154,7 +149,7 @@ export default async function OnboardingPage() {
                   className={cx(
                     "grid h-11 w-11 shrink-0 place-items-center rounded-2xl border text-[15px] font-extrabold",
                     s.done
-                      ? "border-emerald-400/30 bg-white/[0.06] text-emerald-300"
+                      ? "border-emerald-400/30 bg-white/[0.06] text-emerald-700"
                       : "border-brand-100 bg-brand-50 text-brand-700"
                   )}
                 >
@@ -196,7 +191,7 @@ export default async function OnboardingPage() {
         </div>
 
         <p className="text-center text-[11.5px] leading-6 text-ink-500">
-          بعداً — هر وقت خواستید از بخش تنظیمات همین مراحل را ادامه دهید.
+          بعداً — هر وقت خواستید از بخش بیشتر همین مراحل را ادامه دهید.
         </p>
       </div>
     </AppShell>

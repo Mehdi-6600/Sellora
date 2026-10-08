@@ -1,29 +1,27 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/toaster";
+import { NOTIFICATIONS_CHANGED } from "./use-unread-count";
 
 export function MarkAllReadButton({ label }: { label: string }) {
   const router = useRouter();
-  const [pending, start] = useTransition();
-
+  const toast = useToast();
+  const [pending, setPending] = useState(false);
   async function run() {
+    if (pending) return;
+    setPending(true);
     try {
-      await fetch("/api/notifications/read-all", { method: "POST" });
+      const response = await fetch("/api/notifications/read-all", { method: "POST" });
+      if (!response.ok) throw new Error("read failed");
+      window.dispatchEvent(new Event(NOTIFICATIONS_CHANGED));
+      router.refresh();
     } catch {
-      // Non-fatal: the refresh below still shows the current server state.
-    }
-    start(() => router.refresh());
+      toast.push("اعلان‌ها خوانده نشدند. دوباره تلاش کنید.", "error");
+    } finally { setPending(false); }
   }
-
-  return (
-    <button
-      type="button"
-      onClick={run}
-      disabled={pending}
-      className="btn-secondary min-h-[40px] px-3 py-2 text-[12px]"
-    >
-      {pending ? "…" : label}
-    </button>
-  );
+  return <button type="button" onClick={run} disabled={pending} aria-busy={pending} className="btn-secondary px-3 text-xs">
+    {pending ? "در حال ثبت…" : label}
+  </button>;
 }
