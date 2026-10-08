@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { getServerDict } from "@/lib/i18n";
-import { requireAuth } from "@/lib/auth/session";
-import { AppShell } from "@/components/layout/app-shell";
-import { Card } from "@/components/ui/card";
+import { PublicShell } from "@/components/public/public-shell";
+import { PLANS } from "@/lib/config/pricing";
+import { formatToman } from "@/lib/utils/format";
 
 export const dynamic = "force-dynamic";
 
@@ -10,50 +9,42 @@ const FEATURES = [
   {
     icon: "🎯",
     title: "پاسخ خودکار به سوالات مشتری",
-    desc: "قیمت، موجودی، زمان ارسال، آدرس، شرایط گارانتی — هر سوالی که مشتری زیاد می‌پرسه، Sellora خودش جواب می‌ده.",
-    color: "from-pink-50 to-white",
+    desc: "قیمت، موجودی، زمان ارسال، آدرس، شرایط گارانتی — هر سوالی که مشتری زیاد می‌پرسد، سلورا خودش جواب می‌دهد.",
   },
   {
     icon: "💰",
     title: "قیمت و موجودی لحظه‌ای",
-    desc: "قبل از هر پاسخ حساس، Sellora به دیتابیس نگاه می‌کنه. قیمت‌ها همیشه از دیتابیس خودت خونده می‌شن، نه از حدس و گمان.",
-    color: "from-emerald-50 to-white",
+    desc: "قبل از هر پاسخ حساس، سلورا به دیتابیس نگاه می‌کند. قیمت‌ها همیشه از محصولات خودتان خوانده می‌شوند، نه از حدس و گمان.",
   },
   {
     icon: "🔥",
     title: "شناسایی مشتری‌های داغ",
-    desc: "Sellora می‌فهمه کی جدی می‌خواد بخره. وقتی مشتری می‌گه «می‌خوام بخرم»، فوراً بهت خبر می‌ده تا دیر نشه.",
-    color: "from-red-50 to-white",
+    desc: "سلورا می‌فهمد چه کسی جدی می‌خواهد بخرد. وقتی مشتری قصد خرید نشان می‌دهد، امتیاز می‌گیرد و با اعلان به شما خبر می‌دهد.",
   },
   {
     icon: "🤝",
     title: "تحویل به شما وقتی لازمه",
-    desc: "مکالمات پیچیده یا حساس رو Sellora خودش ادامه نمی‌ده. بهت پاس می‌ده تا خودت تصمیم بگیری. یه دکمه، همه‌چی دست تو.",
-    color: "from-amber-50 to-white",
+    desc: "مکالمات پیچیده یا حساس را سلورا خودش ادامه نمی‌دهد؛ به شما پاس می‌دهد تا خودتان تصمیم بگیرید. با یک دکمه، همه‌چیز دست شماست.",
   },
   {
     icon: "🌍",
     title: "فهمیدن فارسی، فینگلیش، عربی، انگلیسی",
-    desc: "چه کسی رسمی سلام کنه، چه فینگلیش بنویسه (salam gheymat chande?)، Sellora هر چهار حالت رو می‌فهمه و جواب می‌ده.",
-    color: "from-sky-50 to-white",
+    desc: "چه کسی رسمی سلام کند، چه فینگلیش بنویسد (salam gheymat chande?)، سلورا هر چهار حالت را می‌فهمد و جواب می‌دهد.",
   },
   {
     icon: "📊",
     title: "آمار و گزارش شفاف",
-    desc: "چند تا مکالمه خودکار حل شد؟ چند تا مشتری داغ؟ چند درصد پاسخ‌ها خودکار بودن؟ همه توی داشبورد، بدون پیچیدگی.",
-    color: "from-violet-50 to-white",
+    desc: "چند مکالمه خودکار حل شد؟ چند مشتری داغ دارید؟ چند درصد پاسخ‌ها خودکار بوده؟ همه در داشبورد، بدون پیچیدگی.",
   },
   {
     icon: "🔒",
     title: "امنیت و جداسازی داده‌ها",
-    desc: "اطلاعات هر فروشگاه کاملاً جدا نگه‌داری می‌شه. توکن‌های اینستاگرام با رمزنگاری AES-256 محافظت می‌شن.",
-    color: "from-slate-50 to-white",
+    desc: "اطلاعات هر فروشگاه کاملاً جدا نگه‌داری می‌شود و توکن‌های اینستاگرام با رمزنگاری AES-256 محافظت می‌شوند.",
   },
   {
     icon: "🧠",
-    title: "هیچ‌وقت از خودش چیزی نمی‌سازه",
-    desc: "Sellora فقط بر اساس اطلاعاتی که تو وارد کردی جواب می‌ده. اگه چیزی رو ندونه، صادقانه می‌گه «نمی‌دونم» و از تو می‌پرسه.",
-    color: "from-cyan-50 to-white",
+    title: "هیچ‌وقت از خودش چیزی نمی‌سازد",
+    desc: "سلورا فقط بر اساس اطلاعاتی که شما وارد کرده‌اید جواب می‌دهد. اگر چیزی را نداند، صادقانه می‌گوید «نمی‌دانم» و از شما می‌پرسد.",
   },
 ];
 
@@ -64,145 +55,237 @@ const COMPARISON = [
   { label: "تحویل مکالمه به صاحب فروشگاه", sellora: true, manual: false, bot: false },
   { label: "گزارش و آمار", sellora: true, manual: false, bot: false },
   { label: "بدون نیاز به دانش فنی", sellora: true, manual: true, bot: false },
-  { label: "هیچ‌وقت اطلاعات اشتباه نمی‌ده", sellora: true, manual: false, bot: false },
+  { label: "هیچ‌وقت اطلاعات اشتباه نمی‌دهد", sellora: true, manual: false, bot: false },
 ];
+
+const PLAN_LABELS: Record<string, string> = {
+  WEEKLY: "هفتگی",
+  MONTHLY: "ماهانه",
+  QUARTERLY: "سه‌ماهه",
+};
 
 function StatusIcon({ ok }: { ok: boolean }) {
   return ok ? (
-    <span className="text-emerald-600 font-bold text-lg">✓</span>
+    <span aria-label="دارد" className="text-emerald-600 font-bold text-lg">
+      ✓
+    </span>
   ) : (
-    <span className="text-red-400 font-bold text-lg">✗</span>
+    <span aria-label="ندارد" className="text-red-400 font-bold text-lg">
+      ✗
+    </span>
   );
 }
 
-export default async function WhySelloraPage() {
-  const { dict } = await getServerDict();
-  let auth;
-  try {
-    auth = await requireAuth();
-  } catch {
-    // برای امنیت، اگه لاگین نبود، به /login می‌ره
-    // ولی کاربر لاگین‌شده مستقیم می‌بینه
-    throw new Response(null, { status: 401 });
-  }
-
+/**
+ * Public marketing page: what Sellora is, who it is for, how it works and how
+ * it differs from a plain auto-reply bot. No authentication required — the
+ * page contains no tenant data.
+ */
+export default function WhySelloraPage() {
   return (
-    <AppShell title="چرا Sellora؟" backHref="/settings">
-      {/* بخش ۱: خلاصه */}
-      <div className="rounded-3xl bg-gradient-to-br from-brand-600 via-brand-500 to-pink-500 text-white p-6 mb-6 shadow-lg">
-        <div className="text-3xl font-bold mb-3 leading-relaxed">
-          Sellora یه کارمند فروشه که ۲۴ ساعته بیداره 🌙
-        </div>
-        <p className="text-white/90 text-sm leading-7 mb-4">
-          به پیام‌های اینستاگرام مشتری‌هات خودکار جواب می‌ده، قیمت و موجودی رو از روی محصولات خودت می‌گه،
-          مشتری‌های جدی رو شناسایی می‌کنه، و وقتی خوابی یا سرت شلوغه، تنهات نمی‌ذاره.
-        </p>
-        <div className="bg-white/15 rounded-2xl p-3 text-xs leading-6 backdrop-blur">
-          <strong className="text-white">مزیتش چیه؟</strong>{" "}
-          دیگه لازم نیست پشت گوشی وایستی، پاسخ‌های تکراری بدی، یا نگران مشتری‌هایی باشی که توی دایرکت گم می‌شن.
-        </div>
-      </div>
-
-      {/* بخش ۲: مقایسه */}
-      <div className="section-title mb-3">Sellora vs بقیه</div>
-      <Card className="overflow-hidden mb-6">
-        <div className="grid grid-cols-4 text-xs font-semibold bg-ink-50 border-b border-ink-100">
-          <div className="p-3 text-right">ویژگی</div>
-          <div className="p-3 text-center text-brand-600">Sellora</div>
-          <div className="p-3 text-center text-ink-500">دستی</div>
-          <div className="p-3 text-center text-ink-500">ربات ساده</div>
-        </div>
-        {COMPARISON.map((row, i) => (
-          <div
-            key={row.label}
-            className={`grid grid-cols-4 text-xs items-center ${
-              i < COMPARISON.length - 1 ? "border-b border-ink-100" : ""
-            }`}
-          >
-            <div className="p-3 text-right font-medium text-ink-800">{row.label}</div>
-            <div className="p-3 text-center bg-brand-50/50">
-              <StatusIcon ok={row.sellora} />
-            </div>
-            <div className="p-3 text-center">
-              <StatusIcon ok={row.manual} />
-            </div>
-            <div className="p-3 text-center">
-              <StatusIcon ok={row.bot} />
-            </div>
+    <PublicShell>
+      <section className="bg-gradient-to-br from-brand-600 via-brand-500 to-pink-500 text-white">
+        <div className="mx-auto w-full max-w-5xl px-4 py-14 sm:py-20">
+          <h1 className="text-3xl sm:text-4xl font-extrabold leading-[1.4] mb-4">
+            سلورا کارمند فروشی است که ۲۴ ساعته بیدار است
+          </h1>
+          <p className="text-white/90 text-base leading-9 max-w-3xl mb-6">
+            به پیام‌های اینستاگرام مشتری‌هایتان خودکار جواب می‌دهد، قیمت و موجودی را از روی
+            محصولات خودتان می‌گوید، مشتری‌های جدی را شناسایی می‌کند و وقتی خوابید یا سرتان
+            شلوغ است، تنهایتان نمی‌گذارد.
+          </p>
+          <div className="bg-white/15 rounded-2xl p-4 text-sm leading-8 backdrop-blur max-w-3xl">
+            <strong>مزیتش چیست؟</strong> دیگر لازم نیست پشت گوشی بایستید، پاسخ‌های تکراری
+            بدهید یا نگران مشتری‌هایی باشید که در دایرکت گم می‌شوند.
           </div>
-        ))}
-      </Card>
+        </div>
+      </section>
 
-      {/* بخش ۳: قابلیت‌ها */}
-      <div className="section-title mb-3">Sellora چیکار می‌کنه؟</div>
-      <div className="space-y-3 mb-6">
-        {FEATURES.map((f) => (
-          <Card
-            key={f.title}
-            className={`p-4 bg-gradient-to-bl ${f.color} border-ink-100`}
-          >
-            <div className="flex items-start gap-3">
-              <div className="text-3xl shrink-0">{f.icon}</div>
-              <div className="flex-1">
-                <div className="font-semibold text-ink-900 mb-1">{f.title}</div>
-                <div className="text-sm text-ink-600 leading-7">{f.desc}</div>
+      <section className="py-12 sm:py-16 bg-white" aria-labelledby="who-title">
+        <div className="mx-auto w-full max-w-5xl px-4 grid gap-8 sm:grid-cols-2">
+          <div>
+            <h2 id="who-title" className="text-2xl font-extrabold text-ink-950 mb-4">
+              سلورا برای چه کسانی است؟
+            </h2>
+            <p className="text-sm leading-8 text-ink-600">
+              برای فروشگاه‌های اینستاگرامی که فروش‌شان در دایرکت اتفاق می‌افتد: پوشاک، کیف و
+              کفش، اکسسوری، لوازم خانگی کوچک، آرایشی و بهداشتی و هر کسب‌وکاری که روزانه ده‌ها
+              پیام تکراری می‌گیرد و می‌خواهد هیچ مشتری‌ای بی‌جواب نماند.
+            </p>
+          </div>
+          <div>
+            <h2 className="text-2xl font-extrabold text-ink-950 mb-4">چطور کار می‌کند؟</h2>
+            <ol className="text-sm leading-8 text-ink-600 list-decimal pr-5 space-y-1">
+              <li>محصولات و اطلاعات کسب‌وکار (آدرس، ارسال، ساعات کاری) را ثبت می‌کنید.</li>
+              <li>حساب اینستاگرام کسب‌وکار را از طریق ورود رسمی متا متصل می‌کنید.</li>
+              <li>سلورا پیام‌ها را می‌فهمد، جواب می‌دهد و داغ‌ها را با اعلان به شما می‌دهد.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 sm:py-16 bg-ink-50" aria-labelledby="compare-title">
+        <div className="mx-auto w-full max-w-5xl px-4">
+          <h2 id="compare-title" className="text-2xl font-extrabold text-ink-950 mb-6">
+            سلورا در برابر راه‌های دیگر
+          </h2>
+          <div className="card overflow-hidden">
+            <div className="grid grid-cols-4 text-xs font-semibold bg-ink-50 border-b border-ink-100">
+              <div className="p-3 text-start">ویژگی</div>
+              <div className="p-3 text-center text-brand-600">سلورا</div>
+              <div className="p-3 text-center text-ink-500">دستی</div>
+              <div className="p-3 text-center text-ink-500">ربات ساده</div>
+            </div>
+            {COMPARISON.map((row, i) => (
+              <div
+                key={row.label}
+                className={`grid grid-cols-4 text-xs items-center ${
+                  i < COMPARISON.length - 1 ? "border-b border-ink-100" : ""
+                }`}
+              >
+                <div className="p-3 text-start font-medium text-ink-800">{row.label}</div>
+                <div className="p-3 text-center bg-brand-50/50">
+                  <StatusIcon ok={row.sellora} />
+                </div>
+                <div className="p-3 text-center">
+                  <StatusIcon ok={row.manual} />
+                </div>
+                <div className="p-3 text-center">
+                  <StatusIcon ok={row.bot} />
+                </div>
               </div>
-            </div>
-          </Card>
-        ))}
-      </div>
-
-      {/* بخش ۴: قبل و بعد */}
-      <div className="section-title mb-3">تفاوت رو حس کن</div>
-      <div className="grid grid-cols-1 gap-3 mb-6">
-        <Card className="p-4 border-red-200 bg-red-50/50">
-          <div className="font-semibold text-red-800 mb-2 flex items-center gap-2">
-            <span>😰</span> بدون Sellora
+            ))}
           </div>
-          <ul className="text-sm text-red-700/90 leading-7 space-y-1.5 list-disc pr-5">
-            <li>صبح بیدار می‌شی، ۵۰ تا پیام نخونده داری</li>
-            <li>بعضی‌ها دیر جواب می‌دی، از دست می‌ری</li>
-            <li>قیمت‌ها اشتباه می‌دی، اعتبارت می‌ره</li>
-            <li>وقتت صرف جواب‌های تکراری می‌شه</li>
-          </ul>
-        </Card>
-
-        <Card className="p-4 border-emerald-200 bg-emerald-50/50">
-          <div className="font-semibold text-emerald-800 mb-2 flex items-center gap-2">
-            <span>🚀</span> با Sellora
-          </div>
-          <ul className="text-sm text-emerald-700/90 leading-7 space-y-1.5 list-disc pr-5">
-            <li>صبح بیدار می‌شی، Sellora همه رو جواب داده</li>
-            <li>فقط به داغ‌ها نگاه می‌کنی و سفارش می‌گیری</li>
-            <li>قیمت‌ها همیشه از دیتابیس درسته</li>
-            <li>وقتت صرف فروش و رشد می‌شه</li>
-          </ul>
-        </Card>
-      </div>
-
-      {/* بخش ۵: CTA */}
-      <Card className="p-6 text-center bg-gradient-to-br from-ink-900 to-ink-800 text-white border-0">
-        <div className="text-lg font-bold mb-2">همین امروز شروع کن</div>
-        <p className="text-xs text-white/70 mb-4 leading-6">
-          یک هفته رایگان. بدون نیاز به کارت اعتباری. هر وقت نخواستی، لغو کن.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-2 justify-center">
-          <Link
-            href="/settings/subscription"
-            className="bg-white text-ink-900 rounded-xl px-5 py-3 text-sm font-semibold hover:bg-white/90"
-          >
-            مشاهده پلن‌ها
-          </Link>
-          <Link
-            href="/settings"
-            className="bg-white/10 border border-white/20 text-white rounded-xl px-5 py-3 text-sm font-semibold hover:bg-white/20"
-          >
-            بازگشت به تنظیمات
-          </Link>
         </div>
-      </Card>
+      </section>
 
-      <div className="h-6" />
-    </AppShell>
+      <section className="py-12 sm:py-16 bg-white" aria-labelledby="features-title">
+        <div className="mx-auto w-full max-w-5xl px-4">
+          <h2 id="features-title" className="text-2xl font-extrabold text-ink-950 mb-6">
+            سلورا چه کاری انجام می‌دهد؟
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {FEATURES.map((f) => (
+              <article key={f.title} className="card p-5">
+                <div className="flex items-start gap-3">
+                  <div aria-hidden="true" className="text-2xl shrink-0">
+                    {f.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-ink-900 mb-1">{f.title}</h3>
+                    <p className="text-sm text-ink-600 leading-7">{f.desc}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 sm:py-16 bg-ink-50" aria-labelledby="before-after-title">
+        <div className="mx-auto w-full max-w-5xl px-4">
+          <h2 id="before-after-title" className="text-2xl font-extrabold text-ink-950 mb-6">
+            تفاوت را حس کنید
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="card p-5 border-red-200 bg-red-50/50">
+              <h3 className="font-bold text-red-800 mb-3 flex items-center gap-2">
+                <span aria-hidden="true">😰</span> بدون سلورا
+              </h3>
+              <ul className="text-sm text-red-700/90 leading-8 space-y-1 list-disc pr-5">
+                <li>صبح بیدار می‌شوی، ده‌ها پیام نخونده داری</li>
+                <li>بعضی‌ها دیر جواب می‌گیری و از دست می‌روند</li>
+                <li>قیمت‌ها را دستی می‌دهی و اشتباه پیش می‌آید</li>
+                <li>وقتت صرف جواب‌های تکراری می‌شود</li>
+              </ul>
+            </div>
+            <div className="card p-5 border-emerald-200 bg-emerald-50/50">
+              <h3 className="font-bold text-emerald-800 mb-3 flex items-center gap-2">
+                <span aria-hidden="true">🚀</span> با سلورا
+              </h3>
+              <ul className="text-sm text-emerald-700/90 leading-8 space-y-1 list-disc pr-5">
+                <li>صبح بیدار می‌شوی، سلورا همه را جواب داده</li>
+                <li>فقط داغ‌ها را پیگیری می‌کنی و سفارش می‌گیری</li>
+                <li>قیمت‌ها همیشه از دیتابیس خودت درست است</li>
+                <li>وقتت صرف فروش و رشد می‌شود</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 sm:py-16 bg-white" aria-labelledby="principles-title">
+        <div className="mx-auto w-full max-w-3xl px-4">
+          <h2 id="principles-title" className="text-2xl font-extrabold text-ink-950 mb-6">
+            اصل‌های ما درباره داده و امنیت
+          </h2>
+          <ul className="space-y-3 text-sm leading-8 text-ink-700">
+            <li className="card p-4">
+              <strong>جداسازی کامل tenant:</strong> هر فروشگاه فقط داده‌های خودش را می‌بیند؛ این
+              جداسازی در همه‌ی پرس‌وجوها و APIها اعمال می‌شود.
+            </li>
+            <li className="card p-4">
+              <strong>بدون ذخیره رمز اینستاگرام:</strong> اتصال فقط از طریق OAuth رسمی متا است و
+              توکن دسترسی با AES-256-GCM رمزنگاری می‌شود.
+            </li>
+            <li className="card p-4">
+              <strong>صداقت در پاسخ:</strong> سلورا قیمت، موجودی یا سیاستی را از خودش نمی‌سازد؛
+              اگر نداند، می‌گوید نمی‌دانم.
+            </li>
+            <li className="card p-4">
+              <strong>کنترل دست شما:</strong> هر گفتگو هر لحظه قابل تحویل گرفتن است و پاسخ خودکار
+              با یک دکمه متوقف می‌شود.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="py-12 sm:py-16 bg-ink-50" aria-labelledby="pricing-link-title">
+        <div className="mx-auto w-full max-w-3xl px-4">
+          <h2 id="pricing-link-title" className="text-2xl font-extrabold text-ink-950 mb-6">
+            قیمت‌ها
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-3 mb-6">
+            {PLANS.map((p) => (
+              <div key={p.id} className="card p-4 text-center">
+                <div className="text-sm font-semibold text-ink-700">{PLAN_LABELS[p.id]}</div>
+                <div className="text-lg font-extrabold text-ink-950 mt-1">
+                  {formatToman(p.price * 10)} <span className="text-xs font-medium text-ink-500">تومان</span>
+                </div>
+                {p.badge && <div className="chip bg-brand-50 text-brand-700 mt-2">{p.badge}</div>}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-ink-500 leading-6">
+            پرداخت در این نسخه کارت‌به‌کارت و با بررسی دستی است؛ پس از ثبت کد رهگیری، درخواست حداکثر
+            تا ۲۴ ساعت بررسی و در صورت تأیید فعال می‌شود.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-12 sm:py-16 bg-gradient-to-br from-ink-900 to-ink-800 text-white">
+        <div className="mx-auto w-full max-w-3xl px-4 text-center">
+          <h2 className="text-2xl font-extrabold mb-3">همین امروز شروع کنید</h2>
+          <p className="text-sm text-white/75 mb-6 leading-7 max-w-xl mx-auto">
+            ثبت‌نام رایگان است و فقط ایمیل لازم دارد. برای روشن شدن پاسخ خودکار، اتصال اینستاگرام
+            کسب‌وکار و افزودن محصولات را کامل کنید.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/signup"
+              className="inline-flex items-center justify-center rounded-xl bg-white text-ink-900 px-6 min-h-[48px] font-bold hover:bg-white/90"
+            >
+              شروع رایگان
+            </Link>
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center rounded-xl bg-white/10 border border-white/20 text-white px-6 min-h-[48px] font-bold hover:bg-white/20"
+            >
+              ورود
+            </Link>
+          </div>
+        </div>
+      </section>
+    </PublicShell>
   );
 }

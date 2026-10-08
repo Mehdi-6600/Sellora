@@ -52,13 +52,9 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Redirect root to dashboard (or login if not authed)
-  if (pathname === "/" || pathname === "") {
-    const url = req.nextUrl.clone();
-    url.pathname = hasSession(req) ? "/dashboard" : "/login";
-    return NextResponse.redirect(url);
-  }
-
+  // "/" is handled by the root page itself: authenticated visitors are
+  // redirected to /dashboard there, anonymous visitors get the public landing
+  // page (which must stay crawlable).
   return res;
 }
 
