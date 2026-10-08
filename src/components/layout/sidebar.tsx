@@ -26,7 +26,7 @@ function NavLink({ item, pathname, badge }: { item: NavItem; pathname: string; b
           "group relative flex items-center gap-3 rounded-2xl px-3 py-2.5 text-[13.5px] transition-all duration-200 ease-smooth",
           active
             ? "bg-white font-bold text-brand-700 shadow-card"
-            : "font-semibold text-ink-500 hover:bg-white/70 hover:text-ink-800"
+            : "font-semibold text-ink-500 hover:bg-white/60 hover:text-ink-800"
         )}
       >
         <span
@@ -41,7 +41,7 @@ function NavLink({ item, pathname, badge }: { item: NavItem; pathname: string; b
             "grid h-9 w-9 shrink-0 place-items-center rounded-xl border transition-colors duration-200",
             active
               ? "border-brand-100 bg-brand-50 text-brand-600"
-              : "border-transparent bg-canvas-soft text-ink-400 group-hover:text-ink-600"
+              : "border-transparent bg-white/55 text-ink-400 group-hover:text-brand-600"
           )}
         >
           <Icon size={18} active={active} />
@@ -99,9 +99,15 @@ export function SidebarNav({ unread, isAdmin, userName, userEmail, businessName,
   const initials = (userName || userEmail || "س").trim().slice(0, 1);
 
   return (
-    <aside className="hidden lg:fixed lg:inset-y-0 lg:start-0 lg:z-40 lg:flex lg:w-[17.5rem] lg:flex-col lg:border-e lg:border-ink-100/80 lg:bg-white/80 lg:px-4 lg:py-6 lg:shadow-side lg:backdrop-blur-xl">
-      <Link href="/dashboard" className="mx-2 mb-6 inline-flex rounded-2xl focus-visible:outline-none">
-        <SelloraLockup size={40} />
+    <aside className="hidden lg:fixed lg:inset-y-0 lg:start-0 lg:z-40 lg:flex lg:w-[17.5rem] lg:flex-col lg:border-e lg:border-ink-100/70 lg:bg-canvas-soft/75 lg:px-4 lg:py-6 lg:shadow-side lg:backdrop-blur-xl">
+      {/* The original artwork on its violet brand plate — the anchor of the
+          product identity on every authenticated screen. */}
+      <Link
+        href="/dashboard"
+        aria-label="سلورا — داشبورد"
+        className="mx-1 mb-6 inline-flex w-fit rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-200"
+      >
+        <SelloraLockup size={40} priority />
       </Link>
 
       <nav aria-label="ناوبری اصلی" className="flex-1 space-y-5 overflow-y-auto">
@@ -111,11 +117,11 @@ export function SidebarNav({ unread, isAdmin, userName, userEmail, businessName,
         {isAdmin ? <Group title="مدیریت" items={ADMIN_NAV} pathname={pathname} /> : null}
       </nav>
 
-      <div className="mt-4 rounded-card border border-ink-100/80 bg-canvas-soft/70 p-3">
+      <div className="mt-4 rounded-card border border-ink-100/80 bg-white/70 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur">
         <div className="flex items-center gap-2.5">
           <span
             aria-hidden="true"
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-[15px] font-extrabold text-white shadow-glowSoft"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-[15px] font-extrabold text-white shadow-glowSoft ring-1 ring-inset ring-white/15"
           >
             {initials}
           </span>

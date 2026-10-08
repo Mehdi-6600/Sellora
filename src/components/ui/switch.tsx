@@ -30,7 +30,7 @@ export function SwitchVisual({
         "relative inline-flex shrink-0 items-center rounded-full border transition-all duration-300 ease-smooth",
         track,
         checked
-          ? "border-brand-700/25 bg-gradient-to-b from-brand-500 to-brand-700 shadow-[inset_0_1px_2px_rgba(0,0,0,0.12)]"
+          ? "border-brand-700/25 bg-gradient-to-b from-brand-500 to-brand-700 shadow-[inset_0_1px_2px_rgba(31,16,66,0.22)]"
           : "border-ink-200 bg-ink-200/80 shadow-inset",
         className
       )}
@@ -38,7 +38,7 @@ export function SwitchVisual({
       <span
         aria-hidden="true"
         className={cx(
-          "absolute rounded-full bg-white shadow-[0_2px_5px_rgba(38,12,24,0.28)] transition-all duration-300 ease-smooth",
+          "absolute rounded-full bg-white shadow-[0_2px_5px_rgba(31,16,66,0.32)] transition-all duration-300 ease-smooth",
           knob
         )}
         style={{

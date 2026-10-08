@@ -1,52 +1,59 @@
 import * as React from "react";
+import Image from "next/image";
 import { cx } from "@/lib/utils/format";
 
 /**
- * Sellora brand components.
+ * Sellora brand components — built on THE ORIGINAL ARTWORK.
  *
- * The mark is a faithful vector reconstruction of the official artwork
- * (public/og.jpg / public/icons/icon-512.png):
+ * The assets in `public/brand/` are the official Sellora images, not
+ * recreations and not new SVG icons:
  *
- *   • a soft squircle (26% corner radius) filled with the brand gradient,
- *     bright rose at the top easing into deep wine at the bottom,
- *   • an inner top sheen + bottom vignette for the soft-3D lighting,
- *   • a white speech bubble outline with the brand "S" inside.
+ *   • sellora-mark*         — the original character (speech bubble + “S”),
+ *                             derived from the official 512×512 icon by
+ *                             resampling + alpha extraction only. No pixel of
+ *                             the artwork is redrawn or recoloured.
+ *   • sellora-wordmark*     — the official “Sellora” wordmark with its hairline
+ *                             underline, cropped out of the original banner
+ *                             (public/og.jpg) with the background keyed out.
+ *                             It is white *in the artwork itself*.
  *
- * It is deliberately NOT a new character, a generic AI glyph or a stock
- * illustration — it is the same character in the same style, rebuilt as crisp
- * SVG so it stays sharp from 16px favicons to hero illustrations.
+ * Because the wordmark is white in the artwork, the lockup is placed on the
+ * deep-violet brand plate (exactly like the reference image, where it sits on
+ * a coloured background). The artwork's own colours — rose, crimson, wine —
+ * are never re-tinted to match the purple environment.
  */
 
-const S_PATH =
-  "M36.5 23.5c-1.6-1.2-3.6-1.8-5.6-1.8-3.4 0-5.9 1.8-5.9 4.3 0 2.2 1.6 3.4 4.9 4.1l2.1.5c2 .4 2.7 1 2.7 1.9 0 1.2-1.4 2-3.6 2-2 0-3.8-.7-5.1-1.9l-2 2.6c1.8 1.6 4.4 2.5 7.1 2.5 3.8 0 6.5-2 6.5-4.8 0-2.3-1.6-3.6-5-4.3l-2.1-.5c-1.9-.4-2.6-.9-2.6-1.8 0-1.1 1.3-1.8 3.2-1.8 1.6 0 3.2.5 4.4 1.4l1.9-2.4Z";
-
-const BUBBLE_PATH =
-  "M32 14c-9.4 0-17 6.6-17 14.8 0 4.6 2.4 8.7 6.2 11.4-.3 2.2-1.1 4.3-2.6 6.1 2.9-.4 5.5-1.5 7.6-3 1.8.5 3.8.8 5.8.8 9.4 0 17-6.6 17-14.8S41.4 14 32 14Z";
+/** Intrinsic size of public/brand/sellora-wordmark.png (used for next/image). */
+const WORDMARK_RATIO = 646 / 194;
 
 export type MarkTone = "brand" | "muted" | "success" | "white";
 
-/**
- * Stable, hydration-safe SVG id prefix. `useId` works in both server and
- * client components, so a mark rendered inside a client island hydrates with
- * exactly the same gradient ids it was server-rendered with.
- */
-function useMarkId(): string {
-  const raw = React.useId();
-  return `sm-${raw.replace(/[^a-zA-Z0-9-]/g, "")}`;
-}
-
-const TONE_GRADIENTS: Record<MarkTone, [string, string, string]> = {
-  brand: ["#f9709a", "#d6255c", "#8e0f39"],
-  muted: ["#dcdee8", "#b9becd", "#8d93a8"],
-  success: ["#6ee7b7", "#10b981", "#047857"],
-  white: ["#ffffff", "#ffffff", "#ffffff"],
+/** Soft-3D light pool + satellites, tinted per tone. */
+const EMBLEM_TONES: Record<MarkTone, { pool: string; satellite: string }> = {
+  brand: {
+    pool: "radial-gradient(circle at 50% 46%, rgba(237,67,110,0.30), rgba(124,76,228,0.16) 52%, transparent 70%)",
+    satellite: "linear-gradient(135deg, rgba(255,255,255,0.95), rgba(214,37,92,0.55))",
+  },
+  muted: {
+    pool: "radial-gradient(circle at 50% 46%, rgba(152,146,179,0.28), transparent 68%)",
+    satellite: "linear-gradient(135deg, rgba(255,255,255,0.9), rgba(152,146,179,0.6))",
+  },
+  success: {
+    pool: "radial-gradient(circle at 50% 46%, rgba(16,185,129,0.26), transparent 68%)",
+    satellite: "linear-gradient(135deg, rgba(255,255,255,0.9), rgba(16,185,129,0.55))",
+  },
+  white: {
+    pool: "radial-gradient(circle at 50% 46%, rgba(255,255,255,0.35), transparent 70%)",
+    satellite: "linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.55))",
+  },
 };
 
 /**
- * The Sellora character/logo mark.
+ * The Sellora character — the original artwork, served as an image so it stays
+ * pixel-identical to the reference at every size (16px favicon → 340px hero).
  *
- * @param size  rendered width & height in px
- * @param glow  adds the brand light bloom used on hero moments
+ * @param size  rendered width & height in px (responsive callers pass a number)
+ * @param glow  adds the artwork's own rose light bloom
  */
 export function SelloraMark({
   size = 40,
@@ -63,164 +70,218 @@ export function SelloraMark({
   className?: string;
   title?: string;
 } & React.HTMLAttributes<HTMLSpanElement>) {
-  // Unique gradient ids per instance — several marks live on one page and
-  // duplicate ids would make every mark inherit the first one's gradient.
-  const id = useMarkId();
-  const [light, mid, dark] = TONE_GRADIENTS[tone];
-  const solid = tone === "white";
+  const muted = tone === "muted";
+  const white = tone === "white";
 
   return (
     <span
       className={cx(
         "relative inline-flex shrink-0 items-center justify-center",
-        glow && "drop-shadow-[0_18px_28px_rgba(214,37,92,0.35)]",
+        glow && !muted && "drop-shadow-[0_18px_28px_rgba(124,76,228,0.35)]",
         className
       )}
       style={{ width: size, height: size, ...style }}
       {...rest}
     >
-      <svg
+      <Image
+        src="/brand/sellora-mark.webp"
+        alt={title}
         width={size}
         height={size}
-        viewBox="0 0 64 64"
-        role="img"
-        aria-label={title}
-        className="h-full w-full"
-      >
-        <defs>
-          <linearGradient id={`${id}-body`} x1="0.12" y1="0" x2="0.86" y2="1">
-            {/* Three stops reproduce the artwork's lighting curve: a bright
-                top-left highlight, the crimson body, the deep-wine base. */}
-            <stop offset="0%" stopColor={light} />
-            <stop offset="46%" stopColor={mid} />
-            <stop offset="100%" stopColor={dark} />
-          </linearGradient>
-          <radialGradient id={`${id}-sheen`} cx="0.5" cy="0" r="0.85">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity={solid ? 0 : 0.55} />
-            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id={`${id}-vignette`} cx="0.5" cy="1" r="0.8">
-            <stop offset="0%" stopColor={dark} stopOpacity={solid ? 0 : 0.5} />
-            <stop offset="100%" stopColor={dark} stopOpacity="0" />
-          </radialGradient>
-          <clipPath id={`${id}-clip`}>
-            <rect width="64" height="64" rx="17" />
-          </clipPath>
-        </defs>
-
-        <g clipPath={`url(#${id}-clip)`}>
-          <rect width="64" height="64" fill={`url(#${id}-body)`} />
-          <rect width="64" height="64" fill={`url(#${id}-sheen)`} />
-          <rect width="64" height="64" fill={`url(#${id}-vignette)`} />
-        </g>
-
-        {/* Speech bubble + brand letter, in the artwork's white. */}
-        <path
-          d={BUBBLE_PATH}
-          fill="none"
-          stroke={solid ? "#d6255c" : "#ffffff"}
-          strokeWidth="4"
-          strokeLinejoin="round"
-        />
-        <path d={S_PATH} fill={solid ? "#d6255c" : "#ffffff"} />
-      </svg>
+        sizes={`${size}px`}
+        priority={size >= 100}
+        /* Serve the artwork file byte-for-byte: no recompression, so the
+           character's gradient and transparency stay exactly as designed. */
+        unoptimized
+        className={cx(
+          "h-full w-full select-none",
+          muted && "opacity-45 grayscale",
+          white && "drop-shadow-[0_10px_22px_rgba(31,10,69,0.28)]"
+        )}
+        draggable={false}
+      />
     </span>
   );
 }
 
 /**
- * Mark + wordmark + the thin underline from the reference artwork.
- * `tone="white"` is for the deep gradient surfaces; the default sits on light
- * backgrounds.
+ * The official “Sellora” wordmark (white, straight out of the reference
+ * artwork) with its hairline underline. Always pair it with a brand plate or a
+ * deep-violet surface — that is how the reference artwork uses it too.
  */
-export function SelloraLockup({
-  size = 36,
-  tone = "ink",
-  subtitle,
+export function SelloraWordmark({
+  height = 30,
+  className,
+  title = "Sellora",
+  priority = false,
+}: {
+  /** Rendered height of the wordmark block in px. */
+  height?: number;
+  className?: string;
+  title?: string;
+  priority?: boolean;
+}) {
+  const width = Math.round(height * WORDMARK_RATIO);
+  return (
+    <Image
+      src="/brand/sellora-wordmark.webp"
+      alt={title}
+      width={width}
+      height={height}
+      sizes={`${width}px`}
+      priority={priority}
+      unoptimized
+      draggable={false}
+      className={cx("block h-auto w-auto select-none", className)}
+      style={{ height, width: "auto" }}
+    />
+  );
+}
+
+/**
+ * The deep-violet brand plate: the surface the artwork's own lockup sits on
+ * (mirrors public/og.jpg, where the wordmark lives on a coloured background).
+ */
+function BrandPlate({
+  children,
   className,
 }: {
-  size?: number;
-  tone?: "ink" | "white";
-  subtitle?: React.ReactNode;
+  children: React.ReactNode;
   className?: string;
 }) {
-  const white = tone === "white";
   return (
-    <span className={cx("inline-flex items-center gap-2.5", className)}>
-      <SelloraMark size={size} tone="brand" glow />
-      <span className="flex flex-col leading-none">
-        <span
-          className={cx(
-            "font-extrabold tracking-[-0.02em]",
-            white ? "text-white" : "text-ink-950"
-          )}
-          style={{ fontSize: Math.round(size * 0.5) }}
-          dir="ltr"
-        >
-          Sellora
-        </span>
-        {/* The hairline under the wordmark in the brand artwork. */}
-        <span
-          aria-hidden="true"
-          className={cx(
-            "mt-[3px] block h-px w-[78%] rounded-full",
-            white ? "bg-white/70" : "bg-gradient-to-r from-brand-400 to-brand-700/10"
-          )}
-        />
-        {subtitle ? (
-          <span
-            className={cx(
-              "mt-1 text-[11px] font-medium leading-none",
-              white ? "text-white/80" : "text-ink-500"
-            )}
-          >
-            {subtitle}
-          </span>
-        ) : null}
-      </span>
+    <span
+      className={cx(
+        "relative inline-flex items-center overflow-hidden rounded-2xl border border-white/15",
+        "bg-brand-gradient shadow-glowSoft ring-1 ring-inset ring-white/10",
+        className
+      )}
+    >
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/22 to-transparent"
+      />
+      <span className="relative inline-flex items-center">{children}</span>
     </span>
   );
 }
 
 /**
- * The character in a soft-3D scene, used for empty states, success moments and
- * onboarding: the mark floating above a rose light pool, with two blurred
- * spheres echoing the bokeh of the reference artwork.
+ * Mark + wordmark lockup.
+ *
+ * `variant="plate"` (default) renders the artwork on the violet brand plate —
+ * the correct treatment for a white wordmark on light chrome (sidebar, mobile
+ * header, marketing header). `variant="bare"` is for surfaces that are already
+ * deep violet (hero panels, footers, auth brand panel).
+ */
+export function SelloraLockup({
+  size = 40,
+  variant = "plate",
+  priority = false,
+  subtitle,
+  className,
+  nameClassName,
+}: {
+  /** Height of the character mark in px. Everything else scales from it. */
+  size?: number;
+  variant?: "plate" | "bare";
+  priority?: boolean;
+  subtitle?: React.ReactNode;
+  className?: string;
+  nameClassName?: string;
+}) {
+  const markSize = size;
+  const wordmarkHeight = Math.max(14, Math.round(size * 0.62));
+  const gap = Math.max(6, Math.round(size * 0.22));
+
+  const content = (
+    <>
+      <SelloraMark size={markSize} glow={variant === "bare"} title="سلورا" />
+      <span className="inline-flex flex-col justify-center">
+        <SelloraWordmark height={wordmarkHeight} priority={priority} className={nameClassName} />
+        {subtitle ? (
+          <span className="mt-1 text-[11px] font-medium leading-none text-white/80">{subtitle}</span>
+        ) : null}
+      </span>
+    </>
+  );
+
+  if (variant === "bare") {
+    return (
+      <span
+        className={cx("inline-flex items-center", className)}
+        style={{ gap }}
+      >
+        {content}
+      </span>
+    );
+  }
+
+  const padX = Math.max(8, Math.round(size * 0.32));
+  const padY = Math.max(5, Math.round(size * 0.2));
+
+  return (
+    <BrandPlate className={className}>
+      <span
+        className="inline-flex items-center"
+        style={{ gap, paddingInline: padX, paddingBlock: padY }}
+      >
+        {content}
+      </span>
+    </BrandPlate>
+  );
+}
+
+/**
+ * The character in a soft-3D scene — for empty states, success moments,
+ * onboarding and 404/error pages: the real artwork floating above a rose light
+ * pool, with two blurred satellites echoing the bokeh of the reference image.
+ *
+ * @param feather blends the artwork's light vignette into the purple canvas
+ *                with a soft radial mask (used for large hero sizes).
  */
 export function SelloraEmblem({
   size = 116,
   tone = "brand",
   pulse = false,
+  feather = false,
   className,
 }: {
   size?: number;
   tone?: MarkTone;
   pulse?: boolean;
+  feather?: boolean;
   className?: string;
 }) {
+  const markSize = Math.round(size * 0.72);
+  const t = EMBLEM_TONES[tone];
+  const big = size >= 120;
+
   return (
     <span
       className={cx("relative inline-flex items-center justify-center", className)}
       style={{ width: size, height: size }}
       aria-hidden="true"
     >
-      {/* Light pool */}
+      {/* Light pool — the artwork's rose plus a violet ambient so it sits on
+          the purple canvas without a hard edge. */}
       <span
-        className="absolute inset-0 rounded-full blur-xl"
-        style={{
-          background:
-            tone === "muted"
-              ? "radial-gradient(circle at 50% 45%, rgba(141,147,168,0.28), transparent 68%)"
-              : "radial-gradient(circle at 50% 45%, rgba(237,67,110,0.32), transparent 68%)",
-        }}
+        className="absolute inset-0 blur-xl"
+        style={{ background: t.pool, borderRadius: "9999px" }}
       />
       {pulse ? (
         <span className="absolute inset-3 rounded-full border border-brand-300/60 animate-pulse-ring" />
       ) : null}
       {/* Small satellite spheres — the same lighting as the brand image. */}
       <span
-        className="absolute rounded-full bg-gradient-to-br from-brand-300/70 to-brand-600/50 blur-[2px]"
-        style={{ width: size * 0.14, height: size * 0.14, top: size * 0.06, insetInlineEnd: 0 }}
+        className="absolute rounded-full blur-[2px]"
+        style={{
+          background: t.satellite,
+          width: size * 0.14,
+          height: size * 0.14,
+          top: size * 0.06,
+          insetInlineEnd: 0,
+        }}
       />
       <span
         className="absolute rounded-full bg-gradient-to-br from-white/90 to-brand-200/70 blur-[3px]"
@@ -231,21 +292,31 @@ export function SelloraEmblem({
           insetInlineStart: size * 0.02,
         }}
       />
-      <SelloraMark size={size * 0.72} tone={tone} glow className="animate-float" />
+      <SelloraMark
+        size={markSize}
+        tone={tone}
+        glow
+        title="سلورا"
+        className={cx("animate-float", feather && big && "brand-feather")}
+      />
     </span>
   );
 }
 
 /**
- * Decorative brand aura for hero surfaces: two soft light sources in the
- * artwork's rose/wine tones. Purely presentational.
+ * Decorative aura for deep-violet hero surfaces: soft violet light sources plus
+ * a whisper of the artwork's rose. Purely presentational.
  */
 export function BrandAura({ className }: { className?: string }) {
   return (
-    <span aria-hidden="true" className={cx("pointer-events-none absolute inset-0 overflow-hidden", className)}>
+    <span
+      aria-hidden="true"
+      className={cx("pointer-events-none absolute inset-0 overflow-hidden", className)}
+    >
       <span className="absolute -top-16 end-[-3rem] h-56 w-56 rounded-full bg-white/20 blur-2xl" />
       <span className="absolute bottom-[-4rem] start-[-2rem] h-52 w-52 rounded-full bg-brand-950/30 blur-2xl" />
       <span className="absolute top-1/3 start-1/3 h-24 w-24 rounded-full bg-brand-300/25 blur-xl" />
+      <span className="absolute top-1/4 end-1/4 h-20 w-20 rounded-full bg-rose-400/20 blur-xl" />
     </span>
   );
 }

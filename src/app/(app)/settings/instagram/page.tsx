@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
 import { Badge, Dot, StatusPulse } from "@/components/ui/badge";
 import { META_APP_ID } from "@/lib/meta/config";
-import { SelloraEmblem } from "@/components/brand/sellora";
+import { SelloraEmblem, SelloraLockup } from "@/components/brand/sellora";
 import { StatusRefresh } from "./status-refresh";
 import { IconArrowRight, IconCheck, IconInstagram, IconSparkle } from "@/components/layout/icons";
 import { formatRelativeTime } from "@/lib/utils/format";
@@ -66,6 +66,8 @@ export default async function InstagramPage() {
             >
               <IconInstagram size={140} />
             </span>
+            {/* The real Sellora lockup, right where the connection is made. */}
+            <SelloraLockup size={34} variant="bare" className="relative mb-4" />
             <div className="relative flex items-start gap-4">
               <span
                 aria-hidden="true"

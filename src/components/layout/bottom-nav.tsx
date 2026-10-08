@@ -82,16 +82,16 @@ export function BottomNav({
           aria-modal={open ? true : undefined}
           aria-label="بیشتر"
           className={cx(
-            "absolute inset-x-0 bottom-0 rounded-t-sheet border border-ink-100/80 bg-white p-4 pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] shadow-[0_-18px_40px_-24px_rgba(29,32,51,0.35)] transition-transform duration-300 ease-smooth focus:outline-none",
+            "absolute inset-x-0 bottom-0 rounded-t-sheet border border-ink-100/80 bg-canvas-soft p-4 pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] shadow-[0_-18px_40px_-24px_rgba(31,16,66,0.45)] transition-transform duration-300 ease-smooth focus:outline-none",
             open ? "translate-y-0" : "translate-y-full"
           )}
         >
           <div aria-hidden="true" className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-ink-100" />
 
-          <div className="flex items-center gap-3 rounded-2xl border border-ink-100/80 bg-canvas-soft/70 p-3">
+          <div className="flex items-center gap-3 rounded-2xl border border-ink-100/80 bg-white/70 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
             <span
               aria-hidden="true"
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-[15px] font-extrabold text-white shadow-glowSoft"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-[15px] font-extrabold text-white shadow-glowSoft ring-1 ring-inset ring-white/15"
             >
               {(userName || userEmail || "س").trim().slice(0, 1)}
             </span>
@@ -117,13 +117,13 @@ export function BottomNav({
                       "flex min-h-[56px] items-center gap-3 rounded-2xl border px-3 transition-colors",
                       active
                         ? "border-brand-100 bg-brand-50/70 text-brand-700"
-                        : "border-ink-100/80 bg-white text-ink-700"
+                        : "border-ink-100/80 bg-white text-ink-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
                     )}
                   >
                     <span
                       className={cx(
                         "grid h-10 w-10 shrink-0 place-items-center rounded-xl",
-                        active ? "bg-white text-brand-600" : "bg-canvas-soft text-ink-500"
+                        active ? "bg-white text-brand-600" : "bg-canvas-soft text-ink-400"
                       )}
                     >
                       <Icon size={19} active={active} />
@@ -154,13 +154,13 @@ export function BottomNav({
                           "flex min-h-[56px] items-center gap-3 rounded-2xl border px-3 transition-colors",
                           active
                             ? "border-brand-100 bg-brand-50/70 text-brand-700"
-                            : "border-ink-100/80 bg-white text-ink-700"
+                            : "border-ink-100/80 bg-white text-ink-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
                         )}
                       >
                         <span
                           className={cx(
                             "grid h-10 w-10 shrink-0 place-items-center rounded-xl",
-                            active ? "bg-white text-brand-600" : "bg-canvas-soft text-ink-500"
+                            active ? "bg-white text-brand-600" : "bg-canvas-soft text-ink-400"
                           )}
                         >
                           <Icon size={19} active={active} />

@@ -4,7 +4,7 @@ import { getServerDict } from "@/lib/i18n";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
-import { SelloraEmblem } from "@/components/brand/sellora";
+import { SelloraEmblem, SelloraLockup } from "@/components/brand/sellora";
 import { Badge } from "@/components/ui/badge";
 import { META_APP_ID } from "@/lib/meta/config";
 import { cx, toPersianDigits } from "@/lib/utils/format";
@@ -100,9 +100,10 @@ export default async function OnboardingPage() {
             aria-hidden="true"
             className="pointer-events-none absolute -bottom-12 end-0 opacity-25"
           >
-            <SelloraEmblem size={200} tone="white" />
+            <SelloraEmblem size={200} tone="white" feather />
           </span>
-          <div className="relative flex items-center gap-4">
+          <SelloraLockup size={38} variant="bare" className="relative mb-4" />
+          <div className="relative flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
             <SelloraEmblem size={86} />
             <div className="min-w-0 flex-1">
               <h2 className="text-[17px] font-extrabold leading-7">

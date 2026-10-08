@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 import { PLANS } from "@/lib/config/pricing";
 import { cx, formatToman } from "@/lib/utils/format";
-import { SelloraEmblem, BrandAura } from "@/components/brand/sellora";
+import { SelloraEmblem, SelloraLockup, BrandAura } from "@/components/brand/sellora";
 import {
   IconBolt,
   IconCheck,
@@ -114,9 +114,10 @@ export default function WhySelloraPage() {
       <section className="relative overflow-hidden border-b border-brand-700/20 bg-brand-gradient text-white">
         <BrandAura />
         <span aria-hidden="true" className="pointer-events-none absolute -bottom-16 end-6 opacity-15">
-          <SelloraEmblem size={280} tone="white" />
+          <SelloraEmblem size={280} tone="white" feather />
         </span>
         <div className="relative mx-auto w-full max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
+          <SelloraLockup size={46} variant="bare" priority className="mb-5" />
           <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-[11.5px] font-bold ring-1 ring-white/25 backdrop-blur">
             <IconSparkle size={14} />
             راهنمای کامل سلورا
@@ -373,9 +374,10 @@ export default function WhySelloraPage() {
         <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
           <div className="relative overflow-hidden rounded-card border border-brand-700/25 bg-brand-gradient p-7 text-center text-white shadow-glowSoft sm:p-10">
             <BrandAura />
-            <span aria-hidden="true" className="relative mx-auto mb-4 block w-fit">
-              <SelloraEmblem size={104} tone="white" />
+            <span aria-hidden="true" className="relative mx-auto mb-3 block w-fit">
+              <SelloraEmblem size={116} tone="white" feather />
             </span>
+            <SelloraLockup size={46} variant="bare" className="relative justify-center" />
             <h2 className="relative text-[22px] font-extrabold leading-relaxed sm:text-3xl">
               همین امروز شروع کنید
             </h2>
