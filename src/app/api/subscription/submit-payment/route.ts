@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/db/prisma";
 import { requireAuth } from "@/lib/auth/session";
 import { getPlan, CURRENCY } from "@/lib/config/pricing";
+import { readJsonBody } from "@/lib/utils/http";
 
 export const runtime = "nodejs";
 
@@ -24,14 +25,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  let json: unknown;
-  try {
-    json = await req.json();
-  } catch {
-    return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+  const bodyRes = await readJsonBody(req, 10_000);
+  if (!bodyRes.ok) {
+    return NextResponse.json({ error: bodyRes.error }, { status: bodyRes.status });
   }
 
-  const parsed = bodySchema.safeParse(json);
+  const parsed = bodySchema.safeParse(bodyRes.json);
   if (!parsed.success) {
     return NextResponse.json(
       { error: "validation_failed", details: parsed.error.flatten() },

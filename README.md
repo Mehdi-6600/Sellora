@@ -96,8 +96,7 @@ npm install
 Copy `.env.example` to `.env.local` (or set via Vercel) and fill in:
 
 ```
-DATABASE_URL=postgres://...            # Neon: use the pooled connection string
-DIRECT_URL=postgres://...              # Neon: direct (non-pooled) for migrations
+SELLORA_DATABASE_URL=postgres://...    # Neon pooled string (schema.prisma reads this exact name)
 NEXTAUTH_SECRET=<long random secret>
 META_APP_ID=...
 META_APP_SECRET=...
@@ -113,7 +112,9 @@ npx prisma migrate dev         # local dev (creates & applies migrations)
 ```
 
 > **Do not use SQLite / in-memory DBs.** The schema is written for Postgres
-> (Neon). A `DATABASE_URL` pointing at a real Postgres database is required.
+> (Neon). A `SELLORA_DATABASE_URL` pointing at a real Postgres database is
+> required — `prisma generate` and `prisma migrate deploy` both read that exact
+> variable name from `prisma/schema.prisma`.
 
 ### 4. Run
 
@@ -127,7 +128,7 @@ to fill in catalog/business info and **Settings → Instagram** to connect.
 ## Production on Vercel
 
 1. Link the repo to Vercel project `sellora-main`.
-2. Configure all environment variables (DATABASE_URL, DIRECT_URL, NEXTAUTH_SECRET,
+2. Configure all environment variables (SELLORA_DATABASE_URL, NEXTAUTH_SECRET,
    META_APP_ID, META_APP_SECRET, META_WEBHOOK_VERIFY_TOKEN, QSTASH_TOKEN).
 3. In Meta App dashboard:
    - Add the webhook URL: `https://<your-domain>/api/webhooks/meta`

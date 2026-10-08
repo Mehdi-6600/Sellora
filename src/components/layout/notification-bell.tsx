@@ -14,7 +14,14 @@ import { toPersianDigits } from "@/lib/utils/format";
  */
 export async function NotificationBell() {
   const { dict, locale } = await getServerDict();
-  const session = await getSession();
+  let session = null;
+  try {
+    session = await getSession();
+  } catch {
+    // Fail closed elsewhere (requireAuth still refuses), but the bell must
+    // never take a page down: render nothing if the session can't be read.
+    return null;
+  }
   if (!session) return null;
 
   const unread = await unreadCount(session.bid);

@@ -70,11 +70,19 @@ export async function getSession(): Promise<SessionPayload | null> {
   const c = cookies();
   const token = c.get(COOKIE_NAME)?.value;
   if (!token) return null;
-  // Surface a missing-secret misconfiguration as a loud 500 instead of silently
-  // treating every session as invalid (fail closed, but diagnosable).
-  getSecretKey();
+  // If the signing secret is missing we cannot verify anything: treat the
+  // caller as anonymous (and log loudly). This stays fail-closed because
+  // createSession() refuses to mint tokens without the secret, so no session
+  // can ever be established or forged in that state.
+  let key: Uint8Array;
   try {
-    const { payload } = await jwtVerify(token, getSecretKey(), {
+    key = getSecretKey();
+  } catch (err) {
+    console.error("[session] refusing to verify sessions:", err);
+    return null;
+  }
+  try {
+    const { payload } = await jwtVerify(token, key, {
       issuer: "sellora",
     });
     if (!payload.uid || !payload.bid) return null;

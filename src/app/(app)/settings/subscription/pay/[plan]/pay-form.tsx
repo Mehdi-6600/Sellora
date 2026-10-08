@@ -36,7 +36,7 @@ export function PayForm({ planId }: { planId: "WEEKLY" | "MONTHLY" | "QUARTERLY"
         return;
       }
       router.push("/settings/subscription/status");
-    } catch (e) {
+    } catch {
       setError("خطا در ارتباط با سرور");
       setLoading(false);
     }

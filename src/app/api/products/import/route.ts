@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db/prisma";
 import { requireAuth } from "@/lib/auth/session";
 import { parseImportInput, toStoragePrice } from "@/lib/products/importer";
 import { z } from "zod";
+import { readJsonBody } from "@/lib/utils/http";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,8 +13,9 @@ const Schema = z.object({ text: z.string().min(1).max(200_000) });
 export async function POST(req: NextRequest) {
   try {
     const auth = await requireAuth();
-    const body = await req.json();
-    const parsed = Schema.safeParse(body);
+    const bodyRes = await readJsonBody(req, 300_000);
+    if (!bodyRes.ok) return NextResponse.json({ error: bodyRes.error }, { status: bodyRes.status });
+    const parsed = Schema.safeParse(bodyRes.json);
     if (!parsed.success) return NextResponse.json({ error: "invalid_input" }, { status: 400 });
     const rows = parseImportInput(parsed.data.text);
     const validRows = rows.filter((r) => r.valid);

@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { getServerDict } from "@/lib/i18n";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
@@ -19,7 +18,6 @@ function isValidPlan(p: string): p is ValidPlan {
 }
 
 export default async function PayPage({ params }: { params: { plan: string } }) {
-  const { dict } = await getServerDict();
   let auth;
   try {
     auth = await requireAuth();

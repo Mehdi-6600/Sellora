@@ -13,7 +13,15 @@ export const dynamic = "force-dynamic";
  * middleware) made the product invisible to anyone who had not signed up yet.
  */
 export default async function RootPage() {
-  const session = await getSession();
+  let session = null;
+  try {
+    session = await getSession();
+  } catch {
+    // Misconfigured signing secret: the public landing must stay reachable.
+    // requireAuth() still refuses every authenticated operation, so this only
+    // degrades "who am I" detection, never authorization.
+    session = null;
+  }
   if (session) redirect("/dashboard");
   return <LandingPage />;
 }

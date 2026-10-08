@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getServerDict } from "@/lib/i18n";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/prisma";
 import { AppShell } from "@/components/layout/app-shell";
@@ -12,7 +11,6 @@ import { daysLeft, paymentStatusLabel, planLabel, subscriptionStatusLabel } from
 export const dynamic = "force-dynamic";
 
 export default async function SubscriptionStatusPage() {
-  const { dict } = await getServerDict();
   let auth;
   try {
     auth = await requireAuth();

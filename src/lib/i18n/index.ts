@@ -1,7 +1,7 @@
 import fa, { Dict } from "./dictionaries/fa";
 import en from "./dictionaries/en";
 import ar from "./dictionaries/ar";
-import { headers, cookies } from "next/headers";
+import { cookies } from "next/headers";
 
 const dictionaries: Record<string, Dict> = { fa, en, ar };
 export const SUPPORTED_LOCALES = ["fa", "en", "ar"] as const;
