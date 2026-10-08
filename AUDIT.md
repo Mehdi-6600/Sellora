@@ -214,3 +214,67 @@ renders `• {m.deliveryState}` → `• RETRYING`. `settings/page.tsx` has
    output and code inspection, and CWV targets are stated as *targets*, not measurements.
 7. **Real PSP** — no Iranian payment gateway is integrated; the manual card-to-card review flow
    is the product's actual payment architecture.
+
+---
+
+## Phase 15 — verification log (2026-10-08, branch `arena/5a3320a9-sellora`)
+
+Everything below was actually executed in this sandbox against a production
+build (`npx next start`), not assumed.
+
+### Gates
+
+| Gate | Command | Result |
+| --- | --- | --- |
+| Type check | `npx tsc --noEmit` | exit 0, no output |
+| Lint | `npx next lint` | `✔ No ESLint warnings or errors` (8 pre-existing warnings fixed) |
+| Production build | `npx next build` | exit 0, 26 static pages |
+| `prisma validate` / `prisma generate` / `migrate deploy` | — | **EXTERNAL BLOCKER**: `binaries.prisma.sh` is outside the sandbox egress allowlist, so the Prisma CLI cannot download its engine. `npm install` therefore fails at `postinstall`; `node_modules` itself is complete. |
+| Runtime against real data (Neon) | — | **EXTERNAL BLOCKER**: no database reachable from the sandbox. |
+
+Build sizes (First Load JS): shared 87.1 kB; `/` 94.1 kB (+180 B);
+`/why-sellora` 94.1 kB; `/dashboard` 95.7 kB; `/products` 98 kB;
+`/products/import` 111 kB (largest client component in the app);
+middleware 26.8 kB. The public marketing surface is the lightest path in the
+app and loads one self-hosted WOFF2 (`/fonts/vazirmatn-var.woff2`, 111 KB) with
+`preload` + `font-display: swap`; no third-party font/CDN requests remain.
+
+### Route matrix (anonymous visitor)
+
+| Route | Result |
+| --- | --- |
+| `/`, `/why-sellora`, `/login`, `/signup` | 200, Persian, `index`/`noindex, follow` respectively |
+| `/robots.txt` | 200 — allows `/`, `/why-sellora`, `/signup`, `/login`; disallows `/dashboard`, `/conversations`, `/leads`, `/products`, `/settings`, `/admin`, `/onboarding`, `/notifications`, `/api`; `Host` + `Sitemap` |
+| `/sitemap.xml` | 200 — exactly 2 absolute public URLs from `siteUrl()` |
+| `/site.webmanifest`, `/favicon.svg`, `/favicon.ico`, `/apple-touch-icon.png`, `/icons/icon-192.png`, `/icons/icon-512.png`, `/og.jpg` | all 200 (`og.jpg` 41 KB, 1200×630) |
+| `/dashboard`, `/conversations`, `/leads`, `/products`, `/settings`, `/onboarding`, `/notifications`, `/admin/subscriptions`, `/admin/system` | 307 → `/login?next=<encoded original path>` (open-redirect safe: only same-origin relative paths) |
+| `/api/products`, `/api/leads`, `/api/conversations`, `/api/rules`, `/api/subscription`, `/api/notifications`, `/api/admin/subscriptions`, `/api/admin/system` | 401 |
+| `/api/health` | 200, no internals leaked |
+| `POST /api/webhooks/meta` (unsigned) | 401 |
+| `POST /api/webhooks/qstash` (bad signature) | 401 |
+| Non-existent path | 404 with the Persian `not-found` boundary |
+
+### Security headers (verified with `curl -I /`)
+
+`X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`,
+`Referrer-Policy: strict-origin-when-cross-origin`,
+`Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()`,
+`X-DNS-Prefetch-Control: on`, `Strict-Transport-Security: max-age=63072000; includeSubDomains`.
+
+### Session behaviour with a missing/broken signing secret
+
+- No cookie → middleware 307 to `/login`.
+- Garbage cookie → the page treats the visitor as anonymous and issues a
+  redirect flight command to `/login` (HTTP body stays 200 because the
+  `loading.tsx` shell has already been streamed; a browser follows it). Verified
+  by inspecting the flight payload (`login;307;`).
+- `NEXTAUTH_SECRET` unset in production → `getSession()` logs
+  `[session] refusing to verify sessions:` and returns null (no 500, no dev
+  fallback key), and `POST /api/auth/login` returns 500 `{"error":{"code":"internal"}}`
+  without minting a cookie. Fail closed, diagnosable.
+
+### Not verifiable here (need the live deployment)
+
+Core Web Vitals (LCP/CLS/INP) on real traffic, Meta/Instagram webhook delivery,
+card-to-card payment approvals, and Neon query plans/index usage. The code paths
+are in place; measuring them requires production traffic and credentials.

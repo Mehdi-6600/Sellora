@@ -75,7 +75,14 @@ export default async function DashboardPage() {
   ]);
 
   // Lazy, server-computed expiry notices (no cron in this deployment).
-  if (sub) await ensureSubscriptionNotices(sub);
+  // Best effort: a notification hiccup must never take the dashboard down.
+  if (sub) {
+    try {
+      await ensureSubscriptionNotices(sub);
+    } catch (err) {
+      console.error("[dashboard] subscription notice failed:", err);
+    }
+  }
 
   // Share of outbound messages that Sellora answered automatically. Both sides
   // come from the Message table, so this is a measured ratio, not a guess.
